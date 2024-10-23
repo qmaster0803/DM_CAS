@@ -1,0 +1,45 @@
+Classes structure:
+
+int main() - program entry point
+	|
+Interactive_shell - UI
+	|
+Modules (functions from the modules:: namespace)
+
+
+Interactive shell class description:
+UI includes two columns: left column with the interactive shell itself and
+right column with the history list of all calculations performed
+There are some hotkeys:
+	ctrl + q closes the program,
+	ctrl + h shows help pages in the right column instead of the history,
+			 until thi hotkey is pressed again
+	ctrl + z undoes latest change
+	ctrl + y redoes latest change
+	arrow up/down recalls latest commands
+	ctrl + arrow up/down recalles latest command results
+
+
+Module functions:
+All of the module classes must be called the same way as mentioned in the
+technical description given by the lector. They must be available by the
+same names in the UI (like classical functions, COMM_NN_D(a, b) etc.).
+Also, some of them should have easy-to-use aliases:
+
+COMMAND     | ALIAS
+---------------------------
+COMM_NN_D   | a == b
+ADD_1N_N    | a ++
+ADD_NN_N    | a + b
+SUB_NN_N    | a >-< b
+MUL_ND_N    | a *1 b
+MUL_Nk_N    | a ^10 k
+MUL_NN_N    | a * b
+SUB_NDN_N   |
+DIV_NN_Dk   |
+DIV_NN_N    | a // b
+MOD_NN_N    | a % b
+GCF_NN_N    |
+LCM_NN_N    |
+
+<TODO> continue the list
