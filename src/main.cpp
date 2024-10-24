@@ -13,12 +13,8 @@ int main()
     // signal(SIGWINCH, sigwinch_handler);
 
     while(!shell.exit) {
-        if(sigwinch_occured) {
-            shell.resize_UI();
-            sigwinch_occured = false;
-        }
-        // shell.update();
-        shell.resize_UI();
+        shell.update();
+        // shell.resize_UI();
     }
     return 0;
 }
