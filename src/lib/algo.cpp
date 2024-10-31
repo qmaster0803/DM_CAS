@@ -1,9 +1,18 @@
 #include "../include/algo.h"
 #include <cstddef>
+#include <algorithm>
 
 namespace algo
 {
-    std::vector<uint8_t> basic_add(std::vector<uint8_t> a, std::vector<uint8_t> b)
+    void truncate_leading_zeros(std::vector<uint8_t> &vec)
+    {
+        // truncate leading zeros
+        auto last_digit = vec.end() - 1;
+        while(*last_digit == 0 && vec.size() > 1)
+            last_digit = vec.erase(last_digit) - 1;
+    }
+    
+    std::vector<uint8_t> basic_add(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)
     {
         std::vector<uint8_t> result_vec;
         
@@ -23,7 +32,7 @@ namespace algo
         return result_vec;
     }
 
-    std::vector<uint8_t> basic_sub(std::vector<uint8_t> a, std::vector<uint8_t> b)
+    std::vector<uint8_t> basic_sub(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)
     {
         std::vector<uint8_t> result_vec;
 
@@ -42,10 +51,11 @@ namespace algo
             result_vec.emplace_back(digit_result);
         }
 
+        truncate_leading_zeros(result_vec);
         return result_vec;
     }
     
-    std::vector<uint8_t> basic_mul(std::vector<uint8_t> a, uint8_t b)
+    std::vector<uint8_t> basic_mul(const std::vector<uint8_t> &a, uint8_t b)
     {
         std::vector<uint8_t> result_vec;
         
@@ -62,5 +72,62 @@ namespace algo
         }
 
         return result_vec;
+    }
+
+    std::vector<uint8_t> basic_div(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b,
+                                   std::optional<std::reference_wrapper<std::vector<uint8_t>>> remainder)
+    {
+        // using the long division algorithm
+        std::vector<uint8_t> result;
+        auto it = a.rbegin();
+    
+        // select first part (from MSB side get at least another.len digits to match div_part >= another)
+        std::vector<uint8_t> div_part = {*(it++)};
+        while(algo::basic_cmp(div_part, b) == -1) {
+            div_part.insert(div_part.begin(), *(it++));
+        }
+
+        // Enter the main loop
+        while(1) {
+            // Divide directly by subtracting another from div_part
+            uint8_t result_digit = 0;
+            while(algo::basic_cmp(div_part, b) != -1) {
+                div_part = algo::basic_sub(div_part, b);
+                result_digit++;
+            }
+            // Save result digit (first digit is MS), but let's just reverse the vector
+            // before returning instead of moving values in the insert()
+            result.emplace_back(result_digit);
+            // Transfer next digit of divident
+            if(it == a.rend())
+                break;
+            
+            div_part.insert(div_part.begin(), *(it++));
+            truncate_leading_zeros(div_part);
+        }
+
+        if(remainder.has_value())
+            (*remainder).get() = std::move(div_part);
+        
+        std::reverse(result.begin(), result.end());
+        return result;
+    }
+    
+    int basic_cmp(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)
+    {
+        if(a.size() != b.size())
+            return (a.size() > b.size()) ? 1 : -1;
+
+        auto it_a = a.rbegin();
+        auto it_b = b.rbegin();
+        while(it_a != a.rend()) {
+            if(*it_a != *it_b)
+                return (*it_a > *it_b) ? 1 : -1;
+
+            it_a++;
+            it_b++;
+        }
+
+        return 0;
     }
 }

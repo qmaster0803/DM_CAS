@@ -1,15 +1,21 @@
 #include "../include/Natural.h"
 #include <stdexcept>
+#include <iostream>
+
+// ----------------------------------------------------------------------------
+// CONSTRUCTORS
+// ----------------------------------------------------------------------------
 
 Natural::Natural()
 {
     _digits.emplace_back(0);
 }
 
-Natural::Natural(std::vector<uint8_t> &digits)
-{
-    _digits = digits;
-}
+Natural::Natural(int value)         : Natural(std::to_string(value)) {}
+Natural::Natural(const char* value) : Natural(std::string(value))    {}
+Natural::Natural(std::vector<uint8_t> &digits) : _digits(digits) {}
+Natural::Natural(const Natural &another)       : _digits(another._digits) {}
+Natural::Natural(Natural &&another)            : _digits(std::move(another._digits)) {}
 
 Natural::Natural(const std::string &value)
 {
@@ -26,19 +32,48 @@ Natural::Natural(const std::string &value)
     }
 }
 
+// ----------------------------------------------------------------------------
+// MODIFIERS
+// ----------------------------------------------------------------------------
+
 void Natural::mul_by_digit(uint8_t digit)
 {
     auto new_digits = algo::basic_mul(this->_digits, digit);
     this->_digits = new_digits;
 }
 
-Natural Natural::operator << (std::size_t k) const
+// ----------------------------------------------------------------------------
+// COMPARISON OPERATORS
+// ----------------------------------------------------------------------------
+
+bool Natural::operator < (const Natural &another) const
 {
-    auto new_digits = this->_digits;
-    for(std::size_t i = 0; i < k; i++)
-        new_digits.insert(new_digits.begin(), 0);
-    return new_digits;
+    return algo::basic_cmp(this->_digits, another._digits) == -1;
 }
+
+bool Natural::operator > (const Natural &another) const
+{
+    return algo::basic_cmp(this->_digits, another._digits) == 1;
+}
+
+bool Natural::operator == (const Natural &another) const
+{
+    return algo::basic_cmp(this->_digits, another._digits) == 0;
+}
+
+bool Natural::operator <= (const Natural &another) const
+{
+    return algo::basic_cmp(this->_digits, another._digits) != 1;
+}
+
+bool Natural::operator >= (const Natural &another) const
+{
+    return algo::basic_cmp(this->_digits, another._digits) != -1;
+}
+
+// ----------------------------------------------------------------------------
+// BINARY OPERATORS
+// ----------------------------------------------------------------------------
 
 Natural Natural::operator + (const Natural &another) const
 {
@@ -47,16 +82,11 @@ Natural Natural::operator + (const Natural &another) const
     return result;
 }
 
-Natural &Natural::operator += (const Natural &another)
-{
-    auto new_digits = algo::basic_add(this->_digits, another._digits);
-    this->_digits = new_digits;
-    return *this;
-}
-
-
 Natural Natural::operator - (const Natural &another) const
 {
+    if(*this < another)
+        throw std::out_of_range("Subtraction of natural numbers results in a negative number");
+    
     auto new_digits = algo::basic_sub(this->_digits, another._digits);
     Natural result(new_digits);
     return result;
@@ -77,5 +107,146 @@ Natural Natural::operator * (const Natural &another) const
     return result;
 }
 
-Natural operator / (const Natural &another) const;
-Natural operator % (const Natural &another) const;
+Natural Natural::operator / (const Natural &another) const
+{
+    if(another == 0)
+        throw std::domain_error("Division be zero");
+    else if(*this < another)
+        return 0;
+    else if(*this == another)
+        return 1;
+
+    auto result_vec = algo::basic_div(this->_digits, another._digits);
+    return Natural(result_vec);
+}
+
+Natural Natural::operator % (const Natural &another) const
+{
+    if(another == 0)
+        throw std::domain_error("Division be zero");
+    else if(another == 1)
+        return Natural(0);
+    else if(*this < another)
+        return Natural(*this);
+
+    std::vector<uint8_t> remainder;
+    algo::basic_div(this->_digits, another._digits, remainder);
+    return Natural(remainder);
+}
+
+// ----------------------------------------------------------------------------
+// SHIFT OPERATORS
+// ----------------------------------------------------------------------------
+
+Natural Natural::operator << (std::size_t k) const
+{
+    auto new_digits = this->_digits;
+    for(std::size_t i = 0; i < k; i++)
+        new_digits.insert(new_digits.begin(), 0);
+    return new_digits;
+}
+
+// ----------------------------------------------------------------------------
+// ASSIGNMENT OPERATORS
+// ----------------------------------------------------------------------------
+
+Natural &Natural::operator = (const Natural &another)
+{
+    if(&another != this) {
+        this->_digits = another._digits; // copy digits array
+    }
+    return *this;
+}
+
+Natural &Natural::operator = (Natural &&another)
+{
+    if(&another != this) {
+        this->_digits = std::move(another._digits);
+    }
+    return *this;
+}
+
+Natural &Natural::operator += (const Natural &another)
+{
+    auto new_natural = (*this) + another;
+    this->_digits = std::move(new_natural._digits);  
+    return *this;
+}
+
+Natural &Natural::operator -= (const Natural &another)
+{
+    auto new_natural = (*this) - another;
+    this->_digits = std::move(new_natural._digits);  
+    return *this;
+}
+
+Natural &Natural::operator *= (const Natural &another)
+{
+    auto new_natural = (*this) * another;
+    this->_digits = std::move(new_natural._digits);  
+    return *this;
+}
+
+Natural &Natural::operator %= (const Natural &another)
+{
+    auto new_natural = (*this) % another;
+    this->_digits = std::move(new_natural._digits);  
+    return *this;
+}
+
+Natural &Natural::operator <<= (std::size_t k)
+{
+    auto new_natural = (*this) << k;
+    this->_digits = std::move(new_natural._digits);  
+    return *this;
+}
+
+// ----------------------------------------------------------------------------
+// INCREMENTS & DECREMENTS
+// ----------------------------------------------------------------------------
+
+Natural &Natural::operator ++ () // prefix
+{
+    (*this) += 1;
+    return *this;
+}
+
+Natural &Natural::operator -- () // prefix
+{
+    (*this) -= 1;
+    return *this;
+}
+
+Natural Natural::operator ++ (int) // postfix
+{
+    Natural copy = *this;
+    ++(*this);
+    return copy;
+}
+
+Natural Natural::operator -- (int) // postfix
+{
+    Natural copy = *this;
+    --(*this);
+    return copy;
+}
+
+// ----------------------------------------------------------------------------
+// VISUALIZATION
+// ----------------------------------------------------------------------------
+
+Natural::operator std::string() const
+{
+    std::string output;
+    auto it = _digits.rbegin();
+    while(it != _digits.rend()) {
+        output += std::to_string(*(it++));
+    }
+    return output;
+}
+
+std::ostream& operator<<(std::ostream& stream, const Natural &value)
+{
+    stream << (std::string)value;
+    return stream;
+}
