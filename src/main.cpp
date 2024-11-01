@@ -1,6 +1,4 @@
 #include "include/Interactive_shell.h"
-#include <signal.h>
-
 
 int main()
 {
