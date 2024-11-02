@@ -95,6 +95,21 @@ TEST(Natural_test, SubstractionOperator)
     EXPECT_THROW({ auto n = c - d; }, std::out_of_range);
 }
 
+TEST(Natural_test, MultiplicationByDigit)
+{
+    Natural p1(321675);
+    Natural p2(702934);
+    Natural z;
+
+    Natural r1 = p1 * static_cast<uint8_t>(9);
+    Natural r2 = p1 * static_cast<uint8_t>(0);
+    Natural r3 =  z * static_cast<uint8_t>(1);
+
+    EXPECT_EQ(static_cast<std::string>(r1), "2895075");
+    EXPECT_EQ(static_cast<std::string>(r2), "0");
+    EXPECT_EQ(static_cast<std::string>(r3), "0");
+}
+
 TEST(Natural_test, MultiplicationOperator)
 {
     Natural p1(321675);
