@@ -278,6 +278,15 @@ Integer::operator std::string() const
     return output;
 }
 
+Integer::operator Natural() const
+{
+    if(this->_neg)
+        throw std::runtime_error("Casting negative Integer(" + static_cast<std::string>(*this) + ") to Natural.");
+
+    Natural result(this->_nat);
+    return result;
+}
+
 std::ostream& operator<<(std::ostream& stream, const Integer &value)
 {
     stream << (std::string)value;
