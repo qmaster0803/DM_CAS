@@ -2,19 +2,19 @@
 
 #include "../include/Integer.h"
 
-TEST(IntegerTest, DefaultConstructor)
+TEST(Integer_test, DefaultConstructor)
 {
     Integer a;
     EXPECT_EQ(static_cast<std::string>(a), "0");
 }
 
-TEST(IntegerTest, IntConstructor)
+TEST(Integer_test, IntConstructor)
 {
     Integer a(42);
     EXPECT_EQ(static_cast<std::string>(a), "42");
 }
 
-TEST(IntegerTest, StringConstructor)
+TEST(Integer_test, StringConstructor)
 {
     Integer p("12345");
     Integer n("-123123");
@@ -22,7 +22,7 @@ TEST(IntegerTest, StringConstructor)
     EXPECT_EQ(static_cast<std::string>(n), "-12345");
 }
 
-TEST(IntegerTest, CharArrayConstructor)
+TEST(Integer_test, CharArrayConstructor)
 {
     char p_arr[] = {'6', '7', '8', '9', '0'};
     char n_arr[] = {'-', '6', '7', '8', '9', '0'};
@@ -33,14 +33,14 @@ TEST(IntegerTest, CharArrayConstructor)
     EXPECT_EQ(static_cast<std::string>(n), "-67890");
 }
 
-TEST(IntegerTest, CopyConstructor)
+TEST(Integer_test, CopyConstructor)
 {
     Integer a(99);
     Integer copy(a);
     EXPECT_EQ(copy, a);
 }
 
-TEST(IntegerTest, MoveConstructor)
+TEST(Integer_test, MoveConstructor)
 {
     Integer a(88);
     Integer moved(std::move(a));
@@ -99,7 +99,7 @@ TEST(Integer_test, Comparison)
     EXPECT_FALSE(p1 >= p2);
 }
 
-TEST(IntegerTest, AdditionOperator)
+TEST(Integer_test, AdditionOperator)
 {
     Integer p1(321675);
     Integer p2(702934);
@@ -120,7 +120,7 @@ TEST(IntegerTest, AdditionOperator)
     EXPECT_EQ(static_cast<std::string>(r5), "0");
 }
 
-TEST(IntegerTest, SubtractionOperator)
+TEST(Integer_test, SubstractionOperator)
 {
     Integer p1(321675);
     Integer p2(702934);
@@ -143,7 +143,7 @@ TEST(IntegerTest, SubtractionOperator)
     EXPECT_EQ(static_cast<std::string>(r6), "-322696");
 }
 
-TEST(IntegerTest, MultiplicationOperator)
+TEST(Integer_test, MultiplicationOperator)
 {
     Integer p1(321675);
     Integer p2(702934);
@@ -166,7 +166,7 @@ TEST(IntegerTest, MultiplicationOperator)
     EXPECT_EQ(static_cast<std::string>(r6), "-328430175");
 }
 
-TEST(IntegerTest, DivisionOperator)
+TEST(Integer_test, DivisionOperator)
 {
     Integer p1(321675);
     Integer p2(702934);
@@ -188,7 +188,7 @@ TEST(IntegerTest, DivisionOperator)
     EXPECT_EQ(static_cast<std::string>(r5), "0");
 }
 
-TEST(IntegerTest, ModulusOperator)
+TEST(Integer_test, ModulusOperator)
 {
     Integer p1(321675);
     Integer p2(702934);
@@ -210,8 +210,7 @@ TEST(IntegerTest, ModulusOperator)
     EXPECT_EQ(static_cast<std::string>(r5), "320654");
 }
 
-// Тест для оператора сдвига
-TEST(IntegerTest, ShiftLeftOperator)
+TEST(Integer_test, ShiftLeftOperator)
 {
     Integer p(213123123);
     Integer n("-2154867946778953485739845");
@@ -227,7 +226,7 @@ TEST(IntegerTest, ShiftLeftOperator)
     EXPECT_EQ(static_cast<std::string>(n << 3), "0");
 }
 
-TEST(IntegerTest, PreIncrementOperator)
+TEST(Integer_test, PreIncrementOperator)
 {
     Integer p(5);
     Integer n(-1);
@@ -240,7 +239,7 @@ TEST(IntegerTest, PreIncrementOperator)
     EXPECT_EQ(static_cast<std::string>(z), "1");
 }
 
-TEST(IntegerTest, PostIncrementOperator)
+TEST(Integer_test, PostIncrementOperator)
 {
     Integer p(5);
     Integer n(-1);
@@ -254,7 +253,7 @@ TEST(IntegerTest, PostIncrementOperator)
     EXPECT_EQ(static_cast<std::string>(z), "1");
 }
 
-TEST(IntegerTest, PreDecrementOperator)
+TEST(Integer_test, PreDecrementOperator)
 {
     Integer p(5);
     Integer n(-1);
@@ -267,7 +266,7 @@ TEST(IntegerTest, PreDecrementOperator)
     EXPECT_EQ(static_cast<std::string>(z), "-1");
 }
 
-TEST(IntegerTest, PostDecrementOperator)
+TEST(Integer_test, PostDecrementOperator)
 {
     Integer p(5);
     Integer n(-1);
@@ -282,7 +281,7 @@ TEST(IntegerTest, PostDecrementOperator)
 }
 
 // Тест оператора преобразования в строку
-TEST(IntegerTest, ToStringOperator)
+TEST(Integer_test, ToStringOperator)
 {
     Integer p(123);
     Integer n(-123);

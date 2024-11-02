@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include "../include/Natural.h"
 
-TEST(Natural_test, Comparison_test)
+TEST(Natural_test, Comparison)
 {
     Natural a = 5;
     Natural b = 1124112460;
@@ -36,7 +36,7 @@ TEST(Natural_test, Comparison_test)
     EXPECT_TRUE (a >= d);
 }
 
-TEST(Natural_test, Add_test)
+TEST(Natural_test, AdditionOperator)
 {
     Natural a = 5;
     Natural b = 9;
@@ -62,7 +62,7 @@ TEST(Natural_test, Add_test)
     EXPECT_EQ(a + 1, 6);
 }
 
-TEST(Natural_test, Sub_test)
+TEST(Natural_test, SubstractionOperator)
 {
     Natural a = 5;
     Natural b = 9;
@@ -92,7 +92,7 @@ TEST(Natural_test, Sub_test)
     EXPECT_THROW({ auto n = c - d; }, std::out_of_range);
 }
 
-TEST(Natural_test, Div_test)
+TEST(Natural_test, DivisionOperator)
 {
     Natural a = "97698126531298371231203";
     Natural b = "1923761927387612714";
@@ -109,7 +109,7 @@ TEST(Natural_test, Div_test)
     EXPECT_THROW({ auto i = Natural(135) / Natural(0); }, std::domain_error);
 }
 
-TEST(Natural_test, Mod_test)
+TEST(Natural_test, ModulusOperator)
 {
     Natural a = "97698126531298371231203";
     Natural b = "1923761927387612714";
@@ -126,7 +126,19 @@ TEST(Natural_test, Mod_test)
     EXPECT_THROW({ auto i = Natural(135) % Natural(0); }, std::domain_error);
 }
 
-TEST(Natural_test, Inc_dec_test)
+TEST(Natural_test, ShiftLeftOperator)
+{
+    Natural p(213123123);
+    Natural z;
+
+    EXPECT_EQ(p << 0, p);
+    EXPECT_EQ(static_cast<std::string>(p << 3), "213123123000");
+
+    EXPECT_EQ(z << 0, z);
+    EXPECT_EQ(static_cast<std::string>(z << 3), "0");
+}
+
+TEST(Natural_test, IncrementDecrementOperator)
 {
     Natural a = "97698126531298371231203";
     Natural b = "5";
@@ -156,7 +168,7 @@ TEST(Natural_test, Inc_dec_test)
     EXPECT_THROW({ c--; }, std::out_of_range);
 }
 
-TEST(Natural_test, Visualization_test)
+TEST(Natural_test, Visualization)
 {
     Natural a = "97698126531298371231203";
     Natural b = 0;
