@@ -7,15 +7,18 @@
 class Natural
 {
 public:
-    Natural();                         // new 0
-    Natural(int value);                // new from int
-    Natural(const std::string &value); // new from string
-    Natural(const char *value);        // new from char array
-    Natural(const Natural &another);   // copy constructor
-    Natural(Natural &&another);        // move constructor
+    Natural();                                  // new 0
+    explicit Natural(int value);                // new from int
+    explicit Natural(const std::string &value); // new from string
+    explicit Natural(const char *value);        // new from char array
+    Natural(const Natural &another);            // copy constructor
+    Natural(Natural &&another);                 // move constructor
 
-    // this functions alter the class object itself
+    // this function alter the class object itself
     void mul_by_digit(uint8_t digit);
+
+    // this function is the fastest way to check == 0
+    bool is_zero() const;
 
     // comparison operators overload
     bool operator <  (const Natural &another) const;

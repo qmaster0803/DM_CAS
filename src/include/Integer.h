@@ -5,12 +5,16 @@
 class Integer
 {
 public:
-    Integer();                         // new 0
-    Integer(int value);                // new from int
-    Integer(const std::string &value); // new from string
-    Integer(const char *value);        // new from char array
-    Integer(const Integer &another);   // copy constructor
-    Integer(Integer &&another);        // move constructor
+    Integer();                                  // new 0
+    explicit Integer(int value);                // new from int
+    explicit Integer(const std::string &value); // new from string
+    explicit Integer(const char *value);        // new from char array
+    explicit Integer(const Natural &value);     // from Natural
+    Integer(const Integer &another);            // copy constructor
+    Integer(Integer &&another);                 // move constructor
+
+    // this function is the fastest way to check == 0
+    bool is_zero() const;
 
     // comparison operators overload
     bool operator <  (const Integer &another) const;

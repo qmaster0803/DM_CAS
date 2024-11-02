@@ -8,8 +8,9 @@
 
 Integer::Integer() {}
 
-Integer::Integer(int value)         : Integer(std::to_string(value)) {}
-Integer::Integer(const char* value) : Integer(std::string(value))    {}
+Integer::Integer(int value)            : Integer(std::to_string(value)) {}
+Integer::Integer(const char* value)    : Integer(std::string(value))    {}
+Integer::Integer(const Natural &value) : _nat(value), _neg(false)       {}
 Integer::Integer(const Integer &another)       : _nat(another._nat), _neg(another._neg)            {}
 Integer::Integer(Integer &&another)            : _nat(std::move(another._nat)), _neg(another._neg) {}
 
@@ -23,8 +24,17 @@ Integer::Integer(const std::string &value)
     std::string nat_part = value.substr((unsigned)_neg);
     _nat = Natural(nat_part);
 
-    if(_nat == 0) // to prevent -0
+    if(_nat.is_zero()) // to prevent -0
         _neg = false;
+}
+
+// ----------------------------------------------------------------------------
+// NON-MODIFIERS
+// ----------------------------------------------------------------------------
+
+bool Integer::is_zero() const
+{
+    return _nat.is_zero();
 }
 
 // ----------------------------------------------------------------------------
@@ -116,7 +126,7 @@ Integer Integer::operator * (const Integer &another) const
 {
     Integer result;
 
-    if(this->_nat != 0 && another._nat != 0) {
+    if(!this->_nat.is_zero() && !another._nat.is_zero()) {
         result._nat = (this->_nat * another._nat);
         result._neg = (this->_neg != another._neg);
     }
@@ -126,7 +136,7 @@ Integer Integer::operator * (const Integer &another) const
 
 Integer Integer::operator / (const Integer &another) const
 {
-    if(another == 0)
+    if(another.is_zero())
         throw std::domain_error("Division be zero");
 
     Integer result;
@@ -134,7 +144,7 @@ Integer Integer::operator / (const Integer &another) const
     result._nat = (this->_nat / another._nat);
     if(result._neg && (this->_nat % another._nat != Natural(0)))
         ++result._nat;
-    else if(result._nat == 0)
+    else if(result._nat.is_zero())
         result._neg = false; // to prevent -0
 
     return result;
@@ -144,7 +154,7 @@ Integer Integer::operator / (const Integer &another) const
 //-15 % 4 => (-4 * 4) + 1 = ([-15//4] * 4) + 1 = -15 => 1 = -15 - ([-15//4] * 4)
 Integer Integer::operator % (const Integer &another) const
 {
-    if(another == 0)
+    if(another.is_zero())
         throw std::domain_error("Division be zero");
 
     return Integer(*this - ((*this / another) * another));
@@ -231,13 +241,13 @@ Integer &Integer::operator <<= (std::size_t k)
 
 Integer &Integer::operator ++ () // prefix
 {
-    (*this) += 1;
+    (*this) += Integer(1);
     return *this;
 }
 
 Integer &Integer::operator -- () // prefix
 {
-    (*this) -= 1;
+    (*this) -= Integer(1);
     return *this;
 }
 

@@ -43,6 +43,15 @@ void Natural::mul_by_digit(uint8_t digit)
 }
 
 // ----------------------------------------------------------------------------
+// NON-MODIFIERS
+// ----------------------------------------------------------------------------
+
+bool Natural::is_zero() const
+{
+    return (this->_digits.size() == 1 && this->_digits[0] == 0);
+}
+
+// ----------------------------------------------------------------------------
 // COMPARISON OPERATORS
 // ----------------------------------------------------------------------------
 
@@ -114,12 +123,12 @@ Natural Natural::operator * (const Natural &another) const
 
 Natural Natural::operator / (const Natural &another) const
 {
-    if(another == 0)
+    if(another.is_zero())
         throw std::domain_error("Division be zero");
     else if(*this < another)
-        return 0;
+        return Natural(0);
     else if(*this == another)
-        return 1;
+        return Natural(1);
 
     auto result_vec = algo::basic_div(this->_digits, another._digits);
     return Natural(result_vec);
@@ -127,9 +136,9 @@ Natural Natural::operator / (const Natural &another) const
 
 Natural Natural::operator % (const Natural &another) const
 {
-    if(another == 0)
+    if(another.is_zero())
         throw std::domain_error("Division be zero");
-    else if(another == 1)
+    else if(another == Natural(1))
         return Natural(0);
     else if(*this < another)
         return Natural(*this);
@@ -146,7 +155,7 @@ Natural Natural::operator % (const Natural &another) const
 Natural Natural::operator << (std::size_t k) const
 {
     Natural result(*this);
-    if(result == 0)
+    if(result.is_zero())
         return result;
     for(std::size_t i = 0; i < k; i++)
         result._digits.insert(result._digits.begin(), 0);
@@ -214,13 +223,13 @@ Natural &Natural::operator <<= (std::size_t k)
 
 Natural &Natural::operator ++ () // prefix
 {
-    (*this) += 1;
+    (*this) += Natural(1);
     return *this;
 }
 
 Natural &Natural::operator -- () // prefix
 {
-    (*this) -= 1;
+    (*this) -= Natural(1);
     return *this;
 }
 

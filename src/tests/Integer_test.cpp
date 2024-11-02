@@ -53,11 +53,11 @@ TEST(Integer_test, MoveConstructor)
 TEST(Integer_test, Comparison)
 {
 
-    Integer p1 = 52321321;
-    Integer p2 = 232;
-    Integer n1 = -12312321;
-    Integer n2 = "-90213123232312323222210090909999999999449";
-    Integer z  = 0;
+    Integer p1(52321321);
+    Integer p2(232);
+    Integer n1(-12312321);
+    Integer n2("-90213123232312323222210090909999999999449");
+    Integer z (0);
 
     // two positives comparison
     EXPECT_FALSE(p1 <  p2);
@@ -231,7 +231,7 @@ TEST(Integer_test, ShiftLeftOperator)
     EXPECT_EQ(n << 0, n);
     EXPECT_EQ(static_cast<std::string>(n << 3), "-2154867946778953485739845000");
 
-    EXPECT_EQ(z << 0, "0");
+    EXPECT_EQ(z << 0, Integer("0"));
     EXPECT_EQ(static_cast<std::string>(z << 3), "0");
 }
 
