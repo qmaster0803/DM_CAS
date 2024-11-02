@@ -19,13 +19,13 @@ TEST(Integer_test, StringConstructor)
     Integer p("12345");
     Integer n("-123123");
     EXPECT_EQ(static_cast<std::string>(p), "12345");
-    EXPECT_EQ(static_cast<std::string>(n), "-12345");
+    EXPECT_EQ(static_cast<std::string>(n), "-123123");
 }
 
 TEST(Integer_test, CharArrayConstructor)
 {
-    char p_arr[] = {'6', '7', '8', '9', '0'};
-    char n_arr[] = {'-', '6', '7', '8', '9', '0'};
+    char p_arr[] = "67890";
+    char n_arr[] = "-67890";
 
     Integer p(p_arr);
     Integer n(n_arr);
@@ -36,8 +36,11 @@ TEST(Integer_test, CharArrayConstructor)
 TEST(Integer_test, CopyConstructor)
 {
     Integer a(99);
-    Integer copy(a);
-    EXPECT_EQ(copy, a);
+    Integer b(-1251);
+    Integer copy_a(a);
+    Integer copy_b(b);
+    EXPECT_EQ(copy_a, a);
+    EXPECT_EQ(copy_b, b);
 }
 
 TEST(Integer_test, MoveConstructor)
@@ -62,7 +65,7 @@ TEST(Integer_test, Comparison)
     EXPECT_FALSE(p1 == p2);
     EXPECT_TRUE (p1 >  p2);
     EXPECT_TRUE (p1 >= p2);
-    EXPECT_FALSE(p1 != p2);
+    EXPECT_TRUE (p1 != p2);
 
     // positive and negative comparison
     EXPECT_FALSE(p1 <  n1);
@@ -70,7 +73,7 @@ TEST(Integer_test, Comparison)
     EXPECT_FALSE(p1 == n1);
     EXPECT_TRUE (p1 >  n1);
     EXPECT_TRUE (p1 >= n1);
-    EXPECT_FALSE(p1 != n2);
+    EXPECT_TRUE (p1 != n2);
 
     // two negatives comparison
     EXPECT_FALSE(n1 <  n2);
@@ -78,7 +81,7 @@ TEST(Integer_test, Comparison)
     EXPECT_FALSE(n1 == n2);
     EXPECT_TRUE (n1 >  n2);
     EXPECT_TRUE (n1 >= n2);
-    EXPECT_FALSE(n1 != n2);
+    EXPECT_TRUE (n1 != n2);
 
     // positive and zero comparison
     EXPECT_FALSE(p1 <  z);
@@ -86,7 +89,7 @@ TEST(Integer_test, Comparison)
     EXPECT_FALSE(p1 == z);
     EXPECT_TRUE (p1 >  z);
     EXPECT_TRUE (p1 >= z);
-    EXPECT_FALSE(p1 != z);
+    EXPECT_TRUE (p1 != z);
 
     // negative and zero comparison
     EXPECT_TRUE (n1 <  z);
@@ -94,7 +97,7 @@ TEST(Integer_test, Comparison)
     EXPECT_FALSE(n1 == z);
     EXPECT_FALSE(n1 >  z);
     EXPECT_FALSE(n1 >= z);
-    EXPECT_FALSE(n1 != z);
+    EXPECT_TRUE (n1 != z);
 
     // comparison of two equal elements
     EXPECT_FALSE(p1 >  p1);
@@ -191,7 +194,7 @@ TEST(Integer_test, DivisionOperator)
     EXPECT_EQ(static_cast<std::string>(r3), "2091513745872086189");
     EXPECT_THROW(p1 / z, std::domain_error);
     EXPECT_EQ(static_cast<std::string>(r4), "0");
-    EXPECT_EQ(static_cast<std::string>(r5), "0");
+    EXPECT_EQ(static_cast<std::string>(r5), "-1");
 }
 
 TEST(Integer_test, ModulusOperator)
@@ -229,7 +232,7 @@ TEST(Integer_test, ShiftLeftOperator)
     EXPECT_EQ(static_cast<std::string>(n << 3), "-2154867946778953485739845000");
 
     EXPECT_EQ(z << 0, "0");
-    EXPECT_EQ(static_cast<std::string>(n << 3), "0");
+    EXPECT_EQ(static_cast<std::string>(z << 3), "0");
 }
 
 TEST(Integer_test, PreIncrementOperator)
