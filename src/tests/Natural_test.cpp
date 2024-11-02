@@ -95,6 +95,21 @@ TEST(Natural_test, SubstractionOperator)
     EXPECT_THROW({ auto n = c - d; }, std::out_of_range);
 }
 
+TEST(Natural_test, MultiplicationOperator)
+{
+    Natural p1(321675);
+    Natural p2(702934);
+    Natural z;
+
+    Natural r1 = p1 * p2;
+    Natural r2 = p1 *  z;
+    Natural r3 =  z * p2;
+
+    EXPECT_EQ(static_cast<std::string>(r1), "226116294450");
+    EXPECT_EQ(static_cast<std::string>(r2), "0");
+    EXPECT_EQ(static_cast<std::string>(r3), "0");
+}
+
 TEST(Natural_test, DivisionOperator)
 {
     Natural a = "97698126531298371231203";
