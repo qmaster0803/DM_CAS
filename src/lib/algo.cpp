@@ -58,10 +58,14 @@ namespace algo
     std::vector<uint8_t> basic_mul(const std::vector<uint8_t> &a, uint8_t b)
     {
         std::vector<uint8_t> result_vec;
+        if(b == 0 || (a.size() == 1 && a[0] == 0)) {
+            result_vec.emplace_back(0);
+            return result_vec;
+        }
         
         uint8_t carry = 0;
         for(std::size_t i = 0; i < a.size(); ++i) {
-            uint8_t digit_result = a[i] + b + carry;
+            uint8_t digit_result = a[i] * b + carry;
             carry = digit_result / 10;
             result_vec.emplace_back(digit_result % 10);
         }
