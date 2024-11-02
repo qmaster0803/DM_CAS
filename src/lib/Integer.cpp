@@ -10,8 +10,8 @@ Integer::Integer() {}
 
 Integer::Integer(int value)         : Integer(std::to_string(value)) {}
 Integer::Integer(const char* value) : Integer(std::string(value))    {}
-Integer::Integer(const Integer &another)       : _nat(another._nat) {}
-Integer::Integer(Integer &&another)            : _nat(std::move(another._nat)) {}
+Integer::Integer(const Integer &another)       : _nat(another._nat), _neg(another._neg)            {}
+Integer::Integer(Integer &&another)            : _nat(std::move(another._nat)), _neg(another._neg) {}
 
 Integer::Integer(const std::string &value)
 {
@@ -158,7 +158,7 @@ Integer Integer::operator << (std::size_t k) const
 {
     Integer result(*this);
     result._nat <<= k;
-    return k;
+    return result;
 }
 
 // ----------------------------------------------------------------------------
