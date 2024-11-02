@@ -22,6 +22,9 @@ Integer::Integer(const std::string &value)
 
     std::string nat_part = value.substr((unsigned)_neg);
     _nat = Natural(nat_part);
+
+    if(_nat == 0) // to prevent -0
+        _neg = false;
 }
 
 // ----------------------------------------------------------------------------
@@ -70,7 +73,7 @@ Integer Integer::operator + (const Integer &another) const
         result._nat = (this->_nat + another._nat);
     }
     else {
-        if(this->_nat >  another._nat) {
+        if(this->_nat > another._nat) {
             result._nat = (this->_nat - another._nat);
             result._neg = this->_neg;
         }
@@ -90,14 +93,16 @@ Integer Integer::operator - (const Integer &another) const
     Integer result;
     
     if(this->_neg == another._neg) { // two numbers with the same sign
-        if(this->_nat >= another._nat) {
+        if(this->_nat > another._nat) {
             result._nat = (this->_nat - another._nat);
             result._neg = another._neg;
         }
-        else {
+        else if(this->_nat < another._nat){
             result._nat = (another._nat - this->_nat);
             result._neg = !another._neg;
         }
+        // if this->_nat == another._nat then the result if zero
+        // which is set by default
     }
     else {
          result._nat = (this->_nat + another._nat);
@@ -110,9 +115,11 @@ Integer Integer::operator - (const Integer &another) const
 Integer Integer::operator * (const Integer &another) const
 {
     Integer result;
-    
-    result._nat = (this->_nat * another._nat);
-    result._neg = (this->_neg != another._neg);
+
+    if(this->_nat != 0 && another._nat != 0) {
+        result._nat = (this->_nat * another._nat);
+        result._neg = (this->_neg != another._neg);
+    }
     
     return result;
 }
@@ -127,6 +134,8 @@ Integer Integer::operator / (const Integer &another) const
     result._nat = (this->_nat / another._nat);
     if(result._neg && (this->_nat % another._nat != Natural(0)))
         ++result._nat;
+    else if(result._nat == 0)
+        result._neg = false; // to prevent -0
 
     return result;
 }
