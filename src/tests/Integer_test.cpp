@@ -27,6 +27,15 @@ TEST(Integer_test, StringConstructor)
     EXPECT_EQ(static_cast<std::string>(zn), "0");
 }
 
+TEST(Integer_test, NaturalConstructor)
+{
+    Integer n(Natural("12345"));
+    Integer z(Natural("0"));
+
+    EXPECT_EQ(static_cast<std::string>(n), "12345");
+    EXPECT_EQ(static_cast<std::string>(z), "0");
+}
+
 TEST(Integer_test, CharArrayConstructor)
 {
     char p_arr[] = "67890";
@@ -314,4 +323,15 @@ TEST(Integer_test, ToStringOperator)
     std::string str2 = static_cast<std::string>(n);
     EXPECT_EQ(str1, "123");
     EXPECT_EQ(str2, "-123");
+}
+
+TEST(Integer_test, StaticCastZToN)
+{
+    Integer p(500);
+    Integer n(-123123123);
+    Integer z;
+
+    EXPECT_TRUE (static_cast<Natural>(p) == Natural(500));
+    EXPECT_THROW({ static_cast<Natural>(n); }, std::runtime_error);
+    EXPECT_TRUE (static_cast<Natural>(z) == Natural(0));
 }

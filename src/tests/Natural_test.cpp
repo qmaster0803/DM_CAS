@@ -3,6 +3,17 @@
 #include <stdexcept>
 #include "../include/Natural.h"
 
+TEST(Natural_test, StringConstructor)
+{
+    Natural n("213123435");
+    Natural z("0");
+
+    EXPECT_EQ(static_cast<std::string>(n), "213123435");
+    EXPECT_EQ(static_cast<std::string>(z), "0");
+    EXPECT_THROW({ Natural("-23"); }, std::invalid_argument);
+    EXPECT_THROW({ Natural("-0"); },  std::invalid_argument);
+}
+
 TEST(Natural_test, Comparison)
 {
     Natural a(5);
