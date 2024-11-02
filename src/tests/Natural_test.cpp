@@ -9,31 +9,34 @@ TEST(Natural_test, Comparison)
     Natural a = 5;
     Natural b = 1124112460;
     Natural c = 0;
-    Natural d = 5;
 
     EXPECT_TRUE (a <  b);
     EXPECT_TRUE (a <= b);
     EXPECT_FALSE(a == b);
     EXPECT_FALSE(a >  b);
     EXPECT_FALSE(a >= b);
+    EXPECT_TRUE (a != b);
     
     EXPECT_FALSE(a <  c);
     EXPECT_FALSE(a <= c);
     EXPECT_FALSE(a == c);
     EXPECT_TRUE (a >  c);
     EXPECT_TRUE (a >= c);
+    EXPECT_TRUE (a != c);
 
-    EXPECT_TRUE (c <  d);
-    EXPECT_TRUE (c <= d);
-    EXPECT_FALSE(c == d);
-    EXPECT_FALSE(c >  d);
-    EXPECT_FALSE(c >= d);
+    EXPECT_TRUE (c <  a);
+    EXPECT_TRUE (c <= a);
+    EXPECT_FALSE(c == a);
+    EXPECT_FALSE(c >  a);
+    EXPECT_FALSE(c >= a);
+    EXPECT_TRUE (c != a);
 
-    EXPECT_FALSE(a <  d);
-    EXPECT_TRUE (a <= d);
-    EXPECT_TRUE (a == d);
-    EXPECT_FALSE(a >  d);
-    EXPECT_TRUE (a >= d);
+    EXPECT_FALSE(a <  a);
+    EXPECT_TRUE (a <= a);
+    EXPECT_TRUE (a == a);
+    EXPECT_FALSE(a >  a);
+    EXPECT_TRUE (a >= a);
+    EXPECT_FALSE(a != a);
 }
 
 TEST(Natural_test, AdditionOperator)

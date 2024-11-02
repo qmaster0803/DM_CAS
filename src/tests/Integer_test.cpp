@@ -62,6 +62,7 @@ TEST(Integer_test, Comparison)
     EXPECT_FALSE(p1 == p2);
     EXPECT_TRUE (p1 >  p2);
     EXPECT_TRUE (p1 >= p2);
+    EXPECT_FALSE(p1 != p2);
 
     // positive and negative comparison
     EXPECT_FALSE(p1 <  n1);
@@ -69,6 +70,7 @@ TEST(Integer_test, Comparison)
     EXPECT_FALSE(p1 == n1);
     EXPECT_TRUE (p1 >  n1);
     EXPECT_TRUE (p1 >= n1);
+    EXPECT_FALSE(p1 != n2);
 
     // two negatives comparison
     EXPECT_FALSE(n1 <  n2);
@@ -76,6 +78,7 @@ TEST(Integer_test, Comparison)
     EXPECT_FALSE(n1 == n2);
     EXPECT_TRUE (n1 >  n2);
     EXPECT_TRUE (n1 >= n2);
+    EXPECT_FALSE(n1 != n2);
 
     // positive and zero comparison
     EXPECT_FALSE(p1 <  z);
@@ -83,20 +86,23 @@ TEST(Integer_test, Comparison)
     EXPECT_FALSE(p1 == z);
     EXPECT_TRUE (p1 >  z);
     EXPECT_TRUE (p1 >= z);
+    EXPECT_FALSE(p1 != z);
 
     // negative and zero comparison
-    EXPECT_TRUE(n1 <  z);
-    EXPECT_TRUE(n1 <= z);
+    EXPECT_TRUE (n1 <  z);
+    EXPECT_TRUE (n1 <= z);
     EXPECT_FALSE(n1 == z);
     EXPECT_FALSE(n1 >  z);
     EXPECT_FALSE(n1 >= z);
+    EXPECT_FALSE(n1 != z);
 
     // comparison of two equal elements
     EXPECT_FALSE(p1 >  p1);
-    EXPECT_FALSE(p1 <  p2);
-    EXPECT_TRUE (p1 == p2);
-    EXPECT_FALSE(p1 >  p2);
-    EXPECT_FALSE(p1 >= p2);
+    EXPECT_TRUE (p1 <= p1);
+    EXPECT_TRUE (p1 == p1);
+    EXPECT_FALSE(p1 >  p1);
+    EXPECT_TRUE (p1 >= p1);
+    EXPECT_FALSE(p1 != p1);
 }
 
 TEST(Integer_test, AdditionOperator)
