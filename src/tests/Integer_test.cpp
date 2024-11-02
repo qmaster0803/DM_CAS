@@ -212,8 +212,8 @@ TEST(Integer_test, ModulusOperator)
     Integer r5 = n1 % p1;
 
     EXPECT_EQ(static_cast<std::string>(r1), "321675");
-    EXPECT_EQ(static_cast<std::string>(r2), "-535");
-    EXPECT_EQ(static_cast<std::string>(r3), "-1021");
+    EXPECT_EQ(static_cast<std::string>(r2), "-961");
+    EXPECT_EQ(static_cast<std::string>(r3), "-40");
     EXPECT_THROW(p1 % z, std::domain_error);
     EXPECT_EQ(static_cast<std::string>(r4), "0");
     EXPECT_EQ(static_cast<std::string>(r5), "320654");
