@@ -18,6 +18,7 @@ public:
     bool operator == (const Integer &another) const;
     bool operator <= (const Integer &another) const;
     bool operator >= (const Integer &another) const;
+    bool operator != (const Integer &another) const;
 
     // binary operators overload
     Integer operator + (const Integer &another) const;

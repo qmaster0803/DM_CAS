@@ -53,6 +53,11 @@ bool Integer::operator >= (const Integer &another) const
     return _cmp(*this, another) != -1;
 }
 
+bool Integer::operator != (const Integer &another) const
+{
+    return _cmp(*this, another) != 0;
+}
+
 // ----------------------------------------------------------------------------
 // BINARY OPERATORS
 // ----------------------------------------------------------------------------
@@ -84,28 +89,31 @@ Integer Integer::operator - (const Integer &another) const
 {
     Integer result;
     
-    if(!this->_neg && another._neg) {
-        // two positive numbers
+    if(this->_neg == another._neg) { // two numbers with the same sign
         if(this->_nat >= another._nat) {
             result._nat = (this->_nat - another._nat);
-            result._neg = false;
+            result._neg = another._neg;
         }
-        
+        else {
+            result._nat = (another._nat - this->_nat);
+            result._neg = !another._neg;
+        }
     }
+    else {
+         result._nat = (this->_nat + another._nat);
+         result._neg = this->_neg;
+    }
+
+    return result;
 }
 
 Integer Integer::operator * (const Integer &another) const
 {
     Integer result;
     
-    for(std::size_t i = 0; i < another._digits.size(); i++) {
-        Integer new_n = *this;
-        new_n.mul_by_digit(another._digits[i]);
-        new_n = new_n << i;
-
-        result += new_n;
-    }
-
+    result._nat = (this->_nat * another._nat);
+    result._neg = (this->_neg != another._neg);
+    
     return result;
 }
 
@@ -113,27 +121,24 @@ Integer Integer::operator / (const Integer &another) const
 {
     if(another == 0)
         throw std::domain_error("Division be zero");
-    else if(*this < another)
-        return 0;
-    else if(*this == another)
-        return 1;
 
-    auto result_vec = algo::basic_div(this->_digits, another._digits);
-    return Integer(result_vec);
+    Integer result;
+    result._neg = (this->_neg != another._neg);
+    result._nat = (this->_nat / another._nat);
+    if(result._neg && (this->_nat % another._nat != Natural(0)))
+        ++result._nat;
+
+    return result;
 }
 
+// 15 % 4 => ( 3 * 4) + 3 = ([ 15//4] * 4) + 3 = 15  => 3 =  15 - ([ 15//4] * 4)
+//-15 % 4 => (-4 * 4) + 1 = ([-15//4] * 4) + 1 = -15 => 1 = -15 - ([-15//4] * 4)
 Integer Integer::operator % (const Integer &another) const
 {
     if(another == 0)
         throw std::domain_error("Division be zero");
-    else if(another == 1)
-        return Integer(0);
-    else if(*this < another)
-        return Integer(*this);
 
-    std::vector<uint8_t> remainder;
-    algo::basic_div(this->_digits, another._digits, remainder);
-    return Integer(remainder);
+    return Integer(*this - ((*this / another) * another));
 }
 
 // ----------------------------------------------------------------------------
@@ -142,64 +147,72 @@ Integer Integer::operator % (const Integer &another) const
 
 Integer Integer::operator << (std::size_t k) const
 {
-    auto new_digits = this->_digits;
-    for(std::size_t i = 0; i < k; i++)
-        new_digits.insert(new_digits.begin(), 0);
-    return new_digits;
+    Integer result(*this);
+    result._nat <<= k;
+    return k;
 }
 
 // ----------------------------------------------------------------------------
 // ASSIGNMENT OPERATORS
 // ----------------------------------------------------------------------------
 
+// copy
 Integer &Integer::operator = (const Integer &another)
 {
     if(&another != this) {
-        this->_digits = another._digits; // copy digits array
+        this->_nat = another._nat;
+        this->_neg = another._neg;
     }
     return *this;
 }
 
+// move
 Integer &Integer::operator = (Integer &&another)
 {
     if(&another != this) {
-        this->_digits = std::move(another._digits);
+        this->_nat = std::move(another._nat);
+        this->_neg = another._neg;
     }
     return *this;
 }
 
 Integer &Integer::operator += (const Integer &another)
 {
-    auto new_natural = (*this) + another;
-    this->_digits = std::move(new_natural._digits);  
+    auto n = (*this) + another;
+    this->_nat = std::move(n._nat);  
+    this->_neg = n._neg;
     return *this;
 }
 
 Integer &Integer::operator -= (const Integer &another)
 {
-    auto new_natural = (*this) - another;
-    this->_digits = std::move(new_natural._digits);  
+    auto n = (*this) - another;
+    this->_nat = std::move(n._nat);  
+    this->_neg = n._neg;
     return *this;
 }
 
 Integer &Integer::operator *= (const Integer &another)
 {
-    auto new_natural = (*this) * another;
-    this->_digits = std::move(new_natural._digits);  
+    auto n = (*this) * another;
+    this->_nat = std::move(n._nat);  
+    this->_neg = n._neg;
     return *this;
 }
 
 Integer &Integer::operator %= (const Integer &another)
 {
-    auto new_natural = (*this) % another;
-    this->_digits = std::move(new_natural._digits);  
+    auto n = (*this) % another;
+    this->_nat = std::move(n._nat);  
+    this->_neg = n._neg;
     return *this;
 }
 
 Integer &Integer::operator <<= (std::size_t k)
 {
-    auto new_natural = (*this) << k;
-    this->_digits = std::move(new_natural._digits);  
+    auto n = (*this) << k;
+    this->_nat = std::move(n._nat);  
+    this->_neg = n._neg;
     return *this;
 }
 
@@ -240,10 +253,9 @@ Integer Integer::operator -- (int) // postfix
 Integer::operator std::string() const
 {
     std::string output;
-    auto it = _digits.rbegin();
-    while(it != _digits.rend()) {
-        output += std::to_string(*(it++));
-    }
+    if(this->_neg)
+        output += '-';
+    output += (std::string)this->_nat;
     return output;
 }
 
@@ -256,7 +268,7 @@ std::ostream& operator<<(std::ostream& stream, const Integer &value)
 // ----------------------------------------------------------------------------
 // PRIVATE METHODS
 // ----------------------------------------------------------------------------
-int Integer::Integer _cmp(const Integer &a, const Integer &b) const
+int Integer::_cmp(const Integer &a, const Integer &b) const
 {
     if(a._neg && !b._neg)
         return -1;
