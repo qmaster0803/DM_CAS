@@ -23,6 +23,7 @@ public:
     bool operator == (const Natural &another) const;
     bool operator <= (const Natural &another) const;
     bool operator >= (const Natural &another) const;
+    bool operator != (const Natural &another) const;
 
     // binary operators overload
     Natural operator + (const Natural &another) const;

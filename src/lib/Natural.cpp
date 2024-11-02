@@ -71,6 +71,11 @@ bool Natural::operator >= (const Natural &another) const
     return algo::basic_cmp(this->_digits, another._digits) != -1;
 }
 
+bool Natural::operator != (const Natural &another) const
+{
+    return algo::basic_cmp(this->_digits, another._digits) != 0;
+}
+
 // ----------------------------------------------------------------------------
 // BINARY OPERATORS
 // ----------------------------------------------------------------------------
@@ -140,10 +145,12 @@ Natural Natural::operator % (const Natural &another) const
 
 Natural Natural::operator << (std::size_t k) const
 {
-    auto new_digits = this->_digits;
+    Natural result(*this);
+    if(result == 0)
+        return result;
     for(std::size_t i = 0; i < k; i++)
-        new_digits.insert(new_digits.begin(), 0);
-    return new_digits;
+        result._digits.insert(result._digits.begin(), 0);
+    return result;
 }
 
 // ----------------------------------------------------------------------------
