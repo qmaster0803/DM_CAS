@@ -223,32 +223,31 @@ TEST(Natural_test, IncrementDecrementOperator)
 TEST(Natural_test, GCD)
 {
     // positive numbers
-    EXPECT_EQ(Natural(10).gcd(Natural(5)), Natural(5));
-    EXPECT_EQ(Natural(15).gcd(Natural(20)), Natural(5));
-    EXPECT_EQ(Natural(7).gcd(Natural(3)), 1);
-    EXPECT_EQ(Natural(100).gcd(Natural(25)), 25);
-    EXPECT_EQ(Natural(255).gcd(Natural(255)), 255));
+    EXPECT_EQ(Natural(10).gcd(Natural(5)),    Natural(5));
+    EXPECT_EQ(Natural(15).gcd(Natural(20)),   Natural(5));
+    EXPECT_EQ(Natural(7).gcd(Natural(3)),     Natural(1));
+    EXPECT_EQ(Natural(100).gcd(Natural(25)),  Natural(25));
+    EXPECT_EQ(Natural(255).gcd(Natural(255)), Natural(255));
 
     // zero cases
-    EXPECT_EQ(Natural(0).gcd(Natural(5)), Natural(5));
-    EXPECT_EQ(Natural(15).gcd(Natural(0)), Natural(15));
-    EXPECT_EQ(Natural(0).gcd(Natural(0)), Natural(0));
-    // Обычно gcd(0, 0) не определен, но часто считается равным 0
+    EXPECT_EQ(Natural(0).gcd(Natural(5)),     Natural(5));
+    EXPECT_EQ(Natural(15).gcd(Natural(0)),    Natural(15));
+    EXPECT_EQ(Natural(0).gcd(Natural(0)),     Natural(0));
 }
 
 TEST(Natural_test, LCM)
 {
     // positive numbers
-    EXPECT_EQ(Natural(10).lcm(Natural(5)), Natural(10));
-    EXPECT_EQ(Natural(15).lcm(Natural(20)), Natural(60));
-    EXPECT_EQ(Natural(7).lcm(Natural(3)), Natural(21));
-    EXPECT_EQ(Natural(100).lcm(Natural(25)), Natural(100));
-    EXPECT_EQ(Natural(255).lcm(Natural(255)), 255));
+    EXPECT_EQ(Natural(10).lcm(Natural(5)),    Natural(10));
+    EXPECT_EQ(Natural(15).lcm(Natural(20)),   Natural(60));
+    EXPECT_EQ(Natural(7).lcm(Natural(3)),     Natural(21));
+    EXPECT_EQ(Natural(100).lcm(Natural(25)),  Natural(100));
+    EXPECT_EQ(Natural(255).lcm(Natural(255)), Natural(255));
 
     // zero cases
-    EXPECT_EQ(Natural(0).lcm(Natural(5)), Natural(0));
-    EXPECT_EQ(Natural(15).lcm(Natural(0)), Natural(0));
-    EXPECT_EQ(Natural(0).lcm(Natural(0)), Natural(0));
+    EXPECT_EQ(Natural(0).lcm(Natural(5)),     Natural(0));
+    EXPECT_EQ(Natural(15).lcm(Natural(0)),    Natural(0));
+    EXPECT_EQ(Natural(0).lcm(Natural(0)),     Natural(0));
 }
 
 TEST(Natural_test, Visualization)

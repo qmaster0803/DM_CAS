@@ -317,41 +317,41 @@ TEST(Integer_test, PostDecrementOperator)
 TEST(Integer_test, GCD)
 {
     // positive numbers
-    EXPECT_EQ(Integer(10).gcd(Integer(5)), Integer(5));
-    EXPECT_EQ(Integer(15).gcd(Integer(20)), Integer(5));
-    EXPECT_EQ(Integer(7).gcd(Integer(3)), 1);
-    EXPECT_EQ(Integer(100).gcd(Integer(25)), 25);
-    EXPECT_EQ(Integer(255).gcd(Integer(255)), 255));
+    EXPECT_EQ(Integer(10).gcd(Integer(5)),    Integer(5));
+    EXPECT_EQ(Integer(15).gcd(Integer(20)),   Integer(5));
+    EXPECT_EQ(Integer(7).gcd(Integer(3)),     Integer(1));
+    EXPECT_EQ(Integer(100).gcd(Integer(25)),  Integer(25));
+    EXPECT_EQ(Integer(255).gcd(Integer(255)), Integer(255));
 
     // negative numbers
-    EXPECT_EQ(Integer(-10).gcd(Integer(5)), Integer(5));
-    EXPECT_EQ(Integer(15).gcd(Integer(-20)), Integer(5));
-    EXPECT_EQ(Integer(-7).gcd(Integer(-3)), Integer(1));
+    EXPECT_EQ(Integer(-10).gcd(Integer(5)),   Integer(5));
+    EXPECT_EQ(Integer(15).gcd(Integer(-20)),  Integer(5));
+    EXPECT_EQ(Integer(-7).gcd(Integer(-3)),   Integer(1));
 
     // zero cases
-    EXPECT_EQ(Integer(0).gcd(Integer(5)), Integer(5));
-    EXPECT_EQ(Integer(15).gcd(Integer(0)), Integer(15));
-    EXPECT_EQ(Integer(0).gcd(Integer(0)), Integer(0));  // Обычно gcd(0, 0) не определен, но часто считается равным 0
+    EXPECT_EQ(Integer(0).gcd(Integer(5)),     Integer(5));
+    EXPECT_EQ(Integer(15).gcd(Integer(0)),    Integer(15));
+    EXPECT_EQ(Integer(0).gcd(Integer(0)),     Integer(0));  // Обычно gcd(0, 0) не определен, но часто считается равным 0
 }
 
 TEST(Integer_test, LCM)
 {
     // positive numbers
-    EXPECT_EQ(Integer(10).lcm(Integer(5)), Integer(10));
-    EXPECT_EQ(Integer(15).lcm(Integer(20)), Integer(60));
-    EXPECT_EQ(Integer(7).lcm(Integer(3)), Integer(21));
-    EXPECT_EQ(Integer(100).lcm(Integer(25)), Integer(100));
-    EXPECT_EQ(Integer(255).lcm(Integer(255)), 255));
+    EXPECT_EQ(Integer(10).lcm(Integer(5)),    Integer(10));
+    EXPECT_EQ(Integer(15).lcm(Integer(20)),   Integer(60));
+    EXPECT_EQ(Integer(7).lcm(Integer(3)),     Integer(21));
+    EXPECT_EQ(Integer(100).lcm(Integer(25)),  Integer(100));
+    EXPECT_EQ(Integer(255).lcm(Integer(255)), Integer(255));
 
     // negative numbers
-    EXPECT_EQ(Integer(-10).lcm(Integer(5)), Integer(10));
-    EXPECT_EQ(Integer(15).lcm(Integer(-20)), Integer(60));
-    EXPECT_EQ(Integer(-7).lcm(Integer(-3)), Integer(21));
+    EXPECT_EQ(Integer(-10).lcm(Integer(5)),   Integer(10));
+    EXPECT_EQ(Integer(15).lcm(Integer(-20)),  Integer(60));
+    EXPECT_EQ(Integer(-7).lcm(Integer(-3)),   Integer(21));
 
     // zero cases
-    EXPECT_EQ(Integer(0).lcm(Integer(5)), Integer(0));
-    EXPECT_EQ(Integer(15).lcm(Integer(0)), Integer(0));
-    EXPECT_EQ(Integer(0).lcm(Integer(0)), Integer(0));
+    EXPECT_EQ(Integer(0).lcm(Integer(5)),     Integer(0));
+    EXPECT_EQ(Integer(15).lcm(Integer(0)),    Integer(0));
+    EXPECT_EQ(Integer(0).lcm(Integer(0)),     Integer(0));
 }
 
 // Тест оператора преобразования в строку
