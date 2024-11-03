@@ -13,8 +13,14 @@ public:
     Integer(const Integer &another);            // copy constructor
     Integer(Integer &&another);                 // move constructor
 
-    // this function is the fastest way to check == 0
+    // this functions is the fastest way to do checks
     bool is_zero() const;
+    bool is_neg()  const;
+
+    Integer abs() const;
+
+    // fast equivalent to mutiplication by -1
+    void neg();
 
     // find GCD or MCL with another Integer
     Integer gcd(const Integer &another) const;

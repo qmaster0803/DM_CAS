@@ -37,6 +37,16 @@ bool Integer::is_zero() const
     return _nat.is_zero();
 }
 
+bool Integer::is_neg() const
+{
+    return this->_neg;
+}
+
+Integer Integer::abs() const
+{
+    return Integer(this->_nat);
+}
+
 Integer Integer::gcd(const Integer &another) const
 {
     return Integer(_nat.gcd(another._nat));
@@ -45,6 +55,15 @@ Integer Integer::gcd(const Integer &another) const
 Integer Integer::lcm(const Integer &another) const
 {
     return Integer(_nat.lcm(another._nat));
+}
+
+// ----------------------------------------------------------------------------
+// MODIFIERS
+// ----------------------------------------------------------------------------
+
+void Integer::neg()
+{
+    _neg = !_neg;
 }
 
 // ----------------------------------------------------------------------------
