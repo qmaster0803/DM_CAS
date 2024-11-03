@@ -27,6 +27,15 @@ TEST(Integer_test, StringConstructor)
     EXPECT_EQ(static_cast<std::string>(zn), "0");
 }
 
+TEST(Integer_test, NaturalConstructor)
+{
+    Integer n(Natural("12345"));
+    Integer z(Natural("0"));
+
+    EXPECT_EQ(static_cast<std::string>(n), "12345");
+    EXPECT_EQ(static_cast<std::string>(z), "0");
+}
+
 TEST(Integer_test, CharArrayConstructor)
 {
     char p_arr[] = "67890";
@@ -305,6 +314,46 @@ TEST(Integer_test, PostDecrementOperator)
     EXPECT_EQ(static_cast<std::string>(z), "-1");
 }
 
+TEST(Integer_test, GCD)
+{
+    // positive numbers
+    EXPECT_EQ(Integer(10).gcd(Integer(5)), Integer(5));
+    EXPECT_EQ(Integer(15).gcd(Integer(20)), Integer(5));
+    EXPECT_EQ(Integer(7).gcd(Integer(3)), 1);
+    EXPECT_EQ(Integer(100).gcd(Integer(25)), 25);
+    EXPECT_EQ(Integer(255).gcd(Integer(255)), 255));
+
+    // negative numbers
+    EXPECT_EQ(Integer(-10).gcd(Integer(5)), Integer(5));
+    EXPECT_EQ(Integer(15).gcd(Integer(-20)), Integer(5));
+    EXPECT_EQ(Integer(-7).gcd(Integer(-3)), Integer(1));
+
+    // zero cases
+    EXPECT_EQ(Integer(0).gcd(Integer(5)), Integer(5));
+    EXPECT_EQ(Integer(15).gcd(Integer(0)), Integer(15));
+    EXPECT_EQ(Integer(0).gcd(Integer(0)), Integer(0));  // Обычно gcd(0, 0) не определен, но часто считается равным 0
+}
+
+TEST(Integer_test, LCM)
+{
+    // positive numbers
+    EXPECT_EQ(Integer(10).lcm(Integer(5)), Integer(10));
+    EXPECT_EQ(Integer(15).lcm(Integer(20)), Integer(60));
+    EXPECT_EQ(Integer(7).lcm(Integer(3)), Integer(21));
+    EXPECT_EQ(Integer(100).lcm(Integer(25)), Integer(100));
+    EXPECT_EQ(Integer(255).lcm(Integer(255)), 255));
+
+    // negative numbers
+    EXPECT_EQ(Integer(-10).lcm(Integer(5)), Integer(10));
+    EXPECT_EQ(Integer(15).lcm(Integer(-20)), Integer(60));
+    EXPECT_EQ(Integer(-7).lcm(Integer(-3)), Integer(21));
+
+    // zero cases
+    EXPECT_EQ(Integer(0).lcm(Integer(5)), Integer(0));
+    EXPECT_EQ(Integer(15).lcm(Integer(0)), Integer(0));
+    EXPECT_EQ(Integer(0).lcm(Integer(0)), Integer(0));
+}
+
 // Тест оператора преобразования в строку
 TEST(Integer_test, ToStringOperator)
 {
@@ -314,4 +363,15 @@ TEST(Integer_test, ToStringOperator)
     std::string str2 = static_cast<std::string>(n);
     EXPECT_EQ(str1, "123");
     EXPECT_EQ(str2, "-123");
+}
+
+TEST(Integer_test, StaticCastZToN)
+{
+    Integer p(500);
+    Integer n(-123123123);
+    Integer z;
+
+    EXPECT_TRUE (static_cast<Natural>(p) == Natural(500));
+    EXPECT_THROW({ static_cast<Natural>(n); }, std::runtime_error);
+    EXPECT_TRUE (static_cast<Natural>(z) == Natural(0));
 }
