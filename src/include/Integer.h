@@ -52,6 +52,7 @@ public:
 
     // visualization
     operator std::string() const;
+    operator Natural()     const;
     
 private:
     Natural _nat;
