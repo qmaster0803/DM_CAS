@@ -20,6 +20,10 @@ public:
     // this function is the fastest way to check == 0
     bool is_zero() const;
 
+    // find GCD or MCL with another Natural
+    Natural gcd(const Natural &another) const;
+    Natural lcm(const Natural &another) const;
+
     // comparison operators overload
     bool operator <  (const Natural &another) const;
     bool operator >  (const Natural &another) const;

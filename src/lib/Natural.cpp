@@ -51,6 +51,38 @@ bool Natural::is_zero() const
     return (this->_digits.size() == 1 && this->_digits[0] == 0);
 }
 
+Natural Natural::gcd(const Natural &another) const
+{
+    // Modification of the Euclidean algorithm:
+    // A = greater operand (copy)
+    // B = lesser  operand (copy)
+    // On every step save the remainder of the division of the greater by lesser
+    // into the variable where the greater operand was stored
+    bool a_is_greater = true;
+    Natural a = (*this >= another) ? *this : another; // greater one goes into A
+    Natural b = (a == *this) ? another : *this;       // the other one goes into B
+
+    while(!a.is_zero() && !b.is_zero()) {
+        if(a_is_greater)
+            a %= b;
+        else
+            b %= a;
+        a_is_greater = !a_is_greater;
+    }
+
+    return (a+b);
+}
+
+Natural Natural::lcm(const Natural &another) const
+{
+    if(this->is_zero() || another.is_zero())
+        return Natural(0);
+    
+    Natural result(*this * another);
+    result /= this->gcd(another);
+    return result;
+}
+
 // ----------------------------------------------------------------------------
 // COMPARISON OPERATORS
 // ----------------------------------------------------------------------------
@@ -199,6 +231,13 @@ Natural &Natural::operator -= (const Natural &another)
 Natural &Natural::operator *= (const Natural &another)
 {
     auto new_natural = (*this) * another;
+    this->_digits = std::move(new_natural._digits);  
+    return *this;
+}
+
+Natural &Natural::operator /= (const Natural &another)
+{
+    auto new_natural = (*this) / another;
     this->_digits = std::move(new_natural._digits);  
     return *this;
 }

@@ -37,6 +37,16 @@ bool Integer::is_zero() const
     return _nat.is_zero();
 }
 
+Integer Integer::gcd(const Integer &another) const
+{
+    return Integer(_nat.gcd(another._nat));
+}
+
+Integer Integer::lcm(const Integer &another) const
+{
+    return Integer(_nat.lcm(another._nat));
+}
+
 // ----------------------------------------------------------------------------
 // COMPARISON OPERATORS
 // ----------------------------------------------------------------------------
@@ -214,6 +224,14 @@ Integer &Integer::operator -= (const Integer &another)
 Integer &Integer::operator *= (const Integer &another)
 {
     auto n = (*this) * another;
+    this->_nat = std::move(n._nat);  
+    this->_neg = n._neg;
+    return *this;
+}
+
+Integer &Integer::operator /= (const Integer &another)
+{
+    auto n = (*this) / another;
     this->_nat = std::move(n._nat);  
     this->_neg = n._neg;
     return *this;

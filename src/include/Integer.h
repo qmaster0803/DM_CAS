@@ -16,6 +16,10 @@ public:
     // this function is the fastest way to check == 0
     bool is_zero() const;
 
+    // find GCD or MCL with another Integer
+    Integer gcd(const Integer &another) const;
+    Integer lcm(const Integer &another) const;
+
     // comparison operators overload
     bool operator <  (const Integer &another) const;
     bool operator >  (const Integer &another) const;
