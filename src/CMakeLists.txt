@@ -11,6 +11,9 @@ target_link_libraries(Natural Algo)
 add_library(Integer STATIC lib/Integer.cpp)
 target_link_libraries(Integer Natural)
 
+add_library(Rational STATIC lib/Rational.cpp)
+target_link_libraries(Rational Integer)
+
 add_library(Interactive_shell STATIC lib/Interactive_shell.cpp)
 target_link_libraries(Interactive_shell ncurses)
 
