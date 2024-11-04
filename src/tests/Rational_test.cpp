@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <stdexcept>
 
 #include "../include/Rational.h"
 
@@ -35,20 +36,21 @@ TEST(Rational_test, StringConstructor)
     EXPECT_THROW({ Rational("-534.123.32"); }, std::invalid_argument);
     EXPECT_THROW({ Rational("-53.41.23.32"); }, std::invalid_argument);
 
-    // >= slashes
+    // >= 2 slashes
     EXPECT_THROW({ Rational("-534//12332"); }, std::invalid_argument);
     EXPECT_THROW({ Rational("-534/12/332"); }, std::invalid_argument);
     EXPECT_THROW({ Rational("-534/12/332/"); }, std::invalid_argument);
-
-    // non natural denominator
-    EXPECT_THROW({ Rational("-534/-12332"); }, std::invalid_argument);
 
     EXPECT_EQ(static_cast<std::string>(Rational("-23/23")), "-1/1");
     // test with zero
     EXPECT_EQ(static_cast<std::string>(Rational("0/23")), "0/1");
 
-    // decimnal fraction
+    // decimal fraction
     EXPECT_EQ(static_cast<std::string>(Rational("4545.23")), "454523/100");
+
+    // integer
+    EXPECT_EQ(static_cast<std::string>(Rational("0912")), "912/1");
+    EXPECT_EQ(static_cast<std::string>(Rational("-18624")), "-18624/1");
 
     // reduction
     EXPECT_EQ(static_cast<std::string>(Rational("46/23")), "2/1");
@@ -111,7 +113,7 @@ TEST(Rational_test, MoveConstructor)
 {
     Rational r1("12322123654654664564646546456546.212312321313");
     Rational r2(std::move(r1));
-    EXPECT_TRUE(r2.is_integer());
+    EXPECT_FALSE(r2.is_integer());
     EXPECT_EQ(static_cast<std::string>(r2), "12322123654654664564646546456546212312321313/1000000000000");
 }
 
@@ -128,7 +130,7 @@ TEST(Rational_test, IsReducted)
 {
     EXPECT_TRUE(Rational("-10/3").is_reducted());
     EXPECT_TRUE(Rational("1/3").is_reducted());
-    EXPECT_FALSE(Rational("0/2").is_reducted());
+    EXPECT_TRUE(Rational("0/2").is_reducted());
 }
 
 TEST(Rational_test, IsInteger)
@@ -152,14 +154,14 @@ TEST(Rational_test, Comparison)
     EXPECT_TRUE(q1 > q2);    // q1 is larger than q2
     EXPECT_FALSE(q2 > q1);   // q2 is not larger than q1
     EXPECT_FALSE(q3 > q1);   // q3 is less than q1
-    EXPECT_FALSE(q4 > q3);   // q4 is less than q3
-    EXPECT_TRUE(q4 > q5);    // q4 is greater than zero
+    EXPECT_TRUE(q4 > q3);    // q3 is less than q4
+    EXPECT_TRUE(q5 > q4);    // q4 is less than zero
 
     // <
     EXPECT_FALSE(q1 < q2);   // q1 is not less than q2
     EXPECT_TRUE(q2 < q1);    // q2 is less than q1
-    EXPECT_FALSE(q3 < q2);   // q3 is not less than q2
-    EXPECT_TRUE(q4 < q3);    // q4 is less than q3
+    EXPECT_TRUE(q3 < q2);    // q3 is less than q2
+    EXPECT_FALSE(q4 < q3);   // q3 is less than q4
     EXPECT_FALSE(q5 < q4);   // zero is not less than q4
 
     // >=
@@ -267,7 +269,7 @@ TEST(Rational_test, DivisionOperator)
     EXPECT_EQ(static_cast<std::string>(r1), "52321321/538472");
     EXPECT_EQ(static_cast<std::string>(r2), "-232/12312321");
     EXPECT_EQ(static_cast<std::string>(r3), "-47200701302618252129/285483");
-    EXPECT_THROW({ q4 / q5; }, std::invalid_argument);
+    EXPECT_THROW({ q4 / q5; }, std::domain_error);
     EXPECT_EQ(static_cast<std::string>(r4), "0/1");
 }
 
@@ -296,8 +298,8 @@ TEST(Rational_test, ToStringOperator)
     EXPECT_EQ(str2, "-123/1");
     EXPECT_EQ(str3, "1/1");
     EXPECT_EQ(str4, "-1/1");
-    EXPECT_EQ(str5, "308086/25");
-    EXPECT_EQ(str6, "-123/1");
+    EXPECT_EQ(str5, "154043/1250");
+    EXPECT_EQ(str6, "0/1");
     EXPECT_EQ(str7, "0/1");
     EXPECT_EQ(str8, "1232131231/1");
 }

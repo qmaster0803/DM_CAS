@@ -13,6 +13,8 @@ Rational::Rational(const Integer &value) : _num(value), _denom(1) {}
 Rational::Rational(const char *value) : Rational(std::string(value)) {}
 Rational::Rational(const Integer &numerator, const Natural &denominator) : _num(numerator), _denom(denominator)
 {
+    if(this->_denom.is_zero())
+        throw std::invalid_argument("Rational number denominator is zero");
     this->reduct();
 }
 
@@ -29,8 +31,11 @@ Rational::Rational(const std::string &value)
     std::size_t point_count = std::count(value.begin(), value.end(), '.');
 
     // check for counts of / and . characters
-    if(slash_count != 0 && point_count != 0)
-        throw std::invalid_argument("Bad input string");
+    if(slash_count != 0 && point_count != 0) {
+        // create Rational from Integer
+        this->_num   = Integer(value);
+        this->_denom = Natural(1);
+    }
 
     const char delim = (slash_count) ? '/' : '.';
     std::size_t delim_pos = value.find(delim);
@@ -39,8 +44,15 @@ Rational::Rational(const std::string &value)
 
     if(slash_count) {
         // format is "numerator/denominator"
-        _num   = Integer(left_part);
-        _denom = Natural(right_part);
+        Integer _num_tmp   = Integer(left_part);
+        Integer _denom_tmp = Integer(right_part);
+        // they both are integers to correctly handle values like "123/-123"
+        this->_num   = _num_tmp.abs();
+        this->_denom = Natural(_denom_tmp.abs());
+        // set correct sign
+        if(!_num.is_zero() && (_num_tmp.is_neg() ^ _denom_tmp.is_neg()))
+            this->_num.neg();
+        
     } else {
         _num = Integer(left_part + right_part);
         _denom = Natural(1);
@@ -168,7 +180,7 @@ Rational Rational::operator * (const Rational &another) const
     result._num = this->_num.abs() * another._num.abs();
     result._denom = this->_denom * another._denom;
     result.reduct();
-    if(this->_num.is_neg() ^ another._num.is_neg())
+    if((this->_num.is_neg() ^ another._num.is_neg()) && !result._num.is_zero())
         result._num.neg();
     
     return result;
@@ -176,11 +188,14 @@ Rational Rational::operator * (const Rational &another) const
 
 Rational Rational::operator / (const Rational &another) const
 {
+    if(another.is_zero())
+        throw std::domain_error("Division be zero");
+
     Rational result;
     result._num = this->_num.abs() * Integer(another._denom);
     result._denom = this->_denom * static_cast<Natural>(another._num.abs());
     result.reduct();
-    if(this->_num.is_neg() ^ another._num.is_neg())
+    if((this->_num.is_neg() ^ another._num.is_neg()) && !result._num.is_zero())
         result._num.neg();
 
     return result;
@@ -278,4 +293,6 @@ void Rational::_to_common_denom(Rational &another)
     Natural common_denom = this->_denom.lcm(another._denom);
     this->_num   *= Integer(common_denom / this->_denom);
     another._num *= Integer(common_denom / another._denom);
+    this->_denom = common_denom;
+    another._denom = std::move(common_denom);
 }
