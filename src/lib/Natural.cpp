@@ -30,6 +30,8 @@ Natural::Natural(const std::string &value)
         
         _digits.emplace_back(intval);
     }
+
+    algo::truncate_leading_zeros(_digits);
 }
 
 // ----------------------------------------------------------------------------
