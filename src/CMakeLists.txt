@@ -30,6 +30,9 @@ target_link_libraries(Natural_test Natural gtest_main gtest)
 add_executable(Integer_test tests/Integer_test.cpp)
 target_link_libraries(Integer_test Integer gtest_main gtest)
 
+add_executable(Rational_test tests/Rational_test.cpp)
+target_link_libraries(Rational_test Rational gtest_main gtest)
+
 include(GoogleTest)
 gtest_discover_tests(Natural_test)
-gtest_discover_tests(Integer_test)
+gtest_discover_tests(Rational_test)
