@@ -11,7 +11,10 @@ Rational::Rational(int value) : _num(value), _denom(1) {}
 Rational::Rational(const Natural &value) : _num(value), _denom(1) {}
 Rational::Rational(const Integer &value) : _num(value), _denom(1) {}
 Rational::Rational(const char *value) : Rational(std::string(value)) {}
-Rational::Rational(const Integer &numerator, const Natural &denominator) : _num(numerator), _denom(denominator) {}
+Rational::Rational(const Integer &numerator, const Natural &denominator) : _num(numerator), _denom(denominator)
+{
+    this->reduct();
+}
 
 Rational::Rational(const Rational &another) : _num(another._num), _denom(another._denom) {}
 Rational::Rational(Rational &&another)      : _num(std::move(another._num)), _denom(std::move(another._denom)) {}
@@ -25,24 +28,27 @@ Rational::Rational(const std::string &value)
     std::size_t slash_count = std::count(value.begin(), value.end(), '/');
     std::size_t point_count = std::count(value.begin(), value.end(), '.');
 
-    if((slash_count != 0 && point_count != 0) || (slash_count == 0 && point_count == 0))
+    // check for counts of / and . characters
+    if(slash_count != 0 && point_count != 0)
         throw std::invalid_argument("Bad input string");
 
     const char delim = (slash_count) ? '/' : '.';
     std::size_t delim_pos = value.find(delim);
     std::string left_part = value.substr(0, delim_pos);
-    std::string right_part = value.substr(delim_pos + 1);
+    std::string right_part = (delim_pos != -1) ? (value.substr(delim_pos + 1)) : ("");
 
     if(slash_count) {
         // format is "numerator/denominator"
         _num   = Integer(left_part);
         _denom = Natural(right_part);
-    }
-    else {
+    } else {
         _num = Integer(left_part + right_part);
         _denom = Natural(1);
         _denom <<= right_part.size();
     }
+
+    if (_denom == Natural(0))
+        throw std::invalid_argument("Denominator must be non zero value!\n");
 
     this->reduct();
 }
@@ -257,7 +263,7 @@ Rational::operator Integer() const
     return Integer(this->_num);
 }
 
-std::ostream& operator<<(std::ostream& stream, const Integer &value)
+std::ostream& operator<<(std::ostream& stream, const Rational &value)
 {
     stream << static_cast<std::string>(value);
     return stream;
