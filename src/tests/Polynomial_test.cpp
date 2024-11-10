@@ -44,19 +44,19 @@ TEST(PolynomialTest, ConstructorFromStringEmpty) {
 }
 
 // Test for multiplication by x^k
-TEST(PolynomialTest, MulByXk) {
+TEST(PolynomialTest, LeftShift) {
     Polynomial p1("{2^1;3^0}"); // 2x + 3
     Natural k(2);
-    p1.mul_by_xk(k); // Multiply by x^2, expecting 2x^3 + 3x^2
+    p1 <<= Natural(k); // Multiply by x^2, expecting 2x^3 + 3x^2
     EXPECT_EQ(static_cast<std::string>(p1), "{2^3;3^2}");
     
     Polynomial p2("{0^1;1^0}"); // x
     Natural k1(3);
-    p2.mul_by_xk(k1); // Multiply by x^3, expecting x^3
+    p2 <<= Natural(k1); // Multiply by x^3, expecting x^3
     EXPECT_EQ(static_cast<std::string>(p2), "{1^3}");
 
     Polynomial p3("{0^0}"); // 0
-    p3.mul_by_xk(Natural(10)); // Multiply by x^10, expecting 0
+    p3 << Natural(10); // Multiply by x^10, expecting 0
     EXPECT_EQ(static_cast<std::string>(p3), "0");
 }
 
