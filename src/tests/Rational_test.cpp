@@ -6,7 +6,7 @@
 TEST(Rational_test, DefaultConstructor)
 {
     Rational a;
-    EXPECT_EQ(static_cast<std::string>(a), "0/1");
+    EXPECT_EQ(static_cast<std::string>(a), "0");
 }
 
 TEST(Rational_test, IntConstructor)
@@ -14,9 +14,9 @@ TEST(Rational_test, IntConstructor)
     Rational p(42);
     Rational n(-123);
     Rational z(0);
-    EXPECT_EQ(static_cast<std::string>(p), "42/1");
-    EXPECT_EQ(static_cast<std::string>(n), "-123/1");
-    EXPECT_EQ(static_cast<std::string>(z), "0/1");
+    EXPECT_EQ(static_cast<std::string>(p), "42");
+    EXPECT_EQ(static_cast<std::string>(n), "-123");
+    EXPECT_EQ(static_cast<std::string>(z), "0");
 }
 
 TEST(Rational_test, StringConstructor)
@@ -41,22 +41,22 @@ TEST(Rational_test, StringConstructor)
     EXPECT_THROW({ Rational("-534/12/332"); }, std::invalid_argument);
     EXPECT_THROW({ Rational("-534/12/332/"); }, std::invalid_argument);
 
-    EXPECT_EQ(static_cast<std::string>(Rational("-23/23")), "-1/1");
+    EXPECT_EQ(static_cast<std::string>(Rational("-23/23")), "-1");
     // test with zero
-    EXPECT_EQ(static_cast<std::string>(Rational("0/23")), "0/1");
+    EXPECT_EQ(static_cast<std::string>(Rational("0/23")), "0");
 
     // decimal fraction
     EXPECT_EQ(static_cast<std::string>(Rational("4545.23")), "454523/100");
 
     // integer
-    EXPECT_EQ(static_cast<std::string>(Rational("0912")), "912/1");
-    EXPECT_EQ(static_cast<std::string>(Rational("-18624")), "-18624/1");
+    EXPECT_EQ(static_cast<std::string>(Rational("0912")), "912");
+    EXPECT_EQ(static_cast<std::string>(Rational("-18624")), "-18624");
 
     // reduction
-    EXPECT_EQ(static_cast<std::string>(Rational("46/23")), "2/1");
+    EXPECT_EQ(static_cast<std::string>(Rational("46/23")), "2");
     EXPECT_EQ(static_cast<std::string>(Rational("45.25")), "181/4");
     EXPECT_EQ(static_cast<std::string>(Rational("0.23")), "23/100");
-    EXPECT_EQ(static_cast<std::string>(Rational("0/2312312312313123")), "0/1");
+    EXPECT_EQ(static_cast<std::string>(Rational("0/2312312312313123")), "0");
     EXPECT_EQ(static_cast<std::string>(Rational("-2312312312313123.23")), "-231231231231312323/100");
 }
 
@@ -71,7 +71,7 @@ TEST(Rational_test, CharArrayConstructor)
 
 TEST(Rational_test, NaturalConstructor)
 {
-    EXPECT_EQ(Rational(Natural("342349023432343242")), Rational("342349023432343242/1"));
+    EXPECT_EQ(Rational(Natural("342349023432343242")), Rational("342349023432343242"));
 }
 
 TEST(Rational_test, IntegerConstructor)
@@ -96,7 +96,7 @@ TEST(Rational_test, IntegerAndNaturalConstructor)
 
     EXPECT_EQ(static_cast<std::string>(r1), "23412331/2342342");
     EXPECT_EQ(static_cast<std::string>(r2), "-9985986859/2342342");
-    EXPECT_EQ(static_cast<std::string>(r3), "0/1");
+    EXPECT_EQ(static_cast<std::string>(r3), "0");
 
     EXPECT_THROW({ Rational(int_p, nat_z); }, std::invalid_argument);
     EXPECT_THROW({ Rational(int_z, nat_z); }, std::invalid_argument);
@@ -136,7 +136,7 @@ TEST(Rational_test, IsReducted)
 TEST(Rational_test, IsInteger)
 {
     EXPECT_FALSE(Rational("-10/3").is_integer());
-    EXPECT_TRUE(Rational("-10/1").is_integer());
+    EXPECT_TRUE(Rational("-10").is_integer());
     EXPECT_TRUE(Rational("-10/5").is_integer());
     EXPECT_TRUE(Rational("0/5").is_integer());
 
@@ -205,10 +205,10 @@ TEST(Rational_test, AdditionOperator)
     Rational r5 = q5 + q5;
 
     EXPECT_EQ(static_cast<std::string>(r1), "52859793/2321");
-    EXPECT_EQ(static_cast<std::string>(r2), "-12312089/1");
+    EXPECT_EQ(static_cast<std::string>(r2), "-12312089");
     EXPECT_EQ(static_cast<std::string>(r3), "47200701302617966646/2093846746021129");
     EXPECT_EQ(static_cast<std::string>(r4), "-123/902131299449");
-    EXPECT_EQ(static_cast<std::string>(r5), "0/1");
+    EXPECT_EQ(static_cast<std::string>(r5), "0");
 }
 
 TEST(Rational_test, SubstractionOperator)
@@ -226,10 +226,10 @@ TEST(Rational_test, SubstractionOperator)
     Rational r5 = q5 - q5;
 
     EXPECT_EQ(static_cast<std::string>(r1), "51782849/2321");
-    EXPECT_EQ(static_cast<std::string>(r2), "12312553/1");
+    EXPECT_EQ(static_cast<std::string>(r2), "12312553");
     EXPECT_EQ(static_cast<std::string>(r3), "47200701302618537612/2093846746021129");
     EXPECT_EQ(static_cast<std::string>(r4), "-123/902131299449");
-    EXPECT_EQ(static_cast<std::string>(r5), "0/1");
+    EXPECT_EQ(static_cast<std::string>(r5), "0");
 }
 
 TEST(Rational_test, MultiplicationOperator)
@@ -247,10 +247,10 @@ TEST(Rational_test, MultiplicationOperator)
     Rational r5 = q5 * q5;
 
     EXPECT_EQ(static_cast<std::string>(r1), "12138546472/2321");
-    EXPECT_EQ(static_cast<std::string>(r2), "-2856458472/1");
+    EXPECT_EQ(static_cast<std::string>(r2), "-2856458472");
     EXPECT_EQ(static_cast<std::string>(r3), "-6435522483/2093846746021129");
-    EXPECT_EQ(static_cast<std::string>(r4), "0/1");
-    EXPECT_EQ(static_cast<std::string>(r5), "0/1");
+    EXPECT_EQ(static_cast<std::string>(r4), "0");
+    EXPECT_EQ(static_cast<std::string>(r5), "0");
 }
 
 TEST(Rational_test, DivisionOperator)
@@ -270,7 +270,7 @@ TEST(Rational_test, DivisionOperator)
     EXPECT_EQ(static_cast<std::string>(r2), "-232/12312321");
     EXPECT_EQ(static_cast<std::string>(r3), "-47200701302618252129/285483");
     EXPECT_THROW({ q4 / q5; }, std::domain_error);
-    EXPECT_EQ(static_cast<std::string>(r4), "0/1");
+    EXPECT_EQ(static_cast<std::string>(r4), "0");
 }
 
 // Тест оператора преобразования в строку
@@ -294,21 +294,21 @@ TEST(Rational_test, ToStringOperator)
     std::string str7 = static_cast<std::string>(q7);
     std::string str8 = static_cast<std::string>(q8);
 
-    EXPECT_EQ(str1, "123/1");
-    EXPECT_EQ(str2, "-123/1");
-    EXPECT_EQ(str3, "1/1");
-    EXPECT_EQ(str4, "-1/1");
+    EXPECT_EQ(str1, "123");
+    EXPECT_EQ(str2, "-123");
+    EXPECT_EQ(str3, "1");
+    EXPECT_EQ(str4, "-1");
     EXPECT_EQ(str5, "154043/1250");
-    EXPECT_EQ(str6, "0/1");
-    EXPECT_EQ(str7, "0/1");
-    EXPECT_EQ(str8, "1232131231/1");
+    EXPECT_EQ(str6, "0");
+    EXPECT_EQ(str7, "0");
+    EXPECT_EQ(str8, "1232131231");
 }
 
 TEST(Rational_test, QToZOperator)
 {
-    EXPECT_THROW({ static_cast<Integer>(Rational("25/36")); }, std::runtime_error);
-    EXPECT_NO_THROW({ static_cast<Integer>(Rational("0/36")); });
-    EXPECT_THROW({ static_cast<Integer>(Rational("-25/36")); }, std::runtime_error);
+    EXPECT_THROW({ auto tmp = static_cast<Integer>(Rational("25/36")); }, std::runtime_error);
+    EXPECT_NO_THROW({ auto tmp = static_cast<Integer>(Rational("0/36")); });
+    EXPECT_THROW({ auto tmp = static_cast<Integer>(Rational("-25/36")); }, std::runtime_error);
 
     EXPECT_EQ(static_cast<Integer>(Rational("-25/5")), Integer(-5));
     EXPECT_EQ(static_cast<Integer>(Rational("0/5")), Integer(0));
