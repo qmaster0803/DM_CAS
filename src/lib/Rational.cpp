@@ -96,6 +96,23 @@ bool Rational::is_integer() const
     return (this->is_reducted() && this->_denom == Natural(1));
 }
 
+Integer Rational::get_numerator()   const
+{
+    return Integer(this->_num);
+}
+
+Natural Rational::get_denominator() const
+{
+    return Natural(this->_denom);
+}
+
+Rational Rational::get_neg() const
+{
+    Rational result = *this;
+    result._num.neg();
+    return result;
+}
+
 // ----------------------------------------------------------------------------
 // COMPARISON OPERATORS
 // ----------------------------------------------------------------------------
@@ -263,6 +280,9 @@ Rational &Rational::operator /= (const Rational &another)
 
 Rational::operator std::string() const
 {
+    if(this->is_integer())
+        return static_cast<std::string>(this->_num);
+    
     std::string output;
     output += static_cast<std::string>(this->_num);
     output += '/';

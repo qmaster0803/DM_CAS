@@ -22,6 +22,9 @@ public:
     bool is_zero()     const;
     bool is_reducted() const;
     bool is_integer()  const;
+    Integer get_numerator()   const;
+    Natural get_denominator() const;
+    Rational get_neg() const;
 
     // comparison operators overload
     bool operator <  (const Rational &another) const;
