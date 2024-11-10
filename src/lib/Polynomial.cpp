@@ -7,20 +7,21 @@
 // CONSTRUCTORS
 // ----------------------------------------------------------------------------
 
-Polynomial::Polynomial()
-{
-    _coeffs.emplace(Natural(0), Rational(1));
-}
+Polynomial::Polynomial() {}
 
 Polynomial::Polynomial(int value)
 {
-    _coeffs.emplace(Natural(0), Rational(value));
+    Rational denom(value);
+    if(!denom.is_zero())
+        _coeffs.emplace(Natural(0), Rational(value));
 }
 
 Polynomial::Polynomial(const std::vector<Rational> &values)
 {
     for(std::size_t i = 0; i < values.size(); i++) {
-        _coeffs.emplace(Natural(i), Rational(values[i]));
+        Rational denom(values[i]);
+        if(!denom.is_zero())
+            _coeffs.emplace(Natural(i), Rational(values[i]));
     }
 }
 
@@ -30,23 +31,28 @@ Polynomial::Polynomial(Polynomial &&another) : _coeffs(std::move(another._coeffs
 
 Polynomial::Polynomial(const std::string &value)
 {
+    // Equal to the zero constructor
+    if(value.length() == 0)
+        return;
+
     // Construct Polynomial from rational input value
     // it will have the free term only
-    if(value[0] != '{' && value[value.length() - 1] != '}') {
+    if(value[0] != '{' || value[value.length() - 1] != '}') {
         _coeffs.emplace(Natural(0), Rational(value));
     }
     // Full constructor
     // String must match this pattern "{k_1^deg_1;k_2^deg2}"
     // Also it may contain k without deg (like "{k_1^deg_1;k_2^deg_2;k_f}") -
     // this k_f will be interpreted as free term
-    else if(value[0] != '{' && value[value.length() - 1] != '}') {
+    else {
+        std::string actual_value = value.substr(0, value.length() - 1); // cut last '}' but not the first '{', because it's set as a delim
         std::size_t prev_delim = 0;
-        std::size_t next_delim = value.find(';');
-        while(prev_delim != value.npos) {
-            std::string sub = value.substr(prev_delim+1, next_delim-prev_delim-1);
+        std::size_t next_delim = actual_value.find(';');
+        while(prev_delim != actual_value.npos) {
+            std::string sub = actual_value.substr(prev_delim+1, next_delim-prev_delim-1);
             std::size_t second_delim = sub.find('^');
             if(second_delim == sub.npos) {
-                auto ins_result = _coeffs.emplace(Natural(1), Rational(sub));
+                auto ins_result = _coeffs.emplace(Natural(0), Rational(sub));
                 if(!ins_result.second)
                     throw std::invalid_argument("Bad input string");
             }
@@ -58,32 +64,31 @@ Polynomial::Polynomial(const std::string &value)
                     throw std::invalid_argument("Bad input string");
             }
             prev_delim = next_delim;
-            next_delim = value.find(';', prev_delim+1);
+            next_delim = actual_value.find(';', prev_delim+1);
         }
     }
+
+    this->_clear_empty();
 }
 
 // ----------------------------------------------------------------------------
 // MODIFIERS
 // ----------------------------------------------------------------------------
 
-void Polynomial::mul_by_rational(const Rational &value)
+void Polynomial::mul_by_xk(const Natural &k)
 {
+    // since there is no way to change keys in the map,
+    // let's just recreate the map with new keys and replace the old one
+    std::map<Natural, Rational> new_coeffs;
+
     auto it = _coeffs.begin();
     const auto end = _coeffs.end();
     while(it != end) {
-        it->second *= value;
+        auto old_pair = *(it++);
+        new_coeffs.emplace(old_pair.first + k, old_pair.second);
     }
-}
 
-void Polynomial::mul_by_xk(const Natural &k)
-{
-    auto it = _coeffs.begin();:
-    const auto end = _coeffs.end();
-    while(it != end) {
-        const Natural new_key = it->first + k;
-        *it = std::make_pair(new_key, Rational(123));
-    }
+    this->_coeffs = std::move(new_coeffs);
 }
 
 
@@ -91,12 +96,46 @@ void Polynomial::mul_by_xk(const Natural &k)
 // NON-MODIFIERS
 // ----------------------------------------------------------------------------
 
-bool Natural::is_zero() const
+bool Polynomial::is_zero() const
 {
-    return (this->_digits.size() == 1 && this->_digits[0] == 0);
+    return _coeffs.empty();
 }
 
-Natural Natural::gcd(const Natural &another) const
+bool Polynomial::is_integer() const
+{
+    return (_coeffs.size() == 1 && _coeffs.count(Natural(0)) == 1);
+}
+
+Rational Polynomial::msc() const
+{
+    return (_coeffs.empty()) ? Rational(0) : _coeffs.rbegin()->second;
+}
+
+Natural Polynomial::deg() const
+{
+    return (_coeffs.empty()) ? Natural(0) : _coeffs.rbegin()->first;
+}
+
+Rational Polynomial::fac() const
+{
+    if(_coeffs.empty())
+        throw std::domain_error("Trying to rationalize an empty polynomial");
+
+    auto it = _coeffs.begin();
+    const auto end = _coeffs.end();
+    
+    
+    Integer cgcd = it->second.get_numerator();
+    Natural clcm = it->second.get_denominator();
+    while(++it != end) {
+        cgcd = cgcd.gcd(it->second.get_numerator());
+        clcm = clcm.lcm(it->second.get_denominator());
+    }
+
+    return Rational(cgcd, clcm);
+}
+
+Polynomial Polynomial::gcd(const Polynomial &another) const
 {
     // Modification of the Euclidean algorithm:
     // A = greater operand (copy)
@@ -104,8 +143,8 @@ Natural Natural::gcd(const Natural &another) const
     // On every step save the remainder of the division of the greater by lesser
     // into the variable where the greater operand was stored
     bool a_is_greater = true;
-    Natural a = (*this >= another) ? *this : another; // greater one goes into A
-    Natural b = (a == *this) ? another : *this;       // the other one goes into B
+    Polynomial a = (this->deg() >= another.deg()) ? *this : another; // greater one goes into A
+    Polynomial b = (a == *this) ? another : *this;       // the other one goes into B
 
     while(!a.is_zero() && !b.is_zero()) {
         if(a_is_greater)
@@ -115,16 +154,41 @@ Natural Natural::gcd(const Natural &another) const
         a_is_greater = !a_is_greater;
     }
 
-    return (a+b);
+    Polynomial result = (a+b);
+    result._clear_empty();
+    return result;
 }
 
-Natural Natural::lcm(const Natural &another) const
+Polynomial Polynomial::derivative() const
 {
-    if(this->is_zero() || another.is_zero())
-        return Natural(0);
-    
-    Natural result(*this * another);
-    result /= this->gcd(another);
+    if(_coeffs.empty())
+        throw std::domain_error("Trying to get derivative from empty polynomial");
+
+    Polynomial result;
+    auto it = _coeffs.begin();
+    const auto end = _coeffs.end();
+    while(it != end) {
+        auto k = *(it++);
+        if(k.first > Natural(0)) {
+            result._coeffs.emplace(k.first - Natural(1), k.second * Rational(k.first));
+        }
+    }
+
+    return result;
+}
+
+Polynomial Polynomial::to_simple_roots() const
+{
+    // Algorithm description:
+    // 1) Find the derivative of the polynomial
+    // 2) Calculate GCD of the polynomial and it's derivative
+    // 3) Divide the polynomial by the this GCD
+
+    Polynomial derivative = this->derivative();
+    Polynomial gcd = this->gcd(derivative);
+    Polynomial result = *this / gcd;
+
+    result._clear_empty();
     return result;
 }
 
@@ -132,222 +196,216 @@ Natural Natural::lcm(const Natural &another) const
 // COMPARISON OPERATORS
 // ----------------------------------------------------------------------------
 
-bool Natural::operator < (const Natural &another) const
+bool Polynomial::operator == (const Polynomial &another) const
 {
-    return algo::basic_cmp(this->_digits, another._digits) == -1;
+    if(this->_coeffs.size() != another._coeffs.size() || this->deg() != another.deg())
+        return false;
+
+    auto it_a = this->_coeffs.begin();
+    auto it_b = another._coeffs.begin();
+    const auto end_a = this->_coeffs.end();
+    while(it_a != end_a) {
+        if(it_a->first != it_b->first || it_a->second != it_b->second)
+            return false;
+        it_a++;
+        it_b++;
+    }
+    return true;
 }
 
-bool Natural::operator > (const Natural &another) const
+bool Polynomial::operator != (const Polynomial &another) const
 {
-    return algo::basic_cmp(this->_digits, another._digits) == 1;
-}
-
-bool Natural::operator == (const Natural &another) const
-{
-    return algo::basic_cmp(this->_digits, another._digits) == 0;
-}
-
-bool Natural::operator <= (const Natural &another) const
-{
-    return algo::basic_cmp(this->_digits, another._digits) != 1;
-}
-
-bool Natural::operator >= (const Natural &another) const
-{
-    return algo::basic_cmp(this->_digits, another._digits) != -1;
-}
-
-bool Natural::operator != (const Natural &another) const
-{
-    return algo::basic_cmp(this->_digits, another._digits) != 0;
+    return !(*this == another);
 }
 
 // ----------------------------------------------------------------------------
 // BINARY OPERATORS
 // ----------------------------------------------------------------------------
 
-Natural Natural::operator + (const Natural &another) const
+Polynomial Polynomial::operator + (const Polynomial &another) const
 {
-    auto new_digits = algo::basic_add(this->_digits, another._digits);
-    Natural result(new_digits);
-    return result;
-}
-
-Natural Natural::operator - (const Natural &another) const
-{
-    if(*this < another)
-        throw std::out_of_range("Subtraction of natural numbers results in a negative number");
-    
-    auto new_digits = algo::basic_sub(this->_digits, another._digits);
-    Natural result(new_digits);
-    return result;
-}
-
-Natural Natural::operator * (const Natural &another) const
-{
-    Natural result;
-    
-    for(std::size_t i = 0; i < another._digits.size(); i++) {
-        Natural new_n = *this;
-        new_n.mul_by_digit(another._digits[i]);
-        new_n = new_n << i;
-
-        result += new_n;
+    Polynomial result = *this;
+    auto it = another._coeffs.begin();
+    const auto end = another._coeffs.end();
+    while(it != end) {
+        if(result._coeffs.count(it->first) == 1)
+            result._coeffs[it->first] = result._coeffs[it->first] + it->second;
+        else
+            result._coeffs.emplace(it->first, it->second);
+        ++it;
     }
 
+    result._clear_empty();
     return result;
 }
 
-Natural Natural::operator / (const Natural &another) const
+Polynomial Polynomial::operator - (const Polynomial &another) const
 {
-    if(another.is_zero())
-        throw std::domain_error("Division be zero");
-    else if(*this < another)
-        return Natural(0);
-    else if(*this == another)
-        return Natural(1);
+    Polynomial result = *this;
+    auto it = another._coeffs.begin();
+    const auto end = another._coeffs.end();
+    while(it != end) {
+        if(result._coeffs.count(it->first))
+            result._coeffs[it->first] = result._coeffs[it->first] - it->second;
+        else
+            result._coeffs.emplace(it->first, it->second.get_neg());
+        ++it;
+    }
 
-    auto result_vec = algo::basic_div(this->_digits, another._digits);
-    return Natural(result_vec);
-}
-
-Natural Natural::operator % (const Natural &another) const
-{
-    if(another.is_zero())
-        throw std::domain_error("Division be zero");
-    else if(another == Natural(1))
-        return Natural(0);
-    else if(*this < another)
-        return Natural(*this);
-
-    std::vector<uint8_t> remainder;
-    algo::basic_div(this->_digits, another._digits, remainder);
-    return Natural(remainder);
-}
-
-// ----------------------------------------------------------------------------
-// SHIFT OPERATORS
-// ----------------------------------------------------------------------------
-
-Natural Natural::operator << (std::size_t k) const
-{
-    Natural result(*this);
-    if(result.is_zero())
-        return result;
-    for(std::size_t i = 0; i < k; i++)
-        result._digits.insert(result._digits.begin(), 0);
+    result._clear_empty();
     return result;
+}
+
+Polynomial Polynomial::operator * (const Polynomial &another) const
+{
+    Polynomial result;
+    auto it = another._coeffs.begin();
+    const auto end = another._coeffs.end();
+    while(it != end) {
+        Polynomial part = (*this) * it->second;
+        part.mul_by_xk(it->first);
+        result += part;
+        ++it;
+    }
+    
+    result._clear_empty();
+    return result;
+}
+
+Polynomial Polynomial::operator * (const Rational &another) const
+{
+    Polynomial result;
+    auto it = this->_coeffs.begin();
+    const auto end = this->_coeffs.end();
+    while(it != end) {
+        result._coeffs.emplace(it->first, it->second * another);
+        ++it;
+    }
+
+    result._clear_empty();
+    return result;
+}
+
+// <TODO>
+Polynomial Polynomial::operator / (const Polynomial &another) const
+{
+    return Polynomial();
+}
+
+Polynomial Polynomial::operator % (const Polynomial &another) const
+{
+    return Polynomial();
 }
 
 // ----------------------------------------------------------------------------
 // ASSIGNMENT OPERATORS
 // ----------------------------------------------------------------------------
 
-Natural &Natural::operator = (const Natural &another)
+Polynomial &Polynomial::operator = (const Polynomial &another)
 {
     if(&another != this) {
-        this->_digits = another._digits; // copy digits array
+        this->_coeffs = another._coeffs;
     }
     return *this;
 }
 
-Natural &Natural::operator = (Natural &&another)
+Polynomial &Polynomial::operator = (Polynomial &&another)
 {
     if(&another != this) {
-        this->_digits = std::move(another._digits);
+        this->_coeffs = std::move(another._coeffs);
     }
     return *this;
 }
 
-Natural &Natural::operator += (const Natural &another)
+Polynomial &Polynomial::operator += (const Polynomial &another)
 {
-    auto new_natural = (*this) + another;
-    this->_digits = std::move(new_natural._digits);  
+    auto new_obj = (*this) + another;
+    this->_coeffs = std::move(new_obj._coeffs);  
     return *this;
 }
 
-Natural &Natural::operator -= (const Natural &another)
+Polynomial &Polynomial::operator -= (const Polynomial &another)
 {
-    auto new_natural = (*this) - another;
-    this->_digits = std::move(new_natural._digits);  
+    auto new_obj = (*this) - another;
+    this->_coeffs = std::move(new_obj._coeffs);  
     return *this;
 }
 
-Natural &Natural::operator *= (const Natural &another)
+Polynomial &Polynomial::operator *= (const Rational &another)
 {
-    auto new_natural = (*this) * another;
-    this->_digits = std::move(new_natural._digits);  
+    auto new_obj = (*this) * another;
+    this->_coeffs = std::move(new_obj._coeffs);  
     return *this;
 }
 
-Natural &Natural::operator /= (const Natural &another)
+Polynomial &Polynomial::operator *= (const Polynomial &another)
 {
-    auto new_natural = (*this) / another;
-    this->_digits = std::move(new_natural._digits);  
+    auto new_obj = (*this) * another;
+    this->_coeffs = std::move(new_obj._coeffs);  
     return *this;
 }
 
-Natural &Natural::operator %= (const Natural &another)
+Polynomial &Polynomial::operator /= (const Polynomial &another)
 {
-    auto new_natural = (*this) % another;
-    this->_digits = std::move(new_natural._digits);  
+    auto new_obj = (*this) / another;
+    this->_coeffs = std::move(new_obj._coeffs);  
     return *this;
 }
 
-Natural &Natural::operator <<= (std::size_t k)
+Polynomial &Polynomial::operator %= (const Polynomial &another)
 {
-    auto new_natural = (*this) << k;
-    this->_digits = std::move(new_natural._digits);  
+    auto new_obj = (*this) % another;
+    this->_coeffs = std::move(new_obj._coeffs);  
     return *this;
-}
-
-// ----------------------------------------------------------------------------
-// INCREMENTS & DECREMENTS
-// ----------------------------------------------------------------------------
-
-Natural &Natural::operator ++ () // prefix
-{
-    (*this) += Natural(1);
-    return *this;
-}
-
-Natural &Natural::operator -- () // prefix
-{
-    (*this) -= Natural(1);
-    return *this;
-}
-
-Natural Natural::operator ++ (int) // postfix
-{
-    Natural copy = *this;
-    ++(*this);
-    return copy;
-}
-
-Natural Natural::operator -- (int) // postfix
-{
-    Natural copy = *this;
-    --(*this);
-    return copy;
 }
 
 // ----------------------------------------------------------------------------
 // VISUALIZATION
 // ----------------------------------------------------------------------------
 
-Natural::operator std::string() const
+Polynomial::operator std::string() const
 {
-    std::string output;
-    auto it = _digits.rbegin();
-    while(it != _digits.rend()) {
-        output += std::to_string(*(it++));
+    if(this->is_zero())
+        return "0";
+    
+    if(this->is_integer())
+        return static_cast<std::string>(this->_coeffs.at(Natural(0)));
+    
+    std::string output = "{";
+    auto it = this->_coeffs.rbegin();
+    const auto end = this->_coeffs.rend();
+    while(true) {
+        output += static_cast<std::string>(it->second);
+        output += '^';
+        output += static_cast<std::string>(it->first);
+        if(++it != end)
+            output += ';';
+        else
+            break;
     }
+    output += '}';
     return output;
 }
 
-std::ostream& operator<<(std::ostream& stream, const Natural &value)
+std::ostream& operator<<(std::ostream& stream, const Polynomial &value)
 {
     stream << (std::string)value;
     return stream;
 }
 
+// ----------------------------------------------------------------------------
+// PRIVATE FUNCTIONS
+// ----------------------------------------------------------------------------
+
+// Delete all zero coeffs from the polynomial
+void Polynomial::_clear_empty()
+{
+    auto it = this->_coeffs.begin();
+    const auto end = this->_coeffs.end();
+    while(it != end) {
+        if(it->second.is_zero())
+            it = this->_coeffs.erase(it);
+        else
+            ++it;
+    }
+}

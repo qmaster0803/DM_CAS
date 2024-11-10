@@ -16,7 +16,6 @@ public:
     Polynomial(Polynomial &&another);                         // move constructor
 
     // this function modifies the object
-    void mul_by_rational(const Rational &value);
     void mul_by_xk(const Natural &k);
 
     bool is_zero()    const;
@@ -24,37 +23,39 @@ public:
     // most significant coefficient
     Rational   msc()  const;
     Natural    deg()  const;
-    Polynomial gcd()  const;
+    Rational   fac()  const;
     Polynomial derivative() const;
+    Polynomial to_simple_roots() const;
+    Polynomial gcd(const Polynomial &another) const;
 
     // comparison operators overload
-    bool operator <  (const Rational &another) const;
-    bool operator >  (const Rational &another) const;
-    bool operator == (const Rational &another) const;
-    bool operator <= (const Rational &another) const;
-    bool operator >= (const Rational &another) const;
-    bool operator != (const Rational &another) const;
+    bool operator == (const Polynomial &another) const;
+    bool operator != (const Polynomial &another) const;
 
     // binary operators overload
-    Rational operator + (const Rational &another) const;
-    Rational operator - (const Rational &another) const;
-    Rational operator * (const Rational &another) const;
-    Rational operator / (const Rational &another) const;
-    Rational operator % (const Rational &another) const;
+    Polynomial operator + (const Polynomial &another) const;
+    Polynomial operator - (const Polynomial &another) const;
+    Polynomial operator * (const Polynomial &another) const;
+    Polynomial operator * (const Rational   &another) const;
+    Polynomial operator / (const Polynomial &another) const;
+    Polynomial operator % (const Polynomial &another) const;
 
     // assignment operators overload
-    Rational &operator =  (const Rational &another); // copy assignment
-    Rational &operator =  (Rational &&another);      // move assignment
-    Rational &operator += (const Rational &another);
-    Rational &operator -= (const Rational &another);
-    Rational &operator *= (const Rational &another);
-    Rational &operator /= (const Rational &another);
+    Polynomial &operator =  (const Polynomial &another); // copy assignment
+    Polynomial &operator =  (Polynomial &&another);      // move assignment
+    Polynomial &operator += (const Polynomial &another);
+    Polynomial &operator -= (const Polynomial &another);
+    Polynomial &operator *= (const Polynomial &another);
+    Polynomial &operator *= (const Rational   &another);
+    Polynomial &operator /= (const Polynomial &another);
+    Polynomial &operator %= (const Polynomial &another);
 
     // visualization
     operator std::string() const;
     
 private:
-  std::map<Natural, Rational> _coeffs;
+    std::map<Natural, Rational> _coeffs;
+    void _clear_empty();
 };
 
 std::ostream& operator<<(std::ostream& stream, const Rational &value);

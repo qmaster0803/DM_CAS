@@ -1,6 +1,8 @@
 # General
 cmake_minimum_required(VERSION 3.20)
 project(DM_CAS)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Libraries
 add_library(Algo    STATIC lib/algo.cpp   )
@@ -13,6 +15,9 @@ target_link_libraries(Integer Natural)
 
 add_library(Rational STATIC lib/Rational.cpp)
 target_link_libraries(Rational Integer)
+
+add_library(Polynomial STATIC lib/Polynomial.cpp)
+target_link_libraries(Polynomial Rational)
 
 add_library(Interactive_shell STATIC lib/Interactive_shell.cpp)
 target_link_libraries(Interactive_shell ncurses)
@@ -33,6 +38,11 @@ target_link_libraries(Integer_test Integer gtest_main gtest)
 add_executable(Rational_test tests/Rational_test.cpp)
 target_link_libraries(Rational_test Rational gtest_main gtest)
 
+add_executable(Polynomial_test tests/Polynomial_test.cpp)
+target_link_libraries(Polynomial_test Polynomial gtest_main gtest)
+
 include(GoogleTest)
 gtest_discover_tests(Natural_test)
+gtest_discover_tests(Integer_test)
 gtest_discover_tests(Rational_test)
+gtest_discover_tests(Polynomial_test)
