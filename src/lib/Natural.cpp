@@ -1,3 +1,5 @@
+// Author: Komarov Daniil 3381
+
 #include "../include/Natural.h"
 #include <stdexcept>
 #include <iostream>
@@ -147,7 +149,7 @@ Natural Natural::operator * (const Natural &another) const
     for(std::size_t i = 0; i < another._digits.size(); i++) {
         Natural new_n = *this;
         new_n.mul_by_digit(another._digits[i]);
-        new_n = new_n << i;
+        new_n = new_n << Natural(i);
 
         result += new_n;
     }
@@ -186,12 +188,12 @@ Natural Natural::operator % (const Natural &another) const
 // SHIFT OPERATORS
 // ----------------------------------------------------------------------------
 
-Natural Natural::operator << (std::size_t k) const
+Natural Natural::operator << (Natural k) const
 {
     Natural result(*this);
     if(result.is_zero())
         return result;
-    for(std::size_t i = 0; i < k; i++)
+    for(Natural i = Natural(0); i < k; i++)
         result._digits.insert(result._digits.begin(), 0);
     return result;
 }
@@ -251,7 +253,7 @@ Natural &Natural::operator %= (const Natural &another)
     return *this;
 }
 
-Natural &Natural::operator <<= (std::size_t k)
+Natural &Natural::operator <<= (Natural k)
 {
     auto new_natural = (*this) << k;
     this->_digits = std::move(new_natural._digits);  

@@ -1,3 +1,5 @@
+// Author: Komarov Daniil 3381
+
 #include <gtest/gtest.h>
 #include "../include/Polynomial.h"
 

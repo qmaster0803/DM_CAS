@@ -1,3 +1,5 @@
+// Author: Komarov Daniil 3381
+
 #include "../include/Integer.h"
 #include <stdexcept>
 #include <iostream>
@@ -193,7 +195,7 @@ Integer Integer::operator % (const Integer &another) const
 // SHIFT OPERATORS
 // ----------------------------------------------------------------------------
 
-Integer Integer::operator << (std::size_t k) const
+Integer Integer::operator << (Natural k) const
 {
     Integer result(*this);
     result._nat <<= k;
@@ -264,7 +266,7 @@ Integer &Integer::operator %= (const Integer &another)
     return *this;
 }
 
-Integer &Integer::operator <<= (std::size_t k)
+Integer &Integer::operator <<= (Natural k)
 {
     auto n = (*this) << k;
     this->_nat = std::move(n._nat);  

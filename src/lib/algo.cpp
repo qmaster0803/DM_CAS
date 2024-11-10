@@ -1,3 +1,5 @@
+// Author: Komarov Daniil 3381
+
 #include "../include/algo.h"
 #include <cstddef>
 #include <algorithm>

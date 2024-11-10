@@ -1,3 +1,5 @@
+// Author: Komarov Daniil 3381
+
 #pragma once
 #include <ncurses.h>
 #include <cstddef>

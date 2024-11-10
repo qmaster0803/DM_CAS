@@ -1,3 +1,5 @@
+// Author: Komarov Daniil 3381
+
 #include "../include/Polynomial.h"
 #include <stdexcept>
 #include <iostream>
@@ -69,26 +71,6 @@ Polynomial::Polynomial(const std::string &value)
     }
 
     this->_clear_empty();
-}
-
-// ----------------------------------------------------------------------------
-// MODIFIERS
-// ----------------------------------------------------------------------------
-
-void Polynomial::mul_by_xk(const Natural &k)
-{
-    // since there is no way to change keys in the map,
-    // let's just recreate the map with new keys and replace the old one
-    std::map<Natural, Rational> new_coeffs;
-
-    auto it = _coeffs.begin();
-    const auto end = _coeffs.end();
-    while(it != end) {
-        auto old_pair = *(it++);
-        new_coeffs.emplace(old_pair.first + k, old_pair.second);
-    }
-
-    this->_coeffs = std::move(new_coeffs);
 }
 
 
@@ -263,7 +245,7 @@ Polynomial Polynomial::operator * (const Polynomial &another) const
     const auto end = another._coeffs.end();
     while(it != end) {
         Polynomial part = (*this) * it->second;
-        part.mul_by_xk(it->first);
+        part = part << it->first;
         result += part;
         ++it;
     }
@@ -295,6 +277,25 @@ Polynomial Polynomial::operator / (const Polynomial &another) const
 Polynomial Polynomial::operator % (const Polynomial &another) const
 {
     return Polynomial();
+}
+
+Polynomial Polynomial::operator << (Natural k) const
+{
+    Polynomial result;
+    
+    // since there is no way to change keys in the map,
+    // let's just recreate the map with new keys and replace the old one
+    std::map<Natural, Rational> new_coeffs;
+
+    auto it = _coeffs.begin();
+    const auto end = _coeffs.end();
+    while(it != end) {
+        auto old_pair = *(it++);
+        new_coeffs.emplace(old_pair.first + k, old_pair.second);
+    }
+
+    result._coeffs = new_coeffs;
+    return result;
 }
 
 // ----------------------------------------------------------------------------
@@ -356,6 +357,13 @@ Polynomial &Polynomial::operator %= (const Polynomial &another)
 {
     auto new_obj = (*this) % another;
     this->_coeffs = std::move(new_obj._coeffs);  
+    return *this;
+}
+
+Polynomial &Polynomial::operator <<= (Natural k)
+{
+    auto new_polynomial = (*this) << k;
+    this->_coeffs = std::move(new_polynomial._coeffs);  
     return *this;
 }
 

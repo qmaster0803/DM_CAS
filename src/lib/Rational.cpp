@@ -1,3 +1,5 @@
+// Author: Ivanov Artyom 3381
+
 #include "../include/Rational.h"
 #include <stdexcept>
 #include <iostream>
