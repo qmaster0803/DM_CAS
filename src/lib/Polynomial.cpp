@@ -18,12 +18,18 @@ Polynomial::Polynomial(int value)
         _coeffs.emplace(Natural(0), Rational(value));
 }
 
+Polynomial::Polynomial(const Rational &value)
+{
+    if(!value.is_zero())
+        _coeffs.emplace(Natural(0), value);
+}
+
 Polynomial::Polynomial(const std::vector<Rational> &values)
 {
     for(std::size_t i = 0; i < values.size(); i++) {
         Rational denom(values[i]);
         if(!denom.is_zero())
-            _coeffs.emplace(Natural(i), Rational(values[i]));
+            _coeffs.emplace(Natural(i), values[i]);
     }
 }
 

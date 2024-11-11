@@ -83,10 +83,9 @@ void Rational::reduct()
 // NON-MODIFIERS
 // ----------------------------------------------------------------------------
 
-bool Rational::is_zero() const
-{
-    return _num.is_zero();
-}
+bool Rational::is_zero() const { return _num.is_zero(); }
+
+bool Rational::is_neg() const { return _num.is_neg(); }
 
 bool Rational::is_reducted() const
 {
@@ -112,6 +111,12 @@ Rational Rational::get_neg() const
 {
     Rational result = *this;
     result._num.neg();
+    return result;
+}
+
+Rational Rational::abs() const
+{
+    Rational result(_num.abs(), _denom);
     return result;
 }
 

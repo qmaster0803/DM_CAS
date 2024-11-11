@@ -13,6 +13,7 @@ public:
     explicit Polynomial(int value);                           // new from int
     explicit Polynomial(const std::string &value);            // new from string
     explicit Polynomial(const char *value);                   // new from char array
+    explicit Polynomial(const Rational &value);
     explicit Polynomial(const std::vector<Rational> &values); // from Rational vector
     Polynomial(const Polynomial &another);                    // copy constructor
     Polynomial(Polynomial &&another);                         // move constructor
