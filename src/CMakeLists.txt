@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.20)
 project(DM_CAS)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+# for debug
+set(CMAKE_BUILD_TYPE Debug)
 
 # Libraries
 add_library(Algo    STATIC lib/algo.cpp   )

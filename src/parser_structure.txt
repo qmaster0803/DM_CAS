@@ -1,0 +1,43 @@
+a + b * c - d / e
+  1   2   1   2
+  1   1   0   0
+
+a + BC - d / e
+  1    1   2
+  1    0   0
+
+a + BC - DE
+  1    1
+  1    0
+
+вектор структур:
+структура:
+	- подстрока с операндом
+	- тип операнда: унарная, бинарная, функция, число
+	- пара приоритета
+
+Динамическая инициализация парсера: add_function(func_name, alias, alias_type)
+
+alias_type = 0 - нет alias'а
+alias_type = 1 - элиас операции (пример: +, ^, ++, ...)
+alias_type = 2 - элиас функции (GCD, ...)
+
+void add_function_unary(std::string func_name, std::string alias, enum alias_type atype, Natural nat_func(Natural &), Integer int_func(Integer &), Rational rat_func(Rational &), Polynomial pol_func(Polynomial &))
+
+Числа
+
+Унарные операции:
+- Постфиксный инкремент
+
+Бинарные операции:
+- Сравнение чисел
+- Сложение двух чисел
+
+Функции:
+- Проверка на ноль (NZER_N_B)
+-
+
+a = bq + r
+r = a - bq = a - b * (a // b)
+
+abs(b - r)

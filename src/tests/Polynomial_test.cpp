@@ -100,19 +100,20 @@ TEST(PolynomialTest, Multiply) {
 }
 
 // // Test for polynomial division
-// TEST(PolynomialTest, Divide) {
-//     Polynomial p1("{3^2;5^1}"); // 3x^2 + 5x
-//     Polynomial p2("{x^1;1^0}"); // x + 1
-//     Polynomial quotient = p1 / p2; // (3x^2 + 5x) / (x + 1) = 3x + 2
-//     EXPECT_EQ(static_cast<std::string>(quotient), "{3^1;2^0}");
+TEST(PolynomialTest, Divide) {
+    Polynomial p1("{3^2;5^1}"); // 3x^2 + 5x
+    Polynomial p2("{1^1;1^0}"); // x + 1
+    Polynomial quotient = p1 / p2; // (3x^2 + 5x) / (x + 1) = 3x + 2
+    EXPECT_EQ(static_cast<std::string>(quotient), "{3^1;2^0}");
 
-//     Polynomial p3("{1^2;0^1;0^0}"); // x^2
-//     Polynomial p4("{1^1;1^0}"); // x + 1
-//     quotient = p3 / p4; // x^2 / (x + 1) = x - 1
-//     EXPECT_EQ(static_cast<std::string>(quotient), "{1^1;-1^0}");
-// }
+    Polynomial p3("{1^2;0^1;0^0}"); // x^2
+    Polynomial p4("{1^1;1^0}"); // x + 1
+    quotient = p3 / p4; // x^2 / (x + 1) = x - 1
+    EXPECT_EQ(static_cast<std::string>(quotient), "{1^1;-1^0}");
+}
 
 // Test for equality of polynomials
+
 TEST(PolynomialTest, Equality) {
     Polynomial p1("{3^2;2^1;1^0}"); // 3x^2 + 2x + 1
     Polynomial p2("{3^2;2^1;1^0}"); // 3x^2 + 2x + 1

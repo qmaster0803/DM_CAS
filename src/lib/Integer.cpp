@@ -186,7 +186,7 @@ Integer Integer::operator / (const Integer &another) const
 Integer Integer::operator % (const Integer &another) const
 {
     if(another.is_zero())
-        throw std::domain_error("Division be zero");
+        throw std::domain_error("Division by zero");
 
     return Integer(*this - ((*this / another) * another));
 }

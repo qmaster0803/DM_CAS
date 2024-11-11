@@ -271,12 +271,36 @@ Polynomial Polynomial::operator * (const Rational &another) const
 // <TODO>
 Polynomial Polynomial::operator / (const Polynomial &another) const
 {
-    return Polynomial();
+    if (another.is_zero())
+        throw std::domain_error("Division by zero!");
+
+    // A = B * Q + R, we need to find Q
+
+    Polynomial R(*this);
+    Polynomial Q;
+
+    Rational alpha(1);
+
+    if (another.msc() != Rational(1))
+        alpha /= another.msc();
+
+    while (R.deg() >= another.deg()) {
+        Polynomial T;
+        T._coeffs.emplace(R.deg() - another.deg(), R.msc() * alpha);
+        Q += T;
+        R = R - T * another; 
+    }
+
+    return Q;
 }
 
 Polynomial Polynomial::operator % (const Polynomial &another) const
 {
-    return Polynomial();
+    if (another.is_zero())
+        throw std::domain_error("Division by zero!");
+
+    // from a % b = a - b * (a / b)
+    return Polynomial(*this - another * (*this / another));
 }
 
 Polynomial Polynomial::operator << (Natural k) const
