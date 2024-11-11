@@ -1,3 +1,5 @@
+// Author: Ivanov Artyom 3381
+
 #include <gtest/gtest.h>
 #include <stdexcept>
 

@@ -1,3 +1,5 @@
+// Author: Komarov Daniil 3381
+
 #include "../include/Interactive_shell.h"
 #include <curses.h>
 

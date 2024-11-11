@@ -1,3 +1,5 @@
+// Author: Ivanov Artyom 3381
+
 #pragma once
 #include "Natural.h"
 #include "Integer.h"

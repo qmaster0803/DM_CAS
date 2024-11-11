@@ -1,3 +1,5 @@
+// Author: Komarov Daniil 3381
+
 #pragma once
 #include "algo.h"
 #include <cstddef>
@@ -40,7 +42,7 @@ public:
     Natural operator % (const Natural &another) const;
 
     // shift operator overload
-    Natural operator << (std::size_t k) const; // equal to *10^k
+    Natural operator << (Natural k) const; // equal to *10^k
 
     // assignment operators overload
     Natural &operator =  (const Natural &another); // copy assignment
@@ -50,7 +52,7 @@ public:
     Natural &operator *= (const Natural &another);
     Natural &operator /= (const Natural &another);
     Natural &operator %= (const Natural &another);
-    Natural &operator <<= (std::size_t k);
+    Natural &operator <<= (Natural k);
 
     // increment & decrement
     Natural &operator ++ ();

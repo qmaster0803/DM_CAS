@@ -1,3 +1,5 @@
+// Author: Komarov Daniil 3381
+
 #pragma once
 #include "Natural.h"
 #include <string>
@@ -42,7 +44,7 @@ public:
     Integer operator % (const Integer &another) const;
 
     // shift operator overload
-    Integer operator << (std::size_t k) const; // equal to *10^k
+    Integer operator << (Natural k) const; // equal to *10^k
 
     // assignment operators overload
     Integer &operator =  (const Integer &another); // copy assignment
@@ -52,7 +54,7 @@ public:
     Integer &operator *= (const Integer &another);
     Integer &operator /= (const Integer &another);
     Integer &operator %= (const Integer &another);
-    Integer &operator <<= (std::size_t k);
+    Integer &operator <<= (Natural k);
 
     // increment & decrement
     Integer &operator ++ ();

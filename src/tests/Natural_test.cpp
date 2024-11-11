@@ -1,3 +1,5 @@
+// Author: Komarov Daniil 3381
+
 #include <gtest/gtest.h>
 #include <sstream>
 #include <stdexcept>
@@ -183,11 +185,11 @@ TEST(Natural_test, ShiftLeftOperator)
     Natural p(213123123);
     Natural z;
 
-    EXPECT_EQ(p << 0, p);
-    EXPECT_EQ(static_cast<std::string>(p << 3), "213123123000");
+    EXPECT_EQ(p << Natural(0), p);
+    EXPECT_EQ(static_cast<std::string>(p << Natural(3)), "213123123000");
 
-    EXPECT_EQ(z << 0, z);
-    EXPECT_EQ(static_cast<std::string>(z << 3), "0");
+    EXPECT_EQ(z << Natural(0), z);
+    EXPECT_EQ(static_cast<std::string>(z << Natural(3)), "0");
 }
 
 TEST(Natural_test, IncrementDecrementOperator)

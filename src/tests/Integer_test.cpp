@@ -1,3 +1,5 @@
+// Author: Ivanov Artyom 3381
+
 #include <gtest/gtest.h>
 
 #include "../include/Integer.h"
@@ -250,14 +252,14 @@ TEST(Integer_test, ShiftLeftOperator)
     Integer n("-2154867946778953485739845");
     Integer z;
 
-    EXPECT_EQ(p << 0, p);
-    EXPECT_EQ(static_cast<std::string>(p << 3), "213123123000");
+    EXPECT_EQ(p << Natural(0), p);
+    EXPECT_EQ(static_cast<std::string>(p << Natural(3)), "213123123000");
 
-    EXPECT_EQ(n << 0, n);
-    EXPECT_EQ(static_cast<std::string>(n << 3), "-2154867946778953485739845000");
+    EXPECT_EQ(n << Natural(0), n);
+    EXPECT_EQ(static_cast<std::string>(n << Natural(3)), "-2154867946778953485739845000");
 
-    EXPECT_EQ(z << 0, Integer("0"));
-    EXPECT_EQ(static_cast<std::string>(z << 3), "0");
+    EXPECT_EQ(z << Natural(0), Integer("0"));
+    EXPECT_EQ(static_cast<std::string>(z << Natural(3)), "0");
 }
 
 TEST(Integer_test, PreIncrementOperator)

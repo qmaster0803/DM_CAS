@@ -1,3 +1,5 @@
+// Author: Komarov Daniil 3381
+
 #pragma once
 #include "Rational.h"
 #include "Natural.h"
@@ -15,9 +17,6 @@ public:
     Polynomial(const Polynomial &another);                    // copy constructor
     Polynomial(Polynomial &&another);                         // move constructor
 
-    // this function modifies the object
-    void mul_by_xk(const Natural &k);
-
     bool is_zero()    const;
     bool is_integer() const;
     // most significant coefficient
@@ -33,22 +32,24 @@ public:
     bool operator != (const Polynomial &another) const;
 
     // binary operators overload
-    Polynomial operator + (const Polynomial &another) const;
-    Polynomial operator - (const Polynomial &another) const;
-    Polynomial operator * (const Polynomial &another) const;
-    Polynomial operator * (const Rational   &another) const;
-    Polynomial operator / (const Polynomial &another) const;
-    Polynomial operator % (const Polynomial &another) const;
+    Polynomial operator  + (const Polynomial &another) const;
+    Polynomial operator  - (const Polynomial &another) const;
+    Polynomial operator  * (const Polynomial &another) const;
+    Polynomial operator  * (const Rational   &another) const;
+    Polynomial operator  / (const Polynomial &another) const;
+    Polynomial operator  % (const Polynomial &another) const;
+    Polynomial operator << (Natural k)                 const;
 
     // assignment operators overload
-    Polynomial &operator =  (const Polynomial &another); // copy assignment
-    Polynomial &operator =  (Polynomial &&another);      // move assignment
-    Polynomial &operator += (const Polynomial &another);
-    Polynomial &operator -= (const Polynomial &another);
-    Polynomial &operator *= (const Polynomial &another);
-    Polynomial &operator *= (const Rational   &another);
-    Polynomial &operator /= (const Polynomial &another);
-    Polynomial &operator %= (const Polynomial &another);
+    Polynomial &operator =   (const Polynomial &another); // copy assignment
+    Polynomial &operator =   (Polynomial &&another);      // move assignment
+    Polynomial &operator +=  (const Polynomial &another);
+    Polynomial &operator -=  (const Polynomial &another);
+    Polynomial &operator *=  (const Polynomial &another);
+    Polynomial &operator *=  (const Rational   &another);
+    Polynomial &operator /=  (const Polynomial &another);
+    Polynomial &operator %=  (const Polynomial &another);
+    Polynomial &operator <<= (Natural k);
 
     // visualization
     operator std::string() const;
