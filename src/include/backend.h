@@ -75,7 +75,7 @@ Integer MUL_ZM_Z(Integer i);
 Integer TRANS_N_Z(Natural n);
 
 // Z-5
-Natural TRANZ_Z_N(Integer i);
+Natural TRANS_Z_N(Integer i);
 
 // Z-6
 Integer ADD_ZZ_Z(Integer i1, Integer i2);
@@ -128,6 +128,10 @@ Rational MUL_QQ_Q(Rational r1, Rational r2);
 
 // Q-8
 Rational DIV_QQ_Q(Rational r1, Rational r2);
+
+// ------------------------------------------------------
+// Polynomial
+// ------------------------------------------------------
 
 // P-1
 Polynomial ADD_PP_P(Polynomial p1, Polynomial p2);

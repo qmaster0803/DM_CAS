@@ -105,7 +105,7 @@ Integer backend::MUL_ZM_Z(Integer i)
 Integer backend::TRANS_N_Z(Natural n) { return Integer(n); }
 
 // Z-5
-Natural backend::TRANZ_Z_N(Integer i) { return Natural(i); }
+Natural backend::TRANS_Z_N(Integer i) { return Natural(i); }
 
 // Z-6
 Integer backend::ADD_ZZ_Z(Integer i1, Integer i2) { return i1 + i2; }
@@ -159,6 +159,10 @@ Rational backend::MUL_QQ_Q(Rational r1, Rational r2) { return r1 * r2; }
 
 // Q-8
 Rational backend::DIV_QQ_Q(Rational r1, Rational r2) { return r1 / r2; }
+
+// ------------------------------------------------------
+// Polynomial
+// ------------------------------------------------------
 
 // P-1
 Polynomial backend::ADD_PP_P(Polynomial p1, Polynomial p2) { return p1 + p2; }
