@@ -19,6 +19,8 @@ public:
     // this function alter the class object itself
     void mul_by_digit(uint8_t digit);
 
+    uint8_t first_div_digit(const Natural &another);
+
     // this function is the fastest way to check == 0
     bool is_zero() const;
 

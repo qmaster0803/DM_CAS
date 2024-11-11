@@ -7,6 +7,8 @@
 #include "Rational.h"
 #include "Polynomial.h"
 
+namespace backend {
+
 // --------------------------------------
 // NATURAL
 // --------------------------------------
@@ -39,7 +41,7 @@ Natural MUL_NN_N(Natural n1, Natural n2);
 Natural SUB_NDN_N(Natural n1, Natural n2, uint8_t d);
 
 // N-10
-// something strange xD
+uint8_t DIV_NN_Dk(Natural n1, Natural n2, Natural k);
 
 // N-11
 Natural DIV_NN_N(Natural n1, Natural n2);
@@ -153,3 +155,5 @@ Polynomial DER_P_P(Polynomial p);
 
 // P-13
 Polynomial NMR_P_P(Polynomial p);
+
+} // end of backend namespace

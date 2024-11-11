@@ -50,6 +50,11 @@ void Natural::mul_by_digit(uint8_t digit)
 // NON-MODIFIERS
 // ----------------------------------------------------------------------------
 
+uint8_t Natural::first_div_digit(const Natural &another)
+{
+    return algo::basic_div(_digits, another._digits, std::nullopt, true)[0];
+}
+
 bool Natural::is_zero() const
 {
     return (this->_digits.size() == 1 && this->_digits[0] == 0);

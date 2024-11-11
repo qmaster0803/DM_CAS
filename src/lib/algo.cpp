@@ -81,13 +81,14 @@ namespace algo
     }
 
     std::vector<uint8_t> basic_div(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b,
-                                   std::optional<std::reference_wrapper<std::vector<uint8_t>>> remainder)
+                                   std::optional<std::reference_wrapper<std::vector<uint8_t>>> remainder,
+                                   bool first_digit_only)
     {
         // using the long division algorithm
         std::vector<uint8_t> result;
         auto it = a.rbegin();
     
-        // select first part (from MSB side get at least another.len digits to match div_part >= another)
+        // select first part (from most significant side get at least another.len digits to match div_part >= another)
         std::vector<uint8_t> div_part = {*(it++)};
         while(algo::basic_cmp(div_part, b) == -1) {
             div_part.insert(div_part.begin(), *(it++));
@@ -104,6 +105,11 @@ namespace algo
             // Save result digit (first digit is MS), but let's just reverse the vector
             // before returning instead of moving values in the insert()
             result.emplace_back(result_digit);
+
+            // stop execution if in first_digit_only mode
+            if (first_digit_only)
+                return result;
+            
             // Transfer next digit of divident
             if(it == a.rend())
                 break;
