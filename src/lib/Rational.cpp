@@ -58,7 +58,7 @@ Rational::Rational(const std::string &value)
     } else {
         _num = Integer(left_part + right_part);
         _denom = Natural(1);
-        _denom <<= right_part.size();
+        _denom <<= Natural(right_part.size());
     }
 
     if (_denom == Natural(0))

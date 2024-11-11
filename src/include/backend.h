@@ -1,53 +1,42 @@
 // Author: Ivanov Artyom 3381
 
-#include "../include/backend.h"
+#pragma once
 
-#include "stdexcept"
+#include "Natural.h"
+#include "Integer.h"
+#include "Rational.h"
+#include "Polynomial.h"
 
-// --------------------------------------------
-// Natural
-// --------------------------------------------
+// --------------------------------------
+// NATURAL
+// --------------------------------------
 
 // N-1
-int COM_NN_D(Natural n1, Natural n2)
-{
-    if (n1 > n2)
-        return 2;
-    else if (n1 < n2)
-        return 1;
-    else
-        return 0;
-}
+int COM_NN_D(Natural n1, Natural n2);
 
 // N-2
-bool NZER_N_B(Natural n) { return n.is_zero(); }
+bool NZER_N_B(Natural n);
 
 // N-3
-Natural ADD_1N_N(Natural n) { return ++n; }
+Natural ADD_1N_N(Natural n);
 
 // N-4
-Natural ADD_NN_N(Natural n1, Natural n2) { return n1 + n2; }
+Natural ADD_NN_N(Natural n1, Natural n2);
 
 // N-5
-Natural SUB_NN_N(Natural n1, Natural n2) { return n1 - n2; };
+Natural SUB_NN_N(Natural n1, Natural n2);
 
 // N-6
-Natural MUL_ND_N(Natural n1, uint8_t d)
-{
-    if (d > 9)
-        throw std::invalid_argument("d must be digit, not a number!");
-        
-    return n1 * Natural(d);
-}
+Natural MUL_ND_N(Natural n1, uint8_t d);
 
 // N-7
-Natural MUL_Nk_N(Natural n, Natural k) { return n << k; }
+Natural MUL_Nk_N(Natural n, Natural k);
 
 // N-8
-Natural MUL_NN_N(Natural n1, Natural n2) { return n1 * n2; }
+Natural MUL_NN_N(Natural n1, Natural n2);
 
 // N-9
-Natural SUB_NDN_N(Natural n1, Natural n2, uint8_t d) { return n1 - Natural(d) * n2; }
+Natural SUB_NDN_N(Natural n1, Natural n2, uint8_t d);
 
 // N-10
 // something strange xD
@@ -106,14 +95,13 @@ Integer MOD_ZZ_Z(Integer i1, Integer i2);
 Rational RED_Q_Q(Rational r);
 
 // Q-2
-// TODO later
 bool INT_Q_B(Rational r);
 
 // Q-3
-Integer TRANS_Z_Q(Integer i);
+Rational TRANS_Z_Q(Integer i);
 
 // Q-4
-Integer TRANS_Q_Z(Rational i);
+Integer TRANS_Q_Z(Rational r);
 
 // Q-5
 Rational ADD_QQ_Q(Rational r1, Rational r2);

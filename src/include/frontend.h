@@ -12,106 +12,145 @@
 // --------------------------------------
 
 // N-1
-int COM_NN_D(const Natural &n1, const Natural &n2);
+int COM_NN_D(Natural n1, Natural n2);
 
 // N-2
-bool NZER_N_B(const Natural &n);
+bool NZER_N_B(Natural n);
 
 // N-3
-Natural ADD_1N_N(const Natural &n);
+Natural ADD_1N_N(Natural n);
 
 // N-4
-Natural ADD_NN_N(const Natural &n1, const Natural &n2);
+Natural ADD_NN_N(Natural n1, Natural n2);
 
 // N-5
-Natural SUB_NN_N(const Natural &n1, const Natural &n2);
+Natural SUB_NN_N(Natural n1, Natural n2);
 
 // N-6
-Natural MUL_ND_N(const Natural &n1, uint8_t d);
+Natural MUL_ND_N(Natural n1, uint8_t d);
 
 // N-7
-Natural MUL_Nk_N(const Natural &n, std::size_t k);
+Natural MUL_Nk_N(Natural n, Natural k);
 
 // N-8
-Natural MUL_NN_N(const Natural &n1, const Natural &n2);
+Natural MUL_NN_N(Natural n1, Natural n2);
 
 // N-9
-Natural SUB_NDN_N(const Natural &n1, const Natural &n2, uint8_t d);
+Natural SUB_NDN_N(Natural n1, Natural n2, uint8_t d);
 
 // N-10
 // something strange xD
 
 // N-11
-Natural DIV_NN_N(const Natural &n1, const Natural &n2);
+Natural DIV_NN_N(Natural n1, Natural n2);
 
 // N-12
-Natural MOD_NN_N(const Natural &n1, const Natural &n2);
+Natural MOD_NN_N(Natural n1, Natural n2);
 
 // N-13
-Natural GCF_NN_N(const Natural &n1, const Natural &n2);
+Natural GCF_NN_N(Natural n1, Natural n2);
 
 // N-14
-Natural LCM_NN_N(const Natural &n1, const Natural &n2);
+Natural LCM_NN_N(Natural n1, Natural n2);
 
 // --------------------------------------
 // INTEGER
 // --------------------------------------
 
 // Z-1
-Integer ABS_Z_Z(const Integer &i);
+Integer ABS_Z_Z(Integer i);
 
 // Z-2
-int SGN_Z_D(const Integer &i);
+int SGN_Z_D(Integer i);
 
 // Z-3
-Integer MUL_ZM_Z(const Integer &i);
+Integer MUL_ZM_Z(Integer i);
 
 // Z-4
-Integer TRANS_N_Z(const Natural &n);
+Integer TRANS_N_Z(Natural n);
 
 // Z-5
-Natural TRANZ_Z_N(const Integer &i);
+Natural TRANZ_Z_N(Integer i);
 
 // Z-6
-Integer ADD_ZZ_Z(const Integer &i1, const Integer &i2);
+Integer ADD_ZZ_Z(Integer i1, Integer i2);
 
 // Z-7
-Integer SUB_ZZ_Z(const Integer &i1, const Integer &i2);
+Integer SUB_ZZ_Z(Integer i1, Integer i2);
 
 // Z-8
-Integer MUL_ZZ_Z(const Integer &i1, const Integer &i2);
+Integer MUL_ZZ_Z(Integer i1, Integer i2);
 
 // Z-9
-Integer DIV_ZZ_Z(const Integer &i1, const Integer &i2);
+Integer DIV_ZZ_Z(Integer i1, Integer i2);
 
 // Z-10
-Integer MOD_ZZ_Z(const Integer &i1, const Integer &i2);
+Integer MOD_ZZ_Z(Integer i1, Integer i2);
 
 // --------------------------------------
 // RATIONAL
 // --------------------------------------
 
 // Q-1
-Rational RED_Q_Q(const Rational &r);
+Rational RED_Q_Q(Rational r);
 
 // Q-2
 // TODO later
-bool INT_Q_B(const Rational &r);
+bool INT_Q_B(Rational r);
 
 // Q-3
-Integer TRANS_Z_Q(const Integer &i);
+Integer TRANS_Z_Q(Integer i);
 
 // Q-4
-Integer TRANS_Q_Z(const Rational &i);
+Integer TRANS_Q_Z(Rational i);
 
 // Q-5
-Rational ADD_QQ_Q(const Rational &r1, const Rational &r2);
+Rational ADD_QQ_Q(Rational r1, Rational r2);
 
 // Q-6
-Rational SUB_QQ_Q(const Rational &r1, const Rational &r2);
+Rational SUB_QQ_Q(Rational r1, Rational r2);
 
 // Q-7
-Rational MUL_QQ_Q(const Rational &r1, const Rational &r2);
+Rational MUL_QQ_Q(Rational r1, Rational r2);
 
 // Q-8
-Rational DIV_QQ_Q
+Rational DIV_QQ_Q(Rational r1, Rational r2);
+
+// P-1
+Polynomial ADD_PP_P(Polynomial p1, Polynomial p2);
+
+// P-2
+Polynomial SUB_PP_P(Polynomial p1, Polynomial p2);
+
+// P-3
+Polynomial MUL_PQ_P(Polynomial p, Rational r);
+
+// P-4
+Polynomial MUL_Pxk_P(Polynomial p, Natural k);
+
+// P-5
+Rational LED_P_Q(Polynomial p);
+
+// P-6
+Natural DEG_P_N(Polynomial p);
+
+// P-7
+Rational FAC_P_Q(Polynomial p);
+
+// P-8
+Polynomial MUL_PP_P(Polynomial p1, Polynomial p2);
+
+// P-9
+Polynomial DIV_PP_P(Polynomial p1, Polynomial p2);
+
+// P-10
+Polynomial MOD_PP_P(Polynomial p1, Polynomial p2);
+
+// P-11
+Polynomial GCF_PP_P(Polynomial p1, Polynomial p2);
+
+// P-12
+Polynomial DER_P_P(Polynomial p);
+
+// P-13
+Polynomial NMR_P_P(Polynomial p);
