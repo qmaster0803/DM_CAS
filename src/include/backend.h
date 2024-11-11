@@ -55,6 +55,9 @@ Natural GCF_NN_N(Natural n1, Natural n2);
 // N-14
 Natural LCM_NN_N(Natural n1, Natural n2);
 
+// N-additional-1
+Natural SUB_1N_N(Natural n);
+
 // --------------------------------------
 // INTEGER
 // --------------------------------------
@@ -89,8 +92,14 @@ Integer DIV_ZZ_Z(Integer i1, Integer i2);
 // Z-10
 Integer MOD_ZZ_Z(Integer i1, Integer i2);
 
-// Z-11
+// Z-additional-1
 Integer MUL_Zk_Z(Integer i, Natural k);
+
+// Z-additional-2
+Integer ADD_1Z_Z(Integer i);
+
+// Z-additional-3
+Integer SUB_1Z_Z(Integer i);
 
 // --------------------------------------
 // RATIONAL

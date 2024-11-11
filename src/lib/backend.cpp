@@ -73,6 +73,9 @@ Natural backend::GCF_NN_N(Natural n1, Natural n2) { return n1.gcd(n2); }
 // N-14
 Natural backend::LCM_NN_N(Natural n1, Natural n2) { return n1.lcm(n2); }
 
+// N-additional-1
+Natural SUB_1N_N(Natural i) { return --i; }
+
 // --------------------------------------
 // INTEGER
 // --------------------------------------
@@ -119,8 +122,14 @@ Integer backend::DIV_ZZ_Z(Integer i1, Integer i2) { return i1 / i2; }
 // Z-10
 Integer backend::MOD_ZZ_Z(Integer i1, Integer i2) { return i1 % i2; }
 
-// Z-11
+// Z-additional-1
 Integer backend::MUL_Zk_Z(Integer i, Natural k) { return i << k; }
+
+// Z-additional-2
+Integer ADD_1Z_Z(Integer i) { return ++i; }
+
+// Z-additional-3
+Integer SUB_1Z_Z(Integer i) { return ++i; }
 
 // --------------------------------------
 // RATIONAL
