@@ -19,6 +19,9 @@ target_link_libraries(Rational Integer)
 add_library(Polynomial STATIC lib/Polynomial.cpp)
 target_link_libraries(Polynomial Rational)
 
+add_library(Parser STATIC lib/Parser.cpp)
+# target_link_libraries(Polynomial Rational)
+
 add_library(Interactive_shell STATIC lib/Interactive_shell.cpp)
 target_link_libraries(Interactive_shell ncurses)
 
@@ -40,6 +43,9 @@ target_link_libraries(Rational_test Rational gtest_main gtest)
 
 add_executable(Polynomial_test tests/Polynomial_test.cpp)
 target_link_libraries(Polynomial_test Polynomial gtest_main gtest)
+
+add_executable(Parser_test tests/Parser_test.cpp)
+target_link_libraries(Parser_test Parser Natural Integer Rational Polynomial gtest_main gtest)
 
 include(GoogleTest)
 gtest_discover_tests(Natural_test)
