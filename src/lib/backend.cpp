@@ -119,6 +119,9 @@ Integer backend::DIV_ZZ_Z(Integer i1, Integer i2) { return i1 / i2; }
 // Z-10
 Integer backend::MOD_ZZ_Z(Integer i1, Integer i2) { return i1 % i2; }
 
+// Z-11
+Integer backend::MUL_Zk_Z(Integer i, Natural k) { return i1 << k; }
+
 // --------------------------------------
 // RATIONAL
 // --------------------------------------

@@ -89,6 +89,9 @@ Integer DIV_ZZ_Z(Integer i1, Integer i2);
 // Z-10
 Integer MOD_ZZ_Z(Integer i1, Integer i2);
 
+// Z-11
+Integer MUL_Zk_Z(Integer i, Natural k);
+
 // --------------------------------------
 // RATIONAL
 // --------------------------------------
