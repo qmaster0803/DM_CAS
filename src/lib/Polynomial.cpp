@@ -268,7 +268,6 @@ Polynomial Polynomial::operator * (const Rational &another) const
     return result;
 }
 
-// <TODO>
 Polynomial Polynomial::operator / (const Polynomial &another) const
 {
     if (another.is_zero())
@@ -284,11 +283,19 @@ Polynomial Polynomial::operator / (const Polynomial &another) const
     if (another.msc() != Rational(1))
         alpha /= another.msc();
 
-    while (R.deg() >= another.deg()) {
+    // std::cout << "Alpha is " << (std::string)alpha << std::endl;
+    // std::cout << "R before is " << (std::string)R << std::endl;
+    // std::cout << "Q before is " << (std::string)Q << std::endl;
+
+    while (R.deg() >= another.deg() && !R.is_zero()) {
         Polynomial T;
         T._coeffs.emplace(R.deg() - another.deg(), R.msc() * alpha);
         Q += T;
-        R = R - T * another; 
+        R = R - T * another;
+        
+        // std::cout << "T is " << (std::string)T << std::endl;
+        // std::cout << "Q is " << (std::string)Q << std::endl;
+        // std::cout << "R is " << (std::string)R << std::endl;
     }
 
     return Q;

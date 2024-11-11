@@ -243,36 +243,35 @@ Rational &Rational::operator = (Rational &&another)
     }
     return *this;
 }
-
 Rational &Rational::operator += (const Rational &another)
 {
     auto n = (*this) + another;
-    this->_num   = std::move(another._num);
-    this->_denom = std::move(another._denom);
+    this->_num   = std::move(n._num);
+    this->_denom = std::move(n._denom);
     return *this;
 }
 
 Rational &Rational::operator -= (const Rational &another)
 {
     auto n = (*this) - another;
-    this->_num   = std::move(another._num);
-    this->_denom = std::move(another._denom);
+    this->_num   = std::move(n._num);
+    this->_denom = std::move(n._denom);
     return *this;
 }
 
 Rational &Rational::operator *= (const Rational &another)
 {
     auto n = (*this) * another;
-    this->_num   = std::move(another._num);
-    this->_denom = std::move(another._denom);
+    this->_num   = std::move(n._num);
+    this->_denom = std::move(n._denom);
     return *this;
 }
 
 Rational &Rational::operator /= (const Rational &another)
 {
     auto n = (*this) / another;
-    this->_num   = std::move(another._num);
-    this->_denom = std::move(another._denom);
+    this->_num   = std::move(n._num);
+    this->_denom = std::move(n._denom);
     return *this;
 }
 
