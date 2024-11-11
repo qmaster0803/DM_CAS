@@ -281,6 +281,6 @@ Polynomial NMR_P_P(Polynomial p) { return p.to_simple_roots(); }
 bool NZER_P_B(Polynomial p) { return p.is_zero(); }
 
 // P-additional-2
-bool INT_P_B_(Polynomial p) { return p.is_integer(); }
+bool INT_P_B(Polynomial p) { return p.is_integer(); }
 
 } // end of backend namespace
