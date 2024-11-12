@@ -30,8 +30,8 @@
  * [simple_roots] a - 4 - pol
  *
  * [cmp] a,b   - 4 - 2*nat, 2*int, 2*rat
- * [gcd] a,b   - 4 - nat, int, rat, pol
- * [lcm] a,b   - 4 - nat, int, rat
+ * [gcd] a,b   - 4 - nat, int, pol
+ * [lcm] a,b   - 4 - nat, int
  *
  * 123 - deftype
  * 123n - natural
@@ -54,10 +54,10 @@ enum class el_type {
 };
 
 enum class default_vartype {
-    VARTYPE_NATURAL,
-    VARTYPE_INTEGER,
-    VARTYPE_RATIONAL,
-    VARTYPE_POLYNOMIAL
+    VARTYPE_NATURAL    = 0,
+    VARTYPE_INTEGER    = 1,
+    VARTYPE_RATIONAL   = 2,
+    VARTYPE_POLYNOMIAL = 3
 };
 
 struct parsed_el {

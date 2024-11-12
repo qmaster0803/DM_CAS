@@ -22,10 +22,10 @@ add_library(Polynomial STATIC lib/Polynomial.cpp)
 target_link_libraries(Polynomial Rational)
 
 add_library(Parser STATIC lib/Parser.cpp)
-# target_link_libraries(Polynomial Rational)
+target_link_libraries(Parser Polynomial)
 
 add_library(Interactive_shell STATIC lib/Interactive_shell.cpp)
-target_link_libraries(Interactive_shell ncurses)
+target_link_libraries(Interactive_shell Parser ncurses)
 
 # Main executable
 add_executable(DM_CAS main.cpp)
@@ -54,3 +54,4 @@ gtest_discover_tests(Natural_test)
 gtest_discover_tests(Integer_test)
 gtest_discover_tests(Rational_test)
 gtest_discover_tests(Polynomial_test)
+gtest_discover_tests(Parser_test)

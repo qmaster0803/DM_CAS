@@ -421,8 +421,10 @@ Polynomial::operator std::string() const
     const auto end = this->_coeffs.rend();
     while(true) {
         output += static_cast<std::string>(it->second);
-        output += '^';
-        output += static_cast<std::string>(it->first);
+        if(!it->first.is_zero()) {
+            output += '^';
+            output += static_cast<std::string>(it->first);
+        }
         if(++it != end)
             output += ';';
         else
