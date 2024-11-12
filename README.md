@@ -1,15 +1,16 @@
 ## Discrete Mathematics Computer Algebra System
 ### Main idea
-Discrete Computer Algebra System (DM_CAS) - is ETU DM&TI course project, aimed at creating a computer algebra system that is capable of performing the simplest operations on: natural, integers, rational numbers, as well as polynomials.
-For Natural, Integer, Rational and Polynomial own classes have been created, UI written using the **ncourses** library.
+Discrete Computer Algebra System (DM_CAS) - is ETU DM&TI course project, aimed at creating a computer algebra system that is capable of performing the simplest operations on: natural, integer, rational numbers, as well as polynomials.
+For Natural, Integer, Rational and Polynomial data types own classes have been created, UI written using the **ncourses** library.
 
 ### Build
 #### 1. Building:
-Execute following command in project root directory to build:
+Execute following command in project root directory to build project:
 ```
 sudo bash ./build.sh
 ```
 #### 2. Execute:
+To exectute builded binary, you need to write following in terminal:
 ```
 ./build/DM_CAS
 ```
@@ -18,12 +19,18 @@ sudo bash ./build.sh
 So, you execute the program, now you have a lot of questions. Lets take it in order:
 #### Interface:
 - In line with "->" you can **write operations**, which you want to calculate. In line "=" you can **see calculated result**;
-- **F3** - to enable autoscroll;
-- **F4** - by default, all nums interpreted as Natural, to switch calculation mode you need to press **F4** key. To use another data type, different from mode type, you need to add prefix: n - for Natural, i - for Integer, r - for Rational, p - for Polynomial;
+- **F3** - to enable/disable autoscroll;
+- **F4** - by default, all numbers interpreted as Natural, to switch calculation mode you need to press **F4** key. So program have only four calculation modes: Natural, Integer, Rational, Polynomial. To use another data type without switch between modes, you need to add suffix: n - for Natural, i - for Integer, r - for Rational, p - for Polynomial;
 - **F5** and **F6** - to scroll help message;
-- Also you can **scroll by results** and expressions by pressing **up** and **down arrows** on keyboard.
+- To scroll in main area you need to use **Page Up** and **Page Down** buttons;
+- Also you can **scroll by results and expressions** by pressing **Up arrow** and **Down arrow** keys on keyboard.
+- Examples of writing types:
+  - Natural: 1, 0, 2342, 43n;
+  - Integer: -1098, 0, 213125, 12i;
+  - Rational: -12/13, -15/-13, 23/-5, 5.6, 0.10, 0/5, 23, -5, 90/34r;
+  - Polynomial: 1, 5, {5/3^3;1^0} (for polynomial like: (5/3)x^3 + 1), {56^2;1}p.
 #### Available commands:
-So, you can use operations from [this table](https://docs.google.com/document/d/1Dv_6AIhxg_3ezu6VMcEnMpyfRzgym9l8PmE4ULGfjgM/edit?tab=t.0) with given arguments like: [\<NAME\>\_\<ARG\_TYPES\>\_\<RET_TYPE\>] \<ARGS\>. Another operations listed below:
+So, you can use operations from [this table](https://docs.google.com/document/d/1Dv_6AIhxg_3ezu6VMcEnMpyfRzgym9l8PmE4ULGfjgM/edit?tab=t.0) with given arguments in format like this: [\<NAME\>\_\<ARG\_TYPES\>\_\<RET_TYPE\>] \<ARGS\>. Alternative names with human-readable names are presented below:
 
 | Operation | Compatible types | Example |
 | --------- | ---------------- | ------- |
