@@ -95,8 +95,8 @@ void Interactive_shell::_redraw_Help()
         "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.";
 
     std::vector<std::string> actual_lines;
-    for(std::size_t i = 0, help_len = help_msg.length(); i < help_len; i += _prev_right_width - 2)
-        actual_lines.push_back(help_msg.substr(i, _prev_right_width-2));
+    for(std::size_t i = 0, help_len = help_msg.length(); i < help_len; i += _prev_right_width - 3)
+        actual_lines.push_back(help_msg.substr(i, _prev_right_width-3));
 
     std::size_t term_pos = 1;
     std::size_t vec_pos = _first_help_line;
@@ -166,8 +166,6 @@ void Interactive_shell::update()
                 
         _redraw_all();
     }
-    // else
-    //     _redraw_all();
 
     // Print the shell line
     const std::size_t last_available_line = _prev_term_height - 6;
@@ -177,7 +175,10 @@ void Interactive_shell::update()
     while(current_term_line != last_available_line &&
           current_shell_line + _first_shell_line != _shell_lines.size()) {
         std::string line = _shell_lines[current_shell_line + _first_shell_line];
-        
+
+        // if line doesn't fit the screen, don't print it
+        if(line.length() > ((_prev_left_width - 2)*(_prev_term_height-3)))
+            line = "Line is too long to display, try resizing the window";
         // insert line breaks if the string is greater than window width
         for(std::size_t i = 0; i < line.length(); i += _prev_left_width - 2) {
             wmove(_left_window, current_term_line, 1);
