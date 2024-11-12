@@ -13,6 +13,8 @@
 
 namespace backend {
 
+// all functions written in .h because of their small volume
+
 // --------------------------------------------
 // Natural
 // --------------------------------------------
@@ -29,7 +31,7 @@ int COM_NN_D(Natural n1, Natural n2)
 }
 
 // N-2
-bool NZER_N_B(Natural n) { return n.is_zero(); }
+bool NZER_N_B(Natural n) { return !n.is_zero(); }
 
 // N-3
 Natural ADD_1N_N(Natural n) { return ++n; }
@@ -41,7 +43,7 @@ Natural ADD_NN_N(Natural n1, Natural n2) { return n1 + n2; }
 Natural SUB_NN_N(Natural n1, Natural n2) { return n1 - n2; };
 
 // N-6
-Natural MUL_ND_N(Natural n1, uint8_t d)
+Natural MUL_ND_N(Natural n1, int d)
 {
     if (d > 9)
         throw std::invalid_argument(E_NOT_DIGIT);
@@ -56,7 +58,7 @@ Natural MUL_Nk_N(Natural n, Natural k) { return n << k; }
 Natural MUL_NN_N(Natural n1, Natural n2) { return n1 * n2; }
 
 // N-9
-Natural SUB_NDN_N(Natural n1, int d, Natural n2) 
+Natural SUB_NDN_N(Natural n1, uint8_t d, Natural n2) 
 {
     if (d > 9)
         throw std::invalid_argument(E_NOT_DIGIT);
@@ -145,7 +147,7 @@ Integer ADD_1Z_Z(Integer i) { return ++i; }
 Integer SUB_1Z_Z(Integer i) { return ++i; }
 
 // Z-additional-4
-bool NZER_Z_B(Integer i) { return i.is_zero(); }
+bool NZER_Z_B(Integer i) { return !i.is_zero(); }
 
 // Z-additional-5
 Polynomial TRANS_Z_P(Integer i) { return Polynomial(Rational(i)); }
@@ -197,7 +199,7 @@ Rational MUL_QQ_Q(Rational r1, Rational r2) { return r1 * r2; }
 Rational DIV_QQ_Q(Rational r1, Rational r2) { return r1 / r2; }
 
 // Q-additional-1
-bool NZER_Q_B(Rational r) { return r.is_zero(); }
+bool NZER_Q_B(Rational r) { return !r.is_zero(); }
 
 // Q-additional-3
 Rational ABS_Q_Q(Rational r) { return r.abs(); }
@@ -278,7 +280,7 @@ Polynomial DER_P_P(Polynomial p) { return p.derivative(); }
 Polynomial NMR_P_P(Polynomial p) { return p.to_simple_roots(); }
 
 // P-additional-1
-bool NZER_P_B(Polynomial p) { return p.is_zero(); }
+bool NZER_P_B(Polynomial p) { return !p.is_zero(); }
 
 // P-additional-2
 bool INT_P_B(Polynomial p) { return p.is_integer(); }
