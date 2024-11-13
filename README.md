@@ -24,6 +24,7 @@ So, you execute the program, now you have a lot of questions. Lets take it in or
 - **F5** and **F6** - to scroll help message;
 - To scroll in main area you need to use **Page Up** and **Page Down** buttons;
 - Also you can **scroll by results and expressions** by pressing **Up arrow** and **Down arrow** keys on keyboard.
+- To exit from program you need to press **Ctrl + C** hotkey.
 - Examples of writing types:
   - Natural: 1, 0, 2342, 43n;
   - Integer: -1098, 0, 213125, 12i;
