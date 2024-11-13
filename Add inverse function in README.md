@@ -59,6 +59,7 @@ So, you can use operations from [this table](https://docs.google.com/document/d/
 | msc - most significant coefficient | Polynomial | [msc] a |
 | deg - degree of Polynomial | Polynomial | [deg] a |
 | fac | Polynomial | [fac] a |
+| inverse | Rational | [inverse] a |
 | simple\_roots | Polynomial | [simple\_roots] a |
 
 | Functions with two arguments | Compatible types | Example |
