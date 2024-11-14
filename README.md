@@ -1,10 +1,11 @@
 ## Discrete Mathematics Computer Algebra System
 ### Main idea
 **Discrete Computer Algebra System (DM_CAS)** - is ETU DM&TI course project, aimed at creating a computer algebra system that is capable of performing the simplest operations on: natural, integer, rational numbers, as well as polynomials.
-For Natural, Integer, Rational and Polynomial data types own classes have been created, UI written using the **ncourses** library.
-\[P.S. The program has been tested only on Ubuntu and Debian distributions, so use linux :)\]
+For Natural, Integer, Rational and Polynomial data types own classes have been created, UI written using the **ncourses** library. \
+*P.S. The program has been tested only on Ubuntu and Debian distributions, so use Linux :)*
 
-![Interface](https://github.com/user-attachments/assets/145f8e8a-88c8-4d01-8720-bb420d0559f6)
+![UI_Screenshot](https://github.com/user-attachments/assets/831103d4-a4e5-4ad0-8878-0d65ce7227c9)
+
 
 ---
 ### Build from source
