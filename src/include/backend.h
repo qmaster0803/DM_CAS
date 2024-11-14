@@ -13,7 +13,7 @@
 
 namespace backend {
 
-// all functions written in .h because of their small volume
+// NOTE: All functions written in .h because of their small volume
 
 // --------------------------------------------
 // Natural
@@ -68,7 +68,17 @@ Natural SUB_NDN_N(Natural n1, uint8_t d, Natural n2)
 
 // N-10
 int DIV_NN_Dk(Natural n1, Natural n2, Natural k)
-    { return n1.first_div_digit(n2 << k); }
+{
+    Natural new_n2 = n2 << k;
+    
+    if (n1 < new_n2)
+        return 0;
+
+    if (new_n2 == Natural(0))
+        throw std::domain_error("Division by zero!");
+    
+    return n1.first_div_digit(n2 << k);
+}
 
 // N-11
 Natural DIV_NN_N(Natural n1, Natural n2) { return n1 / n2; }
