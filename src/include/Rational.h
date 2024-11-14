@@ -1,9 +1,12 @@
 // Author: Ivanov Artyom 3381
 
-#pragma once
+#ifndef RATIONAL_H
+#define RATIONAL_H
+
+#include <string>
+
 #include "Natural.h"
 #include "Integer.h"
-#include <string>
 
 class Rational
 {
@@ -28,6 +31,7 @@ public:
     Integer get_numerator()   const;
     Natural get_denominator() const;
     Rational get_neg() const;
+    Rational get_inversed() const;
 
     Rational abs() const;
 
@@ -67,3 +71,4 @@ private:
 
 std::ostream& operator<<(std::ostream& stream, const Rational &value);
 
+#endif // end of RATIONAL_H

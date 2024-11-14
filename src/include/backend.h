@@ -144,7 +144,7 @@ Integer MUL_Zk_Z(Integer i, Natural k) { return i << k; }
 Integer ADD_1Z_Z(Integer i) { return ++i; }
 
 // Z-additional-3
-Integer SUB_1Z_Z(Integer i) { return ++i; }
+Integer SUB_1Z_Z(Integer i) { return --i; }
 
 // Z-additional-4
 bool NZER_Z_B(Integer i) { return !i.is_zero(); }
@@ -235,6 +235,9 @@ int COM_QQ_D(const Rational &r1, const Rational &r2)
     else
         return 0;
 }
+
+// Q-additional-9
+Rational INV_Q_Q(const Rational &r1){ return r1.get_inversed(); }
 
 // ------------------------------------------------------
 // Polynomial

@@ -1,6 +1,7 @@
 // Author: Ivanov Artyom 3381
 
 #include "../include/Rational.h"
+
 #include <stdexcept>
 #include <iostream>
 
@@ -112,6 +113,30 @@ Rational Rational::get_neg() const
     Rational result = *this;
     result._num.neg();
     return result;
+}
+
+Rational Rational::get_inversed() const
+{
+    if (_num == Integer(0))
+        return Rational("0");
+    
+    // case with negative numerator
+    if (_num.is_neg()) {
+        // save old numerator and make it positive
+        Integer old_num = _num;
+        old_num.neg();
+
+        // save in new numerator old denominator and make it negative
+        Integer new_num = Integer(_denom);
+        new_num.neg();
+
+        // save in new denominator positive old numerator
+        Natural new_denom = Natural(old_num);
+
+        return Rational(new_num, new_denom);
+    }
+
+    return Rational(Integer(_denom), Natural(_num));
 }
 
 Rational Rational::abs() const
