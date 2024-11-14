@@ -11,7 +11,7 @@ P.S. The program has been tested only on Ubuntu and Debian distributions, so use
 #### 1. Building:
 ##### Install dependencies:
 ```
-sudo apt install build-essential cmake libncurses-dev
+sudo apt install build-essential cmake libncurses-dev libgtest-dev
 ```
 Execute following command in project root directory to build project:
 ```
