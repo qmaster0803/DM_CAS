@@ -223,6 +223,7 @@ void Interactive_shell::update()
         std::size_t eq_sgn_count = std::count(actual_line.begin(), actual_line.end(), '=');
         std::string cmd;
         std::string varname;
+        bool calc = true;
         
         if(eq_sgn_count == 0)
             cmd = actual_line.substr(3);
@@ -237,19 +238,39 @@ void Interactive_shell::update()
             // <TODO>
         }
         else {
-            _shell_lines.push_back("Bad input string: wrong \"=\" usage");
+            calc = false;
+            _shell_lines.push_back("!= Bad input string: wrong \"=\" usage");
             _rewind_skip_lines.insert(_shell_lines.size() - 1);
         }
 
+        // Prepare cmd - replace variables with corresponding values
+        while(std::count(cmd.begin(), cmd.end(), '$')) {
+            // Get variable name
+            std::size_t var_begin = cmd.find('$');
+            std::size_t var_end   = cmd.find(' ', var_begin+1);
+            std::string var_to_replace = cmd.substr(var_begin+1, var_end - var_begin - 1);
+
+            if(_vars.count(var_to_replace) == 0) {
+                calc = false;
+                _shell_lines.push_back("!= Unknown variable: " + var_to_replace);
+                _rewind_skip_lines.insert(_shell_lines.size() - 1);
+                break;
+            }
+            cmd.erase(var_begin, var_end - var_begin);
+            cmd.insert(var_begin, _vars[var_to_replace]);
+        }
+
         // calculating the result
-        if(eq_sgn_count < 2) {
+        if(calc) {
             try {
-                std::string result = "=  " + _parser.calc(_deftype, cmd);
+                std::string result = _parser.calc(_deftype, cmd);
                 if(eq_sgn_count == 0)
-                    _shell_lines.push_back(result);
+                    _shell_lines.push_back("=  " + result);
                 else {
-                    _shell_lines.push_back("#= Result saved to the variable |" + varname + "|");
+                    _shell_lines.push_back("#= Result saved to the variable " + varname);
+                    _rewind_skip_lines.insert(_shell_lines.size() - 1);
                     // save result to variable
+                    _vars[varname] = result;
                 }
             }
             catch (std::invalid_argument e) {
