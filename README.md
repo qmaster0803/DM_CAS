@@ -4,12 +4,14 @@
 For Natural, Integer, Rational and Polynomial data types own classes have been created, UI written using the **ncourses** library.
 P.S. The program has been tested only on Ubuntu and Debian distributions, so use linux :)
 
+![Interface](https://github.com/user-attachments/assets/145f8e8a-88c8-4d01-8720-bb420d0559f6)
+
 ---
 ### Build from source
 #### 1. Building:
 ##### Install dependencies:
 ```
-sudo apt install build-essential cmake libncurses-dev
+sudo apt install build-essential cmake libncurses-dev libgtest-dev
 ```
 Execute following command in project root directory to build project:
 ```
