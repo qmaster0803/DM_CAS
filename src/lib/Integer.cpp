@@ -63,10 +63,7 @@ Integer Integer::lcm(const Integer &another) const
 // MODIFIERS
 // ----------------------------------------------------------------------------
 
-void Integer::neg()
-{
-    _neg = !_neg;
-}
+void Integer::neg() { _neg = !_neg && _nat != Natural(0); }
 
 // ----------------------------------------------------------------------------
 // COMPARISON OPERATORS

@@ -139,7 +139,7 @@ std::vector<parsed_el> Parser::_parse(default_vartype dflt, std::string input_st
                     part == "[neg]"     || part == "[Nat]" || part == "[Int]"    ||
                     part == "[Rat]"     || part == "[Pol]" || part == "[is_int]" ||
                     part == "[msc]"     || part == "[deg]" || part == "[fac]"    ||
-                    part == "[simple_roots]" ||
+                    part == "[inverse]" || part == "[simple_roots]" ||
                     part == "[NZER_N_B]" || part == "[ADD_1N_N]" || part == "[ABS_Z_N]"   ||
                     part == "[SGN_Z_D]"  || part == "[MUL_ZM_Z]" || part == "[TRANS_N_Z]" ||
                     part == "[TRANS_Z_N]"|| part == "[RED_Q_Q]"  || part == "[INT_Q_B]"   ||
@@ -470,6 +470,12 @@ void Parser::_calc_op(std::vector<parsed_el> &el_vec, std::size_t index)
             if(a.type != el_type::VALUE_POLYNOMIAL)
                 throw std::invalid_argument("Unable to calculate - wrong operand types");
             result = static_cast<std::string>(backend::FAC_P_Q(Polynomial(a.s)));
+            el_vec[index].type = el_type::VALUE_RATIONAL;
+        }
+        else if(op.s == "[inverse]") {
+            if(a.type != el_type::VALUE_RATIONAL)
+                throw std::invalid_argument("Unable to calculate - wrong operand types");
+            result = static_cast<std::string>(backend::INV_Q_Q(Rational(a.s)));
             el_vec[index].type = el_type::VALUE_RATIONAL;
         }
         else if(op.s == "[DER_P_P]") {

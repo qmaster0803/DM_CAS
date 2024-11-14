@@ -27,6 +27,7 @@
  * [msc] a     - 4 - pol
  * [deg] a     - 4 - pol
  * [fac] a     - 4 - pol
+ * [reverse] a - 4 - rat
  * [simple_roots] a - 4 - pol
  *
  * [cmp] a,b   - 4 - 2*nat, 2*int, 2*rat
