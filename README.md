@@ -32,7 +32,7 @@ To exectute builded binary, you need to write following in terminal:
 So, you execute the program, now you have a lot of questions. Lets take it in order:
 #### Interface:
 - In line with "->" you can **write operations**, which you want to calculate. In line with "=" you can **see calculated result** (or "!=" if error occured);
-- Also you can save variables with command like: <VAR_NAME> = <VALUE>. You can access the variable by adding the '$' sign before name of variable;
+- Also you can save variables with command like: \<VAR_NAME\> = \<VALUE\>. You can access the variable by adding the '$' sign before name of variable;
 - **F3** - to enable/disable autoscroll;
 - **F4** - by default, all numbers interpreted as Natural, to switch calculation mode you need to press **F4** key. So program have only four calculation modes: Natural, Integer, Rational, Polynomial. To use another data type without switch between modes, you need to add suffix: n - for Natural, i - for Integer, r - for Rational, p - for Polynomial;
 - **F5** and **F6** - to scroll help message;
