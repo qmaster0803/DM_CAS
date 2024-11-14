@@ -1,20 +1,33 @@
 ## Discrete Mathematics Computer Algebra System
 ### Main idea
-Discrete Computer Algebra System (DM_CAS) - is ETU DM&TI course project, aimed at creating a computer algebra system that is capable of performing the simplest operations on: natural, integer, rational numbers, as well as polynomials.
+**Discrete Computer Algebra System (DM_CAS)** - is ETU DM&TI course project, aimed at creating a computer algebra system that is capable of performing the simplest operations on: natural, integer, rational numbers, as well as polynomials.
 For Natural, Integer, Rational and Polynomial data types own classes have been created, UI written using the **ncourses** library.
+P.S. The program has been tested only on Ubuntu and Debian distributions, so use linux :)
 
-### Build
+![Interface](https://github.com/user-attachments/assets/145f8e8a-88c8-4d01-8720-bb420d0559f6)
+
+---
+### Build from source
 #### 1. Building:
+##### Install dependencies:
+```
+sudo apt install build-essential cmake libncurses-dev libgtest-dev
+```
 Execute following command in project root directory to build project:
 ```
-sudo bash ./build.sh
+bash ./build.sh
 ```
+#### 2. Run all tests
+```
+cd build && ctest
+```
+
 #### 2. Execute:
 To exectute builded binary, you need to write following in terminal:
 ```
 ./build/DM_CAS
 ```
-
+---
 ### Help
 So, you execute the program, now you have a lot of questions. Lets take it in order:
 #### Interface:

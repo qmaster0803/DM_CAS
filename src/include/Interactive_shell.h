@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <vector>
 #include <set>
+#include <unordered_map>
 #include <string>
 #include "Parser.h"
 
@@ -57,6 +58,9 @@ private:
     // this set contains shell_line indexes with errors in lines
     // to skip this while rewinding
     std::set<std::size_t> _rewind_skip_lines;
+
+    // variables 
+    std::unordered_map<std::string, std::string> _vars;
 
     void _resize_UI(std::size_t new_term_height, std::size_t new_term_width);
     void _redraw_all();
