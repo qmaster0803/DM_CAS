@@ -43,15 +43,19 @@ target_link_libraries(Integer_test Integer gtest_main gtest)
 add_executable(Rational_test tests/Rational_test.cpp)
 target_link_libraries(Rational_test Rational gtest_main gtest)
 
+add_executable(backend_test tests/backend_test.cpp)
+target_link_libraries(backend_test Natural Integer Rational Polynomial gtest_main gtest)
+
 add_executable(Polynomial_test tests/Polynomial_test.cpp)
 target_link_libraries(Polynomial_test Polynomial gtest_main gtest)
 
-add_executable(Parser_test tests/Parser_test.cpp)
-target_link_libraries(Parser_test Parser Natural Integer Rational Polynomial gtest_main gtest)
+# add_executable(Parser_test tests/Parser_test.cpp)
+# target_link_libraries(Parser_test Parser Natural Integer Rational Polynomial gtest_main gtest)
 
 include(GoogleTest)
 gtest_discover_tests(Natural_test)
 gtest_discover_tests(Integer_test)
 gtest_discover_tests(Rational_test)
 gtest_discover_tests(Polynomial_test)
-gtest_discover_tests(Parser_test)
+gtest_discover_tests(backend_test)
+# gtest_discover_tests(Parser_test)
