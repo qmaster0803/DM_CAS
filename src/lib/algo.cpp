@@ -10,12 +10,11 @@ namespace algo
     {
         // truncate leading zeros
         auto last_digit = vec.end() - 1;
-        while(vec.size() > 1 && *last_digit == 0)
+        while(*last_digit == 0 && vec.size() > 1)
             last_digit = vec.erase(last_digit) - 1;
     }
     
-    std::vector<uint8_t> basic_add(const std::vector<uint8_t> &a,
-                                   const std::vector<uint8_t> &b)
+    std::vector<uint8_t> basic_add(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)
     {
         std::vector<uint8_t> result_vec;
         
@@ -29,15 +28,13 @@ namespace algo
             carry = digit_result / 10;
             result_vec.emplace_back(digit_result % 10);
         }
-        
         if(carry != 0)
             result_vec.emplace_back(carry);
 
         return result_vec;
     }
 
-    std::vector<uint8_t> basic_sub(const std::vector<uint8_t> &a,
-                                   const std::vector<uint8_t> &b)
+    std::vector<uint8_t> basic_sub(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)
     {
         std::vector<uint8_t> result_vec;
 
@@ -49,7 +46,8 @@ namespace algo
             if(digit_result < 0) {
                 carry = 1;
                 digit_result += 10;
-            } else
+            }
+            else
                 carry = 0;
                 
             result_vec.emplace_back(digit_result);
@@ -92,8 +90,9 @@ namespace algo
     
         // select first part (from most significant side get at least another.len digits to match div_part >= another)
         std::vector<uint8_t> div_part = {*(it++)};
-        while(algo::basic_cmp(div_part, b) == -1)
+        while(algo::basic_cmp(div_part, b) == -1) {
             div_part.insert(div_part.begin(), *(it++));
+        }
 
         // Enter the main loop
         while(1) {
