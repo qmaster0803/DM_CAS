@@ -1,5 +1,6 @@
 // Author: Komarov Daniil 3381
 
+#include <algorithm>
 #include <stdexcept>
 #include "../include/Interactive_shell.h"
 
@@ -87,16 +88,25 @@ void Interactive_shell::_redraw_Help()
     wclear(_right_window);
     box(_right_window, 0, 0);
 
-    const std::string help_msg =
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et mi eget nunc aliquet placerat. "
-        "Sed sed ipsum pretium, iaculis augue at, accumsan dolor. Ut id dictum urna, vel viverra lacus. "
-        "Nunc sit amet mi at orci iaculis fermentum. Curabitur elementum mauris et imperdiet blandit. "
-        "Donec vehicula tortor at feugiat accumsan. Proin quis risus ut eros mollis dapibus a rhoncus leo. "
-        "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.";
+    std::vector<std::string> help_msg_arr;
+    help_msg_arr.push_back("In line with \"->\" you can write operations, which you want to calculate. In line \"=\" you can see calculated result;");
+    help_msg_arr.push_back("F3 - to enable/disable autoscroll;");
+    help_msg_arr.push_back("F4 - by default, all numbers interpreted as Natural, to switch calculation mode you need to press F4 key. So program have only four calculation modes: Natural, Integer, Rational, Polynomial. To use another data type without switch between modes, you need to add suffix: n - for Natural, i - for Integer, r - for Rational, p - for Polynomial;");
+    help_msg_arr.push_back("F5 and F6 - to scroll help message;");
+    help_msg_arr.push_back("To scroll in main area you need to use Page Up and Page Down buttons;");
+    help_msg_arr.push_back("Also you can scroll by results and expressions by pressing Up arrow and Down arrow keys on keyboard.");
+    help_msg_arr.push_back("Examples of writing types:");
+    help_msg_arr.push_back("Natural: 1, 0, 2342, 43n;");
+    help_msg_arr.push_back("Integer: -1098, 0, 213125, 12i;");
+    help_msg_arr.push_back("Rational: -12/13, -15/-13, 23/-5, 5.6, 0.10, 0/5, 23, -5, 90/34r;");
+    help_msg_arr.push_back("Polynomial: 1, 5, {5/3^3;1^0} (for polynomial like: (5/3)x^3 + 1), {56^2;1}p.");
 
     std::vector<std::string> actual_lines;
-    for(std::size_t i = 0, help_len = help_msg.length(); i < help_len; i += _prev_right_width - 3)
-        actual_lines.push_back(help_msg.substr(i, _prev_right_width-3));
+    for(const std::string &help_msg : help_msg_arr) {
+        for(std::size_t i = 0, help_len = help_msg.length(); i < help_len; i += _prev_right_width - 3)
+            actual_lines.push_back(help_msg.substr(i, _prev_right_width-3));
+        actual_lines.push_back("");
+    }
 
     std::size_t term_pos = 1;
     std::size_t vec_pos = _first_help_line;
@@ -208,18 +218,45 @@ void Interactive_shell::update()
         }
     }
     else if(ch == '\n') {        
-        // calculate the result
-        std::string result = "=  ";
+        // here goes the logic to fetch result into the variable
+        const std::string &actual_line =_shell_lines[_shell_lines.size() - 1];
+        std::size_t eq_sgn_count = std::count(actual_line.begin(), actual_line.end(), '=');
+        std::string cmd;
+        std::string varname;
+        
+        if(eq_sgn_count == 0)
+            cmd = actual_line.substr(3);
+        else if(eq_sgn_count == 1) {
+            cmd = actual_line.substr(actual_line.find('=') + 1);
+            varname = actual_line.substr(3, actual_line.find('=') - 3);
+            // prepare varname
+            while(varname[0] == ' ') { varname.erase(varname.begin()); }
+            while(*(varname.rbegin()) == ' ') { varname.erase(varname.end() - 1); }
 
-        std::string cmd = _shell_lines[_shell_lines.size() - 1].substr(3);
-        try {
-            result += _parser.calc(_deftype, cmd);
+            // analyze varname for wrong chars
+            // <TODO>
         }
-        catch (std::invalid_argument e) {
-            result += e.what();
-            _shell_lines_with_errs.insert(_shell_lines.size());
+        else {
+            _shell_lines.push_back("Bad input string: wrong \"=\" usage");
+            _rewind_skip_lines.insert(_shell_lines.size() - 1);
         }
-        _shell_lines.emplace_back(result);
+
+        // calculating the result
+        if(eq_sgn_count < 2) {
+            try {
+                std::string result = "=  " + _parser.calc(_deftype, cmd);
+                if(eq_sgn_count == 0)
+                    _shell_lines.push_back(result);
+                else {
+                    _shell_lines.push_back("#= Result saved to the variable |" + varname + "|");
+                    // save result to variable
+                }
+            }
+            catch (std::invalid_argument e) {
+                _shell_lines.push_back("!= " + static_cast<std::string>(e.what()));
+                _rewind_skip_lines.insert(_shell_lines.size() - 1);
+            }
+        }
         
         // scroll down if autoscroll is enabled
         if(!_autoscroll && (current_term_line + 1) >= last_available_line) {
@@ -255,10 +292,10 @@ void Interactive_shell::update()
             std::size_t prev_rew_i = _rewind_index;
             do {
                 --_rewind_index;
-            } while(_shell_lines_with_errs.count(_rewind_index) != 0 &&
+            } while(_rewind_skip_lines.count(_rewind_index) != 0 &&
                     _rewind_index > 1);
 
-            if(_shell_lines_with_errs.count(_rewind_index) == 0) {
+            if(_rewind_skip_lines.count(_rewind_index) == 0) {
                 _shell_lines[_shell_lines.size() - 1] = _shell_lines[_rewind_index];
                 _cursor_pos = _shell_lines[_rewind_index].length();
                 if(_shell_lines[_shell_lines.size() - 1][0] == '=') {
@@ -278,10 +315,10 @@ void Interactive_shell::update()
             std::size_t prev_rew_i = _rewind_index;
             do {
                 ++_rewind_index;
-            } while(_shell_lines_with_errs.count(_rewind_index) != 0 &&
+            } while(_rewind_skip_lines.count(_rewind_index) != 0 &&
                     _rewind_index < (_shell_lines.size() - 2));
             
-            if(_shell_lines_with_errs.count(_rewind_index) == 0) {
+            if(_rewind_skip_lines.count(_rewind_index) == 0) {
                 _shell_lines[_shell_lines.size() - 1] = _shell_lines[_rewind_index];
                 _cursor_pos = _shell_lines[_rewind_index].length();
                 if(_shell_lines[_shell_lines.size() - 1][0] == '=') {

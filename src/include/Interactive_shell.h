@@ -56,7 +56,7 @@ private:
     std::size_t _rewind_index = 0;
     // this set contains shell_line indexes with errors in lines
     // to skip this while rewinding
-    std::set<std::size_t> _shell_lines_with_errs;
+    std::set<std::size_t> _rewind_skip_lines;
 
     void _resize_UI(std::size_t new_term_height, std::size_t new_term_width);
     void _redraw_all();

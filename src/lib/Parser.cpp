@@ -58,6 +58,20 @@ std::string Parser::calc(default_vartype dflt, std::string input_str)
 
 std::vector<parsed_el> Parser::_parse(default_vartype dflt, std::string input_str)
 {
+    // prepare string - delete leading/trailing spaces and multiple spaces
+    while(input_str[0] == ' ') { input_str.erase(input_str.begin()); }
+    while(*(input_str.rbegin()) == ' ') { input_str.erase(input_str.end() - 1); }
+    auto it = input_str.begin();
+    auto end_it = (input_str.end() - 1);
+    while(it != input_str.end()) {
+        if(*it == ' ' && *(it+1) == ' ') {
+            input_str.erase(it);
+            end_it--;
+        }
+        else
+            ++it;
+    }
+
     std::vector<parsed_el> parsed_input;
     std::map<std::size_t, std::size_t> el_priorities;
     std::size_t brace_level = 0;
