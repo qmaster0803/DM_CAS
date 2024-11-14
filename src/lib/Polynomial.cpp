@@ -91,7 +91,8 @@ bool Polynomial::is_zero() const
 
 bool Polynomial::is_integer() const
 {
-    return (_coeffs.size() == 1 && _coeffs.count(Natural(0)) == 1);
+    return (_coeffs.size() == 1 && _coeffs.count(Natural(0)) == 1 ||
+            _coeffs.size() == 0);
 }
 
 Rational Polynomial::msc() const
@@ -104,10 +105,13 @@ Natural Polynomial::deg() const
     return (_coeffs.empty()) ? Natural(0) : _coeffs.rbegin()->first;
 }
 
+// return D/M, where:
+// -> D - gcd of polynomial coeff numberators
+// -> M - lcm of polunomial coeff denominators
 Rational Polynomial::fac() const
 {
     if(_coeffs.empty())
-        throw std::domain_error("Trying to rationalize an empty polynomial");
+        return Rational(0);
 
     auto it = _coeffs.begin();
     const auto end = _coeffs.end();
@@ -144,15 +148,24 @@ Polynomial Polynomial::gcd(const Polynomial &another) const
 
     Polynomial result = (a+b);
     result._clear_empty();
+
+    /*
+     * All we know, that gcd of polynomials have an infinite number of
+     * possible results. So here we talk: lets take one from this infinite,
+     * coefficient before the highest degree of which is equal to one
+     */
+    result *= result.msc().get_inversed();
+    
     return result;
 }
 
 Polynomial Polynomial::derivative() const
 {
-    if(_coeffs.empty())
-        throw std::domain_error("Trying to get derivative from empty polynomial");
-
     Polynomial result;
+    
+    if(_coeffs.empty())
+        return result;
+
     auto it = _coeffs.begin();
     const auto end = _coeffs.end();
     while(it != end) {
@@ -177,6 +190,10 @@ Polynomial Polynomial::to_simple_roots() const
     Polynomial result = *this / gcd;
 
     result._clear_empty();
+
+    // Here we want coefficient one before highest degree
+    result *= result.msc().get_inversed();
+   
     return result;
 }
 
