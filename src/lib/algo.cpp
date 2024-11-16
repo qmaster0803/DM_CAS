@@ -1,4 +1,4 @@
-// Author: Komarov Daniil 3381
+// Author: Ivanov Artyom 3381 except 1 function
 
 #include "../include/algo.h"
 #include <cstddef>
@@ -43,6 +43,7 @@ namespace algo
             uint8_t digit_b = (i < b.size()) ? b[i] : 0;
 
             int8_t digit_result = a[i] - digit_b - carry;
+            // check for borrow
             if(digit_result < 0) {
                 carry = 1;
                 digit_result += 10;
@@ -59,12 +60,14 @@ namespace algo
     
     std::vector<uint8_t> basic_mul(const std::vector<uint8_t> &a, uint8_t b)
     {
+        // if a == 0 or b == 0 -> return 0
         std::vector<uint8_t> result_vec;
         if(b == 0 || (a.size() == 1 && a[0] == 0)) {
             result_vec.emplace_back(0);
             return result_vec;
         }
-        
+
+        // basic case
         uint8_t carry = 0;
         for(std::size_t i = 0; i < a.size(); ++i) {
             uint8_t digit_result = a[i] * b + carry;
@@ -72,14 +75,13 @@ namespace algo
             result_vec.emplace_back(digit_result % 10);
         }
 
-        while(carry != 0) {
+        if(carry != 0)
             result_vec.emplace_back(carry % 10);
-            carry /= 10;
-        }
 
         return result_vec;
     }
 
+    // Author: Komarov Daniil 3381
     std::vector<uint8_t> basic_div(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b,
                                    std::optional<std::reference_wrapper<std::vector<uint8_t>>> remainder,
                                    bool first_digit_only)
@@ -90,9 +92,8 @@ namespace algo
     
         // select first part (from most significant side get at least another.len digits to match div_part >= another)
         std::vector<uint8_t> div_part = {*(it++)};
-        while(algo::basic_cmp(div_part, b) == -1) {
+        while(algo::basic_cmp(div_part, b) == -1)
             div_part.insert(div_part.begin(), *(it++));
-        }
 
         // Enter the main loop
         while(1) {
@@ -110,14 +111,16 @@ namespace algo
             if (first_digit_only)
                 return result;
             
-            // Transfer next digit of divident
+            // Exit loop if end of a reached
             if(it == a.rend())
                 break;
             
+            // Transfer next digit of divident to div_part
             div_part.insert(div_part.begin(), *(it++));
             truncate_leading_zeros(div_part);
         }
 
+        // Get remainder        
         if(remainder.has_value())
             (*remainder).get() = std::move(div_part);
         

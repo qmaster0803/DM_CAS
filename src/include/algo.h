@@ -1,5 +1,3 @@
-// author: Komarov Daniil 3381
-
 #pragma once
 #include <functional>
 #include <optional>

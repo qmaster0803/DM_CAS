@@ -1,4 +1,4 @@
-// Author: Komarov Daniil 3381
+// Author: Komarov Daniil 3381 except two functions
 
 #include "../include/Polynomial.h"
 #include <stdexcept>
@@ -56,21 +56,27 @@ Polynomial::Polynomial(const std::string &value)
         std::string actual_value = value.substr(0, value.length() - 1); // cut last '}' but not the first '{', because it's set as a delim
         std::size_t prev_delim = 0;
         std::size_t next_delim = actual_value.find(';');
+        
+        // iterate while we have at least one ';' after prev delim
         while(prev_delim != actual_value.npos) {
+            // get k^d part
             std::string sub = actual_value.substr(prev_delim+1, next_delim-prev_delim-1);
+            // get index of '^'
             std::size_t second_delim = sub.find('^');
+
+            // if '^' wasn't found, so it is free term
             if(second_delim == sub.npos) {
                 auto ins_result = _coeffs.emplace(Natural(0), Rational(sub));
                 if(!ins_result.second)
                     throw std::invalid_argument("Bad input string");
-            }
-            else {
-                std::string left_part = sub.substr(0, second_delim);
-                std::string right_part = sub.substr(second_delim+1);
+            } else {
+                std::string left_part = sub.substr(0, second_delim);    // get k
+                std::string right_part = sub.substr(second_delim+1);    // get d
                 auto ins_result = _coeffs.emplace(Natural(right_part), Rational(left_part));
                 if(!ins_result.second)
                     throw std::invalid_argument("Bad input string");
             }
+            // step forward
             prev_delim = next_delim;
             next_delim = actual_value.find(';', prev_delim+1);
         }
@@ -84,10 +90,7 @@ Polynomial::Polynomial(const std::string &value)
 // NON-MODIFIERS
 // ----------------------------------------------------------------------------
 
-bool Polynomial::is_zero() const
-{
-    return _coeffs.empty();
-}
+bool Polynomial::is_zero() const { return _coeffs.empty(); }
 
 bool Polynomial::is_integer() const
 {
@@ -106,7 +109,7 @@ Natural Polynomial::deg() const
 }
 
 // return D/M, where:
-// -> D - gcd of polynomial coeff numberators
+// -> D - gcd of polynomial coeff numerators
 // -> M - lcm of polunomial coeff denominators
 Rational Polynomial::fac() const
 {
@@ -127,6 +130,7 @@ Rational Polynomial::fac() const
     return Rational(cgcd, clcm);
 }
 
+// Author: Ivanov Artyom 3381
 Polynomial Polynomial::gcd(const Polynomial &another) const
 {
     // Modification of the Euclidean algorithm:
@@ -151,7 +155,7 @@ Polynomial Polynomial::gcd(const Polynomial &another) const
 
     /*
      * All we know, that gcd of polynomials have an infinite number of
-     * possible results. So here we talk: lets take one from this infinite,
+     * possible results. So here we say: lets take one from this infinite,
      * coefficient before the highest degree of which is equal to one
      */
     result *= result.msc().get_inversed();
@@ -178,12 +182,13 @@ Polynomial Polynomial::derivative() const
     return result;
 }
 
+// Author: Ivanov Artyom 3381
 Polynomial Polynomial::to_simple_roots() const
 {
     // Algorithm description:
     // 1) Find the derivative of the polynomial
     // 2) Calculate GCD of the polynomial and it's derivative
-    // 3) Divide the polynomial by the this GCD
+    // 3) Divide the polynomial by this GCD
 
     Polynomial derivative = this->derivative();
     Polynomial gcd = this->gcd(derivative);
@@ -291,6 +296,7 @@ Polynomial Polynomial::operator * (const Rational &another) const
     return result;
 }
 
+// Author: Ivanov Artyom 3381
 Polynomial Polynomial::operator / (const Polynomial &another) const
 {
     if (another.is_zero())
@@ -306,24 +312,17 @@ Polynomial Polynomial::operator / (const Polynomial &another) const
     if (another.msc() != Rational(1))
         alpha /= another.msc();
 
-    // std::cout << "Alpha is " << (std::string)alpha << std::endl;
-    // std::cout << "R before is " << (std::string)R << std::endl;
-    // std::cout << "Q before is " << (std::string)Q << std::endl;
-
     while (R.deg() >= another.deg() && !R.is_zero()) {
         Polynomial T;
         T._coeffs.emplace(R.deg() - another.deg(), R.msc() * alpha);
         Q += T;
         R = R - T * another;
-        
-        // std::cout << "T is " << (std::string)T << std::endl;
-        // std::cout << "Q is " << (std::string)Q << std::endl;
-        // std::cout << "R is " << (std::string)R << std::endl;
     }
 
     return Q;
 }
 
+// Author: Ivanov Artyom 3381
 Polynomial Polynomial::operator % (const Polynomial &another) const
 {
     if (another.is_zero())
@@ -333,6 +332,7 @@ Polynomial Polynomial::operator % (const Polynomial &another) const
     return Polynomial(*this - another * (*this / another));
 }
 
+// Author: Ivanov Artyom 3381
 Polynomial Polynomial::operator << (Natural k) const
 {
     Polynomial result;

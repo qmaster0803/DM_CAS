@@ -1,5 +1,3 @@
-// Author: Ivanov Artyom 3381
-
 #ifndef RATIONAL_H
 #define RATIONAL_H
 

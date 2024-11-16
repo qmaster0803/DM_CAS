@@ -89,7 +89,8 @@ void Interactive_shell::_redraw_Help()
     box(_right_window, 0, 0);
 
     std::vector<std::string> help_msg_arr;
-    help_msg_arr.push_back("In line with \"->\" you can write operations, which you want to calculate. In line \"=\" you can see calculated result;");
+    help_msg_arr.push_back("In line with \"->\" you can write operations, which you want to calculate. In line with \"=\" you can see calculated result (or \"!=\" if error occured);");
+    help_msg_arr.push_back("Also you can save variables with command like: <VAR_NAME> = <VALUE>. You can access the variable by adding the '$' sign before name of variable;");
     help_msg_arr.push_back("F3 - to enable/disable autoscroll;");
     help_msg_arr.push_back("F4 - by default, all numbers interpreted as Natural, to switch calculation mode you need to press F4 key. So program have only four calculation modes: Natural, Integer, Rational, Polynomial. To use another data type without switch between modes, you need to add suffix: n - for Natural, i - for Integer, r - for Rational, p - for Polynomial;");
     help_msg_arr.push_back("F5 and F6 - to scroll help message;");

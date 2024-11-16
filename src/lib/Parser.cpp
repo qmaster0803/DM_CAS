@@ -1,3 +1,5 @@
+// Author: Komarov Daniil 3381
+
 #include "../include/Parser.h"
 #include <algorithm>
 #include <stdexcept>
@@ -80,6 +82,7 @@ std::vector<parsed_el> Parser::_parse(default_vartype dflt, std::string input_st
     std::size_t next_delim = prev_delim;
 
     while(next_delim != input_str.npos) {
+        // split string by spaces
         next_delim = input_str.rfind(' ', next_delim-1);
         std::string part_with_braces = input_str.substr(next_delim + 1, prev_delim - next_delim - 1);
         prev_delim = next_delim;
@@ -100,6 +103,7 @@ std::vector<parsed_el> Parser::_parse(default_vartype dflt, std::string input_st
         part.erase(std::remove(part.begin(), part.end(), ')'), part.end());
         part.erase(std::remove(part.begin(), part.end(), '('), part.end());
 
+        // check part if it is operator
         parsed_el new_element;
         new_element.s = part;
         bool ok = true;
@@ -151,10 +155,12 @@ std::vector<parsed_el> Parser::_parse(default_vartype dflt, std::string input_st
                 ok = false;
             new_element.group_priority = 4;
         }
+        // parse numbers
         else {
             is_value = true;
             try {
                 char last_c = part[part.length() - 1];
+                // guess vartype by postfix or default vartype
                 if(last_c == 'n') {
                     Natural test(part.substr(0, part.length() - 1));
                     new_element.s = part.substr(0, part.length() - 1);
@@ -203,8 +209,9 @@ std::vector<parsed_el> Parser::_parse(default_vartype dflt, std::string input_st
 
         new_element.group_priority += (10 * brace_level);
 
+        // if not is value, it is operator
         if(!is_value) {
-            // set group priority
+            // set element priority
             if(el_priorities.count(new_element.group_priority) == 1) {
                 el_priorities[new_element.group_priority]++;
                 new_element.el_priority = el_priorities[new_element.group_priority];
@@ -245,6 +252,7 @@ std::vector<parsed_el> Parser::_parse(default_vartype dflt, std::string input_st
 void Parser::_calc_op(std::vector<parsed_el> &el_vec, std::size_t index)
 {
     if(el_vec[index].type == el_type::BINARY_OP) {
+        // if too few operands
         if(index == 0 || (index + 1) >= el_vec.size())
             throw std::invalid_argument("Unable to calculate - check operators");
         

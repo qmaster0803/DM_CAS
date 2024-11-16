@@ -35,7 +35,9 @@ Rational::Rational(const std::string &value)
     std::size_t point_count = std::count(value.begin(), value.end(), '.');
 
     // check for counts of / and . characters
-    if(slash_count != 0 && point_count != 0) {
+    if(slash_count != 0 && point_count != 0)
+        throw std::invalid_argument("Bad input string");
+    else if(slash_count == 0 && point_count == 0) {
         // create Rational from Integer
         this->_num   = Integer(value);
         this->_denom = Natural(1);
@@ -119,7 +121,7 @@ Rational Rational::get_neg() const
 Rational Rational::get_inversed() const
 {
     if (_num == Integer(0))
-        return Rational("0");
+        return Rational(0);
     
     // case with negative numerator
     if (_num.is_neg()) {
@@ -239,7 +241,7 @@ Rational Rational::operator * (const Rational &another) const
 Rational Rational::operator / (const Rational &another) const
 {
     if(another.is_zero())
-        throw std::domain_error("Division be zero");
+        throw std::domain_error("Division by zero");
 
     Rational result;
     result._num = this->_num.abs() * Integer(another._denom);
@@ -342,9 +344,10 @@ std::ostream& operator<<(std::ostream& stream, const Rational &value)
 
 void Rational::_to_common_denom(Rational &another)
 {
+    // find common denom
     Natural common_denom = this->_denom.lcm(another._denom);
     this->_num   *= Integer(common_denom / this->_denom);
     another._num *= Integer(common_denom / another._denom);
-    this->_denom = common_denom;
+    this->_denom  = common_denom;
     another._denom = std::move(common_denom);
 }

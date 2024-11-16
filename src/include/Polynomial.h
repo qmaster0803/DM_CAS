@@ -1,5 +1,3 @@
-// Author: Komarov Daniil 3381
-
 #pragma once
 #include "Rational.h"
 #include "Natural.h"

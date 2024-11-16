@@ -13,8 +13,8 @@ Natural::Natural()
     _digits.emplace_back(0);
 }
 
-Natural::Natural(int value)         : Natural(std::to_string(value)) {}
-Natural::Natural(const char* value) : Natural(std::string(value))    {}
+Natural::Natural(int value)                    : Natural(std::to_string(value)) {}
+Natural::Natural(const char* value)            : Natural(std::string(value))    {}
 Natural::Natural(std::vector<uint8_t> &digits) : _digits(digits) {}
 Natural::Natural(const Natural &another)       : _digits(another._digits) {}
 Natural::Natural(Natural &&another)            : _digits(std::move(another._digits)) {}
@@ -50,6 +50,7 @@ void Natural::mul_by_digit(uint8_t digit)
 // NON-MODIFIERS
 // ----------------------------------------------------------------------------
 
+// Author: Ivanov Artyom 3381
 uint8_t Natural::first_div_digit(const Natural &another)
 {
     return algo::basic_div(_digits, another._digits, std::nullopt, true)[0];

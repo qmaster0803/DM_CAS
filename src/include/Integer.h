@@ -1,5 +1,3 @@
-// Author: Komarov Daniil 3381
-
 #pragma once
 #include "Natural.h"
 #include <string>
