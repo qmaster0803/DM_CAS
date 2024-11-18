@@ -217,8 +217,8 @@ TEST(Integer_test, DivisionOperator)
     Integer r5 = n1 / p1;
 
     EXPECT_EQ(static_cast<std::string>(r1), "0");
-    EXPECT_EQ(static_cast<std::string>(r2), "-316");
-    EXPECT_EQ(static_cast<std::string>(r3), "2091513745872086189");
+    EXPECT_EQ(static_cast<std::string>(r2), "-315");
+    EXPECT_EQ(static_cast<std::string>(r3), "2091513745872086190");
     EXPECT_THROW(p1 / z, std::domain_error);
     EXPECT_EQ(static_cast<std::string>(r4), "0");
     EXPECT_EQ(static_cast<std::string>(r5), "-1");
@@ -239,8 +239,8 @@ TEST(Integer_test, ModulusOperator)
     Integer r5 = n1 % p1;
 
     EXPECT_EQ(static_cast<std::string>(r1), "321675");
-    EXPECT_EQ(static_cast<std::string>(r2), "-961");
-    EXPECT_EQ(static_cast<std::string>(r3), "-40");
+    EXPECT_EQ(static_cast<std::string>(r2), "60");
+    EXPECT_EQ(static_cast<std::string>(r3), "981");
     EXPECT_THROW(p1 % z, std::domain_error);
     EXPECT_EQ(static_cast<std::string>(r4), "0");
     EXPECT_EQ(static_cast<std::string>(r5), "320654");

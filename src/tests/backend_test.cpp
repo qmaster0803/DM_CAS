@@ -246,19 +246,19 @@ TEST_F(IntegerTest, MUL_ZZ_Z_test)
 // Z-9
 TEST_F(IntegerTest, DIV_ZZ_Z_test)
 {
-    EXPECT_EQ(DIV_ZZ_Z(i2, i3), Integer(-1));
+    EXPECT_EQ(DIV_ZZ_Z(i2, i3), Integer(0));
     EXPECT_THROW(DIV_ZZ_Z(i2, i1), std::domain_error); // Check division by zero
     EXPECT_EQ(DIV_ZZ_Z(i3, i2), Integer(-9245));
-    EXPECT_EQ(DIV_ZZ_Z(i4, i3), Integer(-236));
+    EXPECT_EQ(DIV_ZZ_Z(i4, i3), Integer(-235));
 }
 
 // Z-10
 TEST_F(IntegerTest, MOD_ZZ_Z_test)
 {
-    EXPECT_EQ(MOD_ZZ_Z(i2, i3), Integer(-231098));
+    EXPECT_EQ(MOD_ZZ_Z(i2, i3), Integer(25));
     EXPECT_THROW(MOD_ZZ_Z(i2, i1), std::domain_error); // Check division by zero
     EXPECT_EQ(MOD_ZZ_Z(i3, i2), Integer(2));
-    EXPECT_EQ(MOD_ZZ_Z(i4, i3), Integer(-191576));
+    EXPECT_EQ(MOD_ZZ_Z(i4, i3), Integer(39547));
 }
 
 // Z-additional-1

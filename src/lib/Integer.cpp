@@ -171,7 +171,8 @@ Integer Integer::operator / (const Integer &another) const
     Integer result;
     result._neg = (this->_neg != another._neg);
     result._nat = (this->_nat / another._nat);
-    if(result._neg && !(this->_nat % another._nat).is_zero())
+    // if(result._neg && !(this->_nat % another._nat).is_zero())
+    if(this->_neg && !(this->_nat % another._nat).is_zero())
         ++result._nat;
     else if(result._nat.is_zero())
         result._neg = false; // to prevent -0
