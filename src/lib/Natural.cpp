@@ -93,6 +93,17 @@ Natural Natural::lcm(const Natural &another) const
     return result;
 }
 
+Natural Natural::factorial() const
+{
+    Natural result = Natural(1);
+
+    for (Natural i = Natural(2); i <= *this; ++i) {
+        result *= i;
+    }
+
+    return result;
+}
+
 // ----------------------------------------------------------------------------
 // COMPARISON OPERATORS
 // ----------------------------------------------------------------------------

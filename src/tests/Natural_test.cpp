@@ -252,6 +252,15 @@ TEST(Natural_test, LCM)
     EXPECT_EQ(Natural(0).lcm(Natural(0)),     Natural(0));
 }
 
+TEST(Natural_test, Factorial)
+{
+    EXPECT_EQ(Natural(0).factorial(), Natural(1));
+    EXPECT_EQ(Natural(1).factorial(), Natural(1));
+    EXPECT_EQ(Natural(2).factorial(), Natural(2));
+    EXPECT_EQ(Natural(5).factorial(), Natural(120));
+    EXPECT_EQ(Natural(7).factorial(), Natural(5040));
+}
+
 TEST(Natural_test, Visualization)
 {
     Natural a("97698126531298371231203");

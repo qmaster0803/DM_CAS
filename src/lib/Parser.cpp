@@ -108,7 +108,7 @@ std::vector<parsed_el> Parser::_parse(default_vartype dflt, std::string input_st
         new_element.s = part;
         bool ok = true;
         bool is_value = false;
-        if(part == "++" || part == "--" || part == "'") {
+        if(part == "++" || part == "--" || part == "'" || part == "!") {
             new_element.type = el_type::UNARY_OP;
             new_element.group_priority = 4;
         }
@@ -372,6 +372,13 @@ void Parser::_calc_op(std::vector<parsed_el> &el_vec, std::size_t index)
 
             if(a.type == el_type::VALUE_POLYNOMIAL)
                 result = static_cast<std::string>(backend::DER_P_P(Polynomial(a.s)));
+            else
+                throw std::invalid_argument("Unable to calculate - wrong operand types");
+        }
+        else if(op.s == "!") {
+
+            if(a.type == el_type::VALUE_NATURAL)
+                result = static_cast<std::string>(backend::FACT_N_N(Natural(a.s)));
             else
                 throw std::invalid_argument("Unable to calculate - wrong operand types");
         }

@@ -26,6 +26,8 @@ public:
     Natural gcd(const Natural &another) const;
     Natural lcm(const Natural &another) const;
 
+    Natural factorial() const;
+
     // comparison operators overload
     bool operator <  (const Natural &another) const;
     bool operator >  (const Natural &another) const;

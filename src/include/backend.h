@@ -101,6 +101,9 @@ Rational TRANS_N_Q(Natural n) { return Rational(n); }
 // N-additional-3
 Polynomial TRANS_N_P(Natural n) { return Polynomial(n); }
 
+// N-additional-4
+Natural FACT_N_N(Natural n) { return n.factorial(); }
+
 // --------------------------------------
 // INTEGER
 // --------------------------------------
