@@ -1,5 +1,5 @@
 ## Discrete Mathematics Computer Algebra System
-### Main idea
+## Main idea
 **Discrete Computer Algebra System (DM_CAS)** - is ETU DM&TI course project, aimed at creating a computer algebra system that is capable of performing the simplest operations on: natural, integer, rational numbers, as well as polynomials.
 For Natural, Integer, Rational and Polynomial data types own classes have been created, UI written using the **ncourses** library. \
 *P.S. The program has been tested only on Ubuntu and Debian distributions, so use Linux :)*
@@ -8,9 +8,9 @@ For Natural, Integer, Rational and Polynomial data types own classes have been c
 
 
 ---
-### Build from source
-#### 1. Building
-##### Install dependencies
+## Build from source
+### 1. Building
+#### Install dependencies
 ```
 sudo apt install build-essential cmake libncurses-dev libgtest-dev
 ```
@@ -18,20 +18,20 @@ Execute following command in project root directory to build project:
 ```
 bash ./build.sh
 ```
-#### 2. Run all tests
+### 2. Run all tests
 ```
 cd build && ctest
 ```
 
-#### 2. Execute
+### 2. Execute
 To exectute builded binary, you need to write following in terminal:
 ```
 ./build/DM_CAS
 ```
 ---
-### Help
+## Help
 So, you execute the program, now you have a lot of questions. Lets take it in order:
-#### Interface:
+### Interface:
 - In line with "->" you can **write operations**, which you want to calculate. In line with "=" you can **see calculated result** (or "!=" if error occured);
 - Also you can save variables with command like: \<VAR_NAME\> = \<VALUE\>. You can access the variable by adding the '$' sign before name of variable;
 - **F3** - to enable/disable autoscroll;
@@ -45,8 +45,11 @@ So, you execute the program, now you have a lot of questions. Lets take it in or
   - Integer: -1098, 0, 213125, 12i;
   - Rational: -12/13, -15/-13, 23/-5, 5.6, 0.10, 0/5, 23, -5, 90/34r;
   - Polynomial: 1, 5, {5/3^3;1^0} (for polynomial like: (5/3)x^3 + 1), {56^2;1}p.
-#### Available commands
+### Available commands
 So, you can use operations from [this table](https://docs.google.com/document/d/1Dv_6AIhxg_3ezu6VMcEnMpyfRzgym9l8PmE4ULGfjgM/edit?tab=t.0) with given arguments in format like this: [\<NAME\>\_\<ARG\_TYPES\>\_\<RET_TYPE\>] \<ARGS\>. Alternative names with human-readable names are presented below:
+
+---
+#### Operations
 
 | Operation | Compatible types | Example |
 | --------- | ---------------- | ------- |
@@ -59,8 +62,12 @@ So, you can use operations from [this table](https://docs.google.com/document/d/
 | Shift | Natural, Integer, Polynomial (mul by x^k) | a << k (k - Natural) |
 | Div | All types | a / b |
 | Mod | Natural, Integer, Polynomial | a % b |
+| Factorial | Natural | a ! |
 
-| Functions with one argument | Compatible types | Example |
+---
+#### Functions with one argument
+
+| Functions | Compatible types | Example |
 | --------- | ---------------- | ------- |
 | is_zero   | All types        | [is_zero] a |
 | abs       | Integer, Rational | [abs] a |
@@ -77,7 +84,10 @@ So, you can use operations from [this table](https://docs.google.com/document/d/
 | inverse | Rational | [inverse] a |
 | simple\_roots | Polynomial | [simple\_roots] a |
 
-| Functions with two arguments | Compatible types | Example |
+---
+#### Functions with two arguments
+
+| Functions | Compatible types | Example |
 | ---------------------------- | ---------------- | ------- |
 | cmp | Natural, Integer, Rational | [cmp] a b |
 | gcd | Natural, Integer, Polynomial | [gcd] a b |
